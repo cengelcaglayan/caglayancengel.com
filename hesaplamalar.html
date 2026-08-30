@@ -566,6 +566,7 @@ body.kilit{overflow:hidden}
           <div><label>Yıllık faiz (%)</label><input id="r_faiz" type="number" step="0.01" placeholder="55"></div>
           <div><label>Kullanım süresi (gün)</label><input id="r_gun" type="number" placeholder="92"></div>
           <div><label>Dönem sonu komisyon (%)</label><input id="r_kom" type="number" step="0.01" placeholder="1"></div>
+            <div><label>Komisyon kaç ayda bir</label><input id="r_komay" type="number" step="1" value="3" placeholder="3"></div>
           <div><label>BSMV (%)</label><input id="r_bsmv" type="number" step="0.01" value="5" placeholder="5"></div>
           <div><label>KKDF (%)</label><input id="r_kkdf" type="number" step="0.01" placeholder="0"></div>
         </div></div>
@@ -719,9 +720,9 @@ body.kilit{overflow:hidden}
       <strong>Eşikler nereden geliyor?</strong> Yeşil–kırmızı değerlendirmesi <strong>sabit
       bantlara</strong> göre yapılır: bankaların kredi analizinde yaygın kullandığı kabul
       aralıkları (cari oran 1,50 · asit-test 1,00 · borç/özkaynak 2,00 · DSCR 1,25 ·
-      net borç/FAVÖK 3,00 · özkaynak oranı %30). <strong>Canlı Merkez Bankası verisi veya
+      banka borcu/FAVÖK 3,00 · özkaynak oranı %30). <strong>Canlı Merkez Bankası verisi veya
       sektör ortalaması kullanılmaz</strong> — bunlar dışarıdan çekilen veri gerektirir ve
-      bu sayfa hiçbir sunucuya bağlanmaz. Kredi hesaplarında karşılaştırma, girdiğiniz
+      girdiğiniz rakamlar hiçbir sunucuya gönderilmez. Kredi hesaplarında karşılaştırma, girdiğiniz
       nominal faizle çıkan efektif maliyet arasındadır; piyasa faiziyle kıyaslama yapılmaz.
       Sektör ortalamasıyla karşılaştırma, firmanın NACE koduna göre ayrı bir çalışmadır.
     </div>
@@ -788,11 +789,15 @@ function teshis(){
   const satirlar = [
     ['Cari oran',            b(g.t_dv, g.t_kvyk),                       1.5, 'ust', OR, '> 1,50'],
     ['Asit-test (likidite)', b(g.t_dv===null||g.t_stok===null?null:g.t_dv-g.t_stok, g.t_kvyk), 1.0, 'ust', OR, '> 1,00'],
-    ['Borç / Özkaynak',      b(g.t_aktif===null||g.t_ozk===null?null:g.t_aktif-g.t_ozk, g.t_ozk), 2.0, 'alt', OR, '< 2,00'],
+    /* Ozkaynak negatifse oran da negatif cikiyor ve '< 2,00' testini geciyordu:
+       batik firma yesil gorunuyordu. Negatif ozkaynakta oran anlamsizdir -> null. */
+    ['Borç / Özkaynak',      (g.t_ozk!==null&&g.t_ozk<=0)?null:b(g.t_aktif===null||g.t_ozk===null?null:g.t_aktif-g.t_ozk, g.t_ozk), 2.0, 'alt', OR, '< 2,00'],
     ['Özkaynak oranı',       b(g.t_ozk, g.t_aktif),                     0.30,'ust', YZ, '> %30'],
     ['FAVÖK marjı',          b(g.t_favok, g.t_ns),                      0.08,'ust', YZ, '> %8'],
     ['Net kâr marjı',        b(g.t_nk, g.t_ns),                         0.01,'ust', YZ, '> %1'],
-    ['Net borç / FAVÖK',     b(g.t_borc, g.t_favok),                    3.0, 'alt', OR, '< 3,00'],
+    /* Araçta nakit girdisi yok; bu oran BRUT banka borcu uzerinden hesaplaniyor.
+       'Net borc' etiketi yanlisti — Arac 02 net hesapliyor, ikisi celisiyordu. */
+    ['Banka borcu / FAVÖK',  b(g.t_borc, g.t_favok),                    3.0, 'alt', OR, '< 3,00'],
     ['DSCR',                 b(g.t_favok, g.t_bs),                      1.25,'ust', OR, '> 1,25'],
     ['Stok / Aktif',         b(g.t_stok, g.t_aktif),                    0.30,'alt', YZ, '< %30'],
   ];
@@ -855,7 +860,11 @@ function ccc(){
   const c = dso + dio - dpo;
   document.getElementById('n_ccc').innerHTML = c.toLocaleString('tr-TR',{maximumFractionDigits:0}) + '<small> gün</small>';
   const bagli = ns ? ns/365*c : null;
-  document.getElementById('n_alt').textContent = 'Bağlanan işletme sermayesi: ' + (bagli===null?'—':TL(bagli));
+  /* DIO ve DPO satis maliyeti (SMM) uzerinden hesaplanir; ciroyla carpinca sonuc
+     bir miktar yukari sapar. Yaklasik oldugu yaziliyor. */
+  document.getElementById('n_alt').textContent = 'Bağlanan işletme sermayesi (yaklaşık): '
+    + (bagli===null?'—':TL(bagli))
+    + (bagli===null?'':' · ciro üzerinden; stok ve borç günleri satış maliyetine dayandığı için gerçek tutar bir miktar daha düşüktür');
   let rz, y;
   if (c <= 60){ rz='<span class="rozet r-iyi">Sağlıklı</span>';
     y='Para çok kısa süre dışarıda kalıyor. İşletme büyürken ek finansman ihtiyacı sınırlı olur.'; }
@@ -916,7 +925,19 @@ function taksit(){
 function pos(){
   const c=N(p_ciro.value), k1=N(p_k1.value), k2=N(p_k2.value);
   if(c===null||k1===null||k2===null) return;
-  const gun=N(p_gun.value)||0, ay=(N(p_maliyet.value)||0)/100;
+  const gun=N(p_gun.value)||0, ayHam=N(p_maliyet.value);
+  /* Aylik para maliyeti bos birakilinca 0 aliniyordu; bloke bekleyen paranin
+     maliyeti sifirlaniyor ve blokeli POS HER ZAMAN kazaniyordu. Aracin tek
+     anlamli girdisi bu — bos ise hesap yapilmaz. */
+  if(ayHam===null||ayHam<=0){
+    document.getElementById('p_fark').innerHTML='—';
+    document.getElementById('p_alt').textContent='Aylık kredi faizinizi girin — blokede bekleyen paranın maliyeti onsuz hesaplanamaz.';
+    document.getElementById('p_rozet').innerHTML='<span class="rozet r-dikkat">Eksik girdi</span>';
+    document.getElementById('p_yorum').textContent='Blokeli ile ertesi gün ödeyen POS ancak paranın size kaça mal olduğu bilinirse karşılaştırılabilir. Faiz alanı boşken karşılaştırma yanıltıcı olur.';
+    document.getElementById('p_tablo').innerHTML='';
+    return;
+  }
+  const ay=ayHam/100;
   const kom1=c*k1/100, kom2=c*k2/100;
   const komFark=kom1-kom2;                    /* blokelinin komisyon avantaji */
   const paraMaliyeti=c*ay*(gun/30);           /* blokede bekleyen paranin maliyeti */
@@ -951,15 +972,24 @@ function rotatif(){
   const faiz=A*f*g/360, fBsmv=faiz*bsmv, fKkdf=faiz*kkdf;
   const kom=A*komO, kBsmv=kom*bsmv;
   const toplam=faiz+fBsmv+fKkdf+kom+kBsmv;
-  const yillik=toplam*360/g, oran=A?yillik/A:0;
+  /* Komisyon donem SONUNDA bir kez alinir; faizle ayni carpanla yilliga cevrilirse
+     g=30 girildiginde 12 kez sayiliyordu. Faiz gun bazli (360/g), komisyon ise
+     kendi periyoduna gore (12/ay) yilliklandirilir. Bankalar bu komisyonu
+     tipik olarak uc ayda bir alir — varsayilan 3. */
+  const komAy=Math.max(1, N(r_komay.value)||3);
+  const yillikFaiz=(faiz+fBsmv+fKkdf)*360/g;
+  const yillikKom=(kom+kBsmv)*(12/komAy);
+  const yillik=yillikFaiz+yillikKom, oran=A?yillik/A:0;
   document.getElementById('r_yil').innerHTML='%'+(oran*100).toLocaleString('tr-TR',{maximumFractionDigits:1});
   document.getElementById('r_alt').textContent=g+' günlük dönem maliyeti: '+TL(toplam)+' · nominal faiz %'+fy;
   document.getElementById('r_tablo').innerHTML=
     `<tr><td>Faiz (${g} gün)</td><td>${TL(faiz)}</td></tr>`
    +`<tr><td>Faiz üzerinden BSMV${fKkdf?' + KKDF':''}</td><td>${TL(fBsmv+fKkdf)}</td></tr>`
-   +`<tr><td>Dönem sonu komisyon + BSMV</td><td class="d-risk">${TL(kom+kBsmv)}</td></tr>`
+   +`<tr><td>Dönem sonu komisyon + BSMV (${komAy} ayda bir)</td><td class="d-risk">${TL(kom+kBsmv)}</td></tr>`
    +`<tr><td><strong>Dönem toplam ödeme</strong></td><td><strong>${TL(toplam)}</strong></td></tr>`
-   +`<tr><td>Yıllığa çevrilmiş</td><td class="d-risk">${TL(yillik)}</td></tr>`;
+   +`<tr><td>Yıllık faiz yükü</td><td>${TL(yillikFaiz)}</td></tr>`
+   +`<tr><td>Yıllık komisyon yükü</td><td>${TL(yillikKom)}</td></tr>`
+   +`<tr><td>Yıllığa çevrilmiş <strong>toplam</strong></td><td class="d-risk"><strong>${TL(yillik)}</strong></td></tr>`;
   const fark=oran*100-fy;
   let rz,y;
   if(fark<5){rz='<span class="rozet r-iyi">Nominale yakın</span>';y='Vergi ve komisyon yükü sınırlı; ilan edilen orana yakın maliyetle çalışıyorsunuz.';}
@@ -975,7 +1005,9 @@ function spot(){
   const faiz=A*f*g/360, fBsmv=faiz*bsmv, fKkdf=faiz*kkdf;
   const kul=A*kulO, kBsmv=kul*bsmv;
   const toplam=faiz+fBsmv+fKkdf+kul+kBsmv;
-  const yillik = g>=360 ? toplam : toplam*360/g;
+  /* g>=360'ta bolme atlaniyordu: 540 gunluk maliyet yillik gibi gosteriliyor,
+     maliyet sisik cikiyordu. Her durumda yilliga cevrilir. */
+  const yillik = toplam*360/g;
   const oran=A?yillik/A:0;
   document.getElementById('s_yil').innerHTML='%'+(oran*100).toLocaleString('tr-TR',{maximumFractionDigits:1});
   document.getElementById('s_alt').textContent='Vade sonunda ödenecek: '+TL(A+toplam)+' (anapara + '+TL(toplam)+')';
@@ -1265,7 +1297,7 @@ document.querySelectorAll('input').forEach(i => i.addEventListener('input', () =
 })();
 </script>
 <script data-goatcounter="https://caglayancengel.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
+        async src="sayac.js"></script>
 <script>
 /* ===== ZIYARET SAYACI · olay katmani · 30.08.2026 =====
    Cerezsiz sayaca yalnizca "ne yapildi" bilgisi gider; girilen rakamlar GITMEZ.
