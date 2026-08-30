@@ -1061,13 +1061,24 @@ body.kilit{overflow:hidden}
     var y=window.pageYOffset||document.documentElement.scrollTop;
     bar.style.width=(h>0?Math.min(100,y/h*100):0)+'%';
     if(nav){ nav.classList.toggle('kaydi', y>10); }
+    /* Sayfa dibinde kalan ogeler bir daha kaydirilamadigi icin gozlemciye takilmaz
+       ve gizli kalirdi (alt bilgi boyle kaybolmustu). Dipte kalanlar zorla acilir. */
+    if(h-y<160){
+      var kalan=document.querySelectorAll('.rv:not(.gor),.rv-ic:not(.gor)');
+      for(var i=0;i<kalan.length;i++){
+        var rr=kalan[i].getBoundingClientRect();
+        if(rr.top<window.innerHeight) kalan[i].classList.add('gor');
+      }
+    }
     bekle=false;
   }
   addEventListener('scroll',function(){ if(!bekle){ bekle=true; requestAnimationFrame(cizgi); } },{passive:true});
   cizgi();
 
   /* --- 2 · kaydirinca beliren bloklar --- */
-  var kaplar=document.querySelectorAll('section > .wrap, section > .narrow, main > .wrap, main > .narrow, footer > .wrap, footer > .narrow');
+  /* Alt bilgi kapsam DISI: sayfa dibinde kaldigi icin gozlemciye takilmiyor,
+     icerik gizli kaliyordu. Footer daima gorunur durur. */
+  var kaplar=document.querySelectorAll('section > .wrap, section > .narrow, main > .wrap, main > .narrow');
   var hedefler=[];
 
   function isaretle(el,sinif,sira){
@@ -1121,7 +1132,17 @@ body.kilit{overflow:hidden}
       if(g.isIntersecting){ g.target.classList.add('gor'); io.unobserve(g.target); }
     });
   },{rootMargin:'0px 0px -20% 0px',threshold:0.15});
-  hedefler.forEach(function(el){ io.observe(el); });
+
+  /* Ikinci ag: bir oge ekrana tamamen girdiyse, ilk gozlemci tetiklemese bile acilir.
+     Boylece hicbir icerik gorunmez kalamaz. */
+  var io2=new IntersectionObserver(function(giris){
+    giris.forEach(function(g){
+      if(g.intersectionRatio>=0.98||g.boundingClientRect.top<0){
+        g.target.classList.add('gor'); io2.unobserve(g.target);
+      }
+    });
+  },{rootMargin:'0px',threshold:[0.98]});
+  hedefler.forEach(function(el){ io.observe(el); io2.observe(el); });
 
   /* ekranin ustunde kalanlar hemen acilsin (kaydirmadan gorunenler) */
   requestAnimationFrame(function(){
