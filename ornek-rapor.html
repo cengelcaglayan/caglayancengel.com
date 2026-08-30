@@ -169,6 +169,34 @@ footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 2
 .altm a:hover{background:var(--band);color:var(--navy)}
 .altm .altm-bas{padding:5px 18px 9px;font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:var(--goldink);font-weight:600;border-bottom:1px solid var(--rule);margin-bottom:5px}
 @media(max-width:1023px){.altm{display:none}}
+
+/* --- MOBIL MENU --- */
+.hmb{display:none;flex:0 0 auto;width:44px;height:44px;align-items:center;justify-content:center;
+  background:none;border:1px solid var(--rule);border-radius:3px;cursor:pointer;padding:0;margin-left:10px}
+.hmb span{display:block;width:19px;height:2px;background:var(--navy);position:relative;transition:.2s}
+.hmb span::before,.hmb span::after{content:"";position:absolute;left:0;width:19px;height:2px;background:var(--navy);transition:.2s}
+.hmb span::before{top:-6px} .hmb span::after{top:6px}
+.hmb.acik span{background:transparent}
+.hmb.acik span::before{transform:rotate(45deg);top:0}
+.hmb.acik span::after{transform:rotate(-45deg);top:0}
+.mpanel{
+  display:none;position:fixed;inset:0;z-index:90;background:var(--paper);
+  padding:78px 26px 30px;overflow-y:auto;-webkit-overflow-scrolling:touch
+}
+.mpanel.acik{display:block}
+.mpanel a{
+  display:block;padding:16px 0;font-family:'Playfair Display',Georgia,serif;font-size:21px;
+  color:var(--navy);text-decoration:none;border-bottom:1px solid var(--rule)
+}
+.mpanel .mp-bas{padding:22px 0 8px;font-size:11px;letter-spacing:1.6px;text-transform:uppercase;color:var(--goldink);font-weight:600}
+.mpanel .mp-arac{font-family:'IBM Plex Sans',sans-serif;font-size:16px;padding:12px 0;color:var(--body)}
+.mpanel .mp-wa{
+  display:flex;align-items:center;justify-content:center;gap:9px;margin-top:26px;padding:16px;
+  background:#128C7E;color:#fff;border:0;border-radius:3px;font-family:'IBM Plex Sans',sans-serif;
+  font-size:16px;font-weight:600
+}
+body.kilit{overflow:hidden}
+@media(max-width:1023px){.hmb{display:flex}}
 </style>
 </head>
 <body>
@@ -181,8 +209,10 @@ footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 2
     <span class="mgrup"><a class="geri" href="hesaplamalar.html">Hesaplamalar</a><div class="altm"><div class="altm-bas">Hesaplama araçları</div><a href="hesaplamalar.html#a1">Bilanço teşhisi</a><a href="hesaplamalar.html#a2">Borç servisi · DSCR</a><a href="hesaplamalar.html#a3">Nakit döngüsü</a><a href="hesaplamalar.html#a4">Taksitli kredi maliyeti</a><a href="hesaplamalar.html#a5">Rotatif kredi</a><a href="hesaplamalar.html#a6">Spot kredi</a><a href="hesaplamalar.html#a7">Çek/senet iskonto</a><a href="hesaplamalar.html#a8">POS komisyonu</a></div></span>
     <a class="geri" href="/">Ana sayfa</a>
     <a class="wa-top" href="https://wa.me/905337619443" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true" style="flex:0 0 auto"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.06 2.88 1.21 3.08c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.22 1.36.19 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35M12.04 21.5h-.01a9.5 9.5 0 0 1-4.83-1.32l-.35-.21-3.59.94.96-3.5-.23-.36a9.46 9.46 0 0 1-1.45-5.06c0-5.23 4.27-9.49 9.51-9.49 2.54 0 4.92.99 6.71 2.78a9.42 9.42 0 0 1 2.78 6.72c0 5.23-4.27 9.5-9.5 9.5m8.08-17.58A11.42 11.42 0 0 0 12.04.5C5.75.5.63 5.61.63 11.9c0 2.01.53 3.98 1.53 5.71L.5 23.5l6.05-1.59a11.4 11.4 0 0 0 5.49 1.4h.01c6.28 0 11.4-5.11 11.4-11.4 0-3.05-1.19-5.91-3.34-8.07"/></svg><span>WhatsApp</span></a>
-  </div>
+  <button class="hmb" id="hmbBtn" aria-label="Menü" aria-expanded="false"><span></span></button></div>
 </div>
+
+<div class="mpanel" id="mpanel"><a href="/#ne-yaparim">Kapsam</a><a href="/#olcut">Sizde var mı?</a><a href="hesaplamalar.html">Hesaplamalar</a><a href="/#kimim">Deneyim</a><a href="ornek-rapor.html">Örnek rapor</a><a href="/#iletisim">İletişim</a><div class="mp-bas">Hesaplama araçları</div><a class="mp-arac" href="hesaplamalar.html#a1">Bilanço teşhisi</a><a class="mp-arac" href="hesaplamalar.html#a2">Borç servisi · DSCR</a><a class="mp-arac" href="hesaplamalar.html#a3">Nakit döngüsü</a><a class="mp-arac" href="hesaplamalar.html#a4">Taksitli kredi maliyeti</a><a class="mp-arac" href="hesaplamalar.html#a5">Rotatif kredi</a><a class="mp-arac" href="hesaplamalar.html#a6">Spot kredi</a><a class="mp-arac" href="hesaplamalar.html#a7">Çek/senet iskonto</a><a class="mp-arac" href="hesaplamalar.html#a8">POS komisyonu</a><a class="mp-wa" href="https://wa.me/905337619443" target="_blank" rel="noopener">WhatsApp ile yazın</a></div>
 
 <header class="hero">
   <div class="wrap">
@@ -457,6 +487,18 @@ footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 2
   function g(){ b.classList.toggle('gor', window.scrollY>520); }
   window.addEventListener('scroll',g,{passive:true}); g();
   b.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+})();
+
+(function(){
+  const d=document.getElementById('hmbBtn'), p=document.getElementById('mpanel');
+  if(!d||!p) return;
+  d.addEventListener('click',()=>{
+    const a=p.classList.toggle('acik'); d.classList.toggle('acik',a);
+    document.body.classList.toggle('kilit',a); d.setAttribute('aria-expanded',a);
+  });
+  p.querySelectorAll('a').forEach(x=>x.addEventListener('click',()=>{
+    p.classList.remove('acik'); d.classList.remove('acik'); document.body.classList.remove('kilit');
+  }));
 })();
 </script>
 </body>
