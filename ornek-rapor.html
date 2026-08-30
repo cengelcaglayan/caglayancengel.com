@@ -54,7 +54,7 @@ h2{font-size:clamp(25px,2.7vw,32px);margin-bottom:12px}
 .top img{width:48px;height:48px;object-fit:contain}
 .top .nm{font-family:'Playfair Display',serif;font-weight:700;color:var(--navy);font-size:17px;letter-spacing:1.4px}
 .top .marka{display:flex;align-items:center;gap:14px;text-decoration:none;transition:opacity .2s ease}
-.top .marka:hover{opacity:.72}
+.top @media(hover:hover) and (pointer:fine){.marka:hover{opacity:.72}}
 .top .sp{flex:1}
 .top a.geri{font-size:14.5px;color:var(--navy);text-decoration:none;border-bottom:1px solid var(--gold);padding:2px 0}
 
@@ -171,7 +171,8 @@ footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 2
 .altm{position:absolute;top:calc(100% + 10px);left:50%;transform:translateX(-50%) translateY(-6px);
   min-width:236px;background:var(--white);border:1px solid var(--rule);border-radius:3px;
   box-shadow:0 6px 22px rgba(15,28,46,.13);padding:7px 0;z-index:70;opacity:0;visibility:hidden;transition:.18s}
-.mgrup:hover .altm,.mgrup:focus-within .altm{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
+@media(hover:hover) and (pointer:fine){.mgrup:hover .altm{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}}
+.mgrup:focus-within .altm{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
 .altm::before{content:"";position:absolute;top:-10px;left:0;right:0;height:10px}
 .altm a{display:block;padding:9px 18px;font-size:14.5px;color:var(--body);text-decoration:none;border:0;white-space:nowrap;transition:.12s}
 .altm a:hover{background:var(--band);color:var(--navy)}
@@ -808,6 +809,23 @@ body.kilit{overflow:hidden}
     else if(h.indexOf('linkedin.com')>-1) olay('sosyal/linkedin','LinkedIn');
   }, true);
 })();
+</script>
+<script>
+(function(){
+  /* Ust soldaki marka baglantisi: ana sayfadayken yeniden yukleme yerine basa kaydirir.
+     Yeniden yuklemede tarayici eski kaydirma konumunu geri getiriyor ve baglanti
+     calismamis gibi gorunuyordu (iki dokunus sorunu). */
+  var anaSayfa = location.pathname === '/' || /\/index\.html$/.test(location.pathname);
+  if(!anaSayfa) return;
+  document.querySelectorAll('a.marka').forEach(function(a){
+    a.addEventListener('click', function(e){
+      e.preventDefault();
+      window.scrollTo({top:0, behavior:'smooth'});
+      if(location.hash) history.replaceState(null,'',location.pathname);
+    });
+  });
+})();
+
 </script>
 </body>
 </html>

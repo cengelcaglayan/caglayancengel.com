@@ -53,7 +53,7 @@ h2{font-size:clamp(24px,2.6vw,31px);margin-bottom:11px}
 .top img{width:48px;height:48px;object-fit:contain}
 .top .nm{font-family:'Playfair Display',serif;font-weight:700;color:var(--navy);font-size:17px;letter-spacing:1.4px}
 .top .marka{display:flex;align-items:center;gap:14px;text-decoration:none;transition:opacity .2s ease}
-.top .marka:hover{opacity:.72}
+.top @media(hover:hover) and (pointer:fine){.marka:hover{opacity:.72}}
 .top .sp{flex:1}
 .top a{font-size:14.5px;color:var(--navy);text-decoration:none;border-bottom:1px solid var(--gold);padding:2px 0}
 
@@ -172,7 +172,8 @@ section[id]{scroll-margin-top:calc(var(--yapiskan,130px) + 14px)}
   box-shadow:0 6px 22px rgba(15,28,46,.13);padding:7px 0;z-index:70;
   opacity:0;visibility:hidden;transition:.18s
 }
-.mgrup:hover .altm,.mgrup:focus-within .altm{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
+@media(hover:hover) and (pointer:fine){.mgrup:hover .altm{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}}
+.mgrup:focus-within .altm{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
 .altm::before{content:"";position:absolute;top:-10px;left:0;right:0;height:10px}
 .altm a{
   display:block;padding:9px 18px;font-size:14.5px;color:var(--body);text-decoration:none;
@@ -1062,6 +1063,21 @@ function iskonto(){
   addEventListener('scroll',guncelle,{passive:true});
   addEventListener('resize',function(){ olc(); sonAkt=-1; guncelle(); },{passive:true});
   olc(); guncelle();
+})();
+
+(function(){
+  /* Ust soldaki marka baglantisi: ana sayfadayken yeniden yukleme yerine basa kaydirir.
+     Yeniden yuklemede tarayici eski kaydirma konumunu geri getiriyor ve baglanti
+     calismamis gibi gorunuyordu (iki dokunus sorunu). */
+  var anaSayfa = location.pathname === '/' || /\/index\.html$/.test(location.pathname);
+  if(!anaSayfa) return;
+  document.querySelectorAll('a.marka').forEach(function(a){
+    a.addEventListener('click', function(e){
+      e.preventDefault();
+      window.scrollTo({top:0, behavior:'smooth'});
+      if(location.hash) history.replaceState(null,'',location.pathname);
+    });
+  });
 })();
 
 document.querySelectorAll('input').forEach(i => i.addEventListener('input', () => {
