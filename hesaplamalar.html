@@ -79,6 +79,11 @@ input:focus{outline:none;border-color:var(--gold);background:var(--white)}
 .d-risk{color:var(--kirmizi);font-weight:600}
 .d-bos{color:var(--soft)}
 
+.kaynak-not{
+  margin-top:34px;padding:18px 22px;background:var(--band);border-left:2px solid var(--gold);
+  font-size:15px;line-height:1.68;color:var(--soft);max-width:76ch
+}
+.kaynak-not strong{color:var(--navy)}
 .cta{margin-top:30px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
 .btn{display:inline-block;padding:15px 32px;font-size:15px;font-weight:600;letter-spacing:.7px;text-decoration:none;border-radius:2px}
 .b1{background:var(--gold);color:var(--navy)}
@@ -489,6 +494,21 @@ section[id]{scroll-margin-top:62px}
           <div class="yorum" id="p_yorum">Ciro ve iki komisyon oranını girin.</div>
         </div>
       </div>
+      <div class="skor"><table>
+        <thead><tr><th>Aylık</th><th>Ertesi gün POS</th><th>Blokeli POS</th></tr></thead>
+        <tbody id="p_tablo"><tr><td class="d-bos" colspan="3">Rakam bekleniyor…</td></tr></tbody>
+      </table></div>
+    </div>
+
+    <div class="kaynak-not">
+      <strong>Eşikler nereden geliyor?</strong> Yeşil–kırmızı değerlendirmesi <strong>sabit
+      bantlara</strong> göre yapılır: bankaların kredi analizinde yaygın kullandığı kabul
+      aralıkları (cari oran 1,50 · asit-test 1,00 · borç/özkaynak 2,00 · DSCR 1,25 ·
+      net borç/FAVÖK 3,00 · özkaynak oranı %30). <strong>Canlı Merkez Bankası verisi veya
+      sektör ortalaması kullanılmaz</strong> — bunlar dışarıdan çekilen veri gerektirir ve
+      bu sayfa hiçbir sunucuya bağlanmaz. Kredi hesaplarında karşılaştırma, girdiğiniz
+      nominal faizle çıkan efektif maliyet arasındadır; piyasa faiziyle kıyaslama yapılmaz.
+      Sektör ortalamasıyla karşılaştırma, firmanın NACE koduna göre ayrı bir çalışmadır.
     </div>
 
     <div class="cta">
@@ -682,6 +702,13 @@ function pos(){
     y='Blokeli POS ayda ' + TL(net) + ' daha ucuz — ancak paranız ' + gun + ' gün bekliyor. Nakit sıkışıklığı varsa bu avantaj kâğıt üstünde kalır.'; }
   else { rz='<span class="rozet r-iyi">Ertesi gün avantajlı</span>';
     y='Ertesi gün ödeyen POS ayda ' + TL(-net) + ' daha ucuza geliyor. Yüksek komisyona rağmen paranın erken gelmesi kazandırıyor.'; }
+  document.getElementById('p_tablo').innerHTML=
+     `<tr><td>Komisyon oranı</td><td>%${k1.toLocaleString('tr-TR',{maximumFractionDigits:2})}</td><td>%${k2.toLocaleString('tr-TR',{maximumFractionDigits:2})}</td></tr>`
+   + `<tr><td>Kesilen komisyon</td><td class="d-risk">${TL(kom1)}</td><td class="d-iyi">${TL(kom2)}</td></tr>`
+   + `<tr><td>Hesaba geçen</td><td>${TL(c-kom1)}</td><td>${TL(c-kom2)}</td></tr>`
+   + `<tr><td>Para ne zaman elinizde</td><td class="d-iyi">ertesi gün</td><td class="d-risk">${gun} gün sonra</td></tr>`
+   + `<tr><td>Bekleyen paranın maliyeti</td><td>—</td><td class="d-risk">${TL(paraMaliyeti)}</td></tr>`
+   + `<tr><td><strong>Gerçek aylık maliyet</strong></td><td class="${net>0?'d-risk':'d-iyi'}"><strong>${TL(kom1)}</strong></td><td class="${net>0?'d-iyi':'d-risk'}"><strong>${TL(kom2+paraMaliyeti)}</strong></td></tr>`;
   document.getElementById('p_rozet').innerHTML=rz;
   document.getElementById('p_yorum').textContent=y;
 }
