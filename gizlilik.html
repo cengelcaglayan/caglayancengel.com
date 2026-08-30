@@ -153,12 +153,12 @@ body.kilit{overflow:hidden}
 @keyframes acilis{to{opacity:1;transform:none}}
 
 /* --- kaydirinca beliren bloklar --- */
-.js-anim .rv{opacity:0;transform:translateY(26px);
+.js-anim .rv{opacity:0;transform:translateY(34px);
   transition:opacity .8s cubic-bezier(.22,.61,.36,1),transform .8s cubic-bezier(.22,.61,.36,1)}
 .js-anim .rv.gor{opacity:1;transform:none}
 
 /* ic ogeler biraz daha kisa yoldan gelir */
-.js-anim .rv-ic{opacity:0;transform:translateY(18px);
+.js-anim .rv-ic{opacity:0;transform:translateY(24px);
   transition:opacity .7s cubic-bezier(.22,.61,.36,1),transform .7s cubic-bezier(.22,.61,.36,1)}
 .js-anim .rv-ic.gor{opacity:1;transform:none}
 
@@ -419,27 +419,41 @@ body.kilit{overflow:hidden}
     hedefler.push(el);
   }
 
-  kaplar.forEach(function(kap){
-    var s=0;
-    Array.prototype.forEach.call(kap.children,function(el){
-      var p=getComputedStyle(el).position;
-      if(p==='sticky'||p==='fixed'||p==='-webkit-sticky') return;   /* sticky bozulmasin */
+  /* Uzun bir blok, ucu ekrana girer girmez tetiklenir; kullanici oraya varana kadar
+     animasyon coktan biter ve bolum "sabit duruyor" gorunur. Bu yuzden ekranin
+     yarisindan uzun bloklar ve tekrarli kardesler ozyinelemeli parcalanir. */
+  function bol(el,derinlik,sira){
+    var p=getComputedStyle(el).position;
+    if(p==='sticky'||p==='fixed'||p==='-webkit-sticky') return;   /* sticky bozulmasin */
+    /* tablo ve grafigin KENDISI butun kalir — transform ic yerlesimlerini bozar.
+       Ama kardeslerinin bolunmesine engel degildir. */
+    var t=String(el.tagName).toLowerCase();
+    if(t==='svg'||t==='table'||t==='thead'||t==='tbody'||t==='tr'||t==='td'||t==='th'){
+      if(t==='svg'||t==='table') isaretle(el,'rv-ic',sira);
+      return;
+    }
 
-      /* blok icinde tekrar eden kardesler varsa (kartlar, adimlar, sorular)
-         blogun kendisi degil, cocuklari tek tek gelir — hareket her seviyede olur */
-      /* tablo/grafik iceren blok bolunmez — transform ic yerlesimi bozabilir */
-      if(el.querySelector('table,svg')){ isaretle(el,'rv',s); s++; return; }
-      var ic=[]; Array.prototype.forEach.call(el.children,function(c){ if(c.nodeType===1) ic.push(c); });
-      var tekrarli = ic.length>=2 && ic.length<=14 && ic.every(function(c){return c.tagName===ic[0].tagName});
-
-      if(tekrarli){
-        el.classList.add('rv-kap');
-        ic.forEach(function(c,j){ isaretle(c,'rv-ic',j); });
-        s++;
-      }else{
-        isaretle(el,'rv',s); s++;
-      }
+    var cocuk=[];
+    Array.prototype.forEach.call(el.children,function(c){
+      if(c.nodeType===1 && getComputedStyle(c).display!=='none') cocuk.push(c);
     });
+    var uzun = el.getBoundingClientRect().height > window.innerHeight*0.42;
+    var tekrarli = cocuk.length>=2 && cocuk.length<=14 &&
+                   cocuk.every(function(c){return c.tagName===cocuk[0].tagName});
+
+    /* tablo veya grafik iceren blok bolunmez — ic yerlesimi transformdan bozulur */
+    if(derinlik<4 && cocuk.length>=2 && (uzun||tekrarli)){
+      el.classList.add('rv-kap');
+      cocuk.forEach(function(c,j){ bol(c,derinlik+1,j); });
+      return;
+    }
+    isaretle(el, derinlik===0?'rv':'rv-ic', sira);
+  }
+
+  kaplar.forEach(function(kap){
+    var ust=[];
+    Array.prototype.forEach.call(kap.children,function(c){ if(c.nodeType===1) ust.push(c); });
+    ust.forEach(function(el,i){ bol(el,0,i); });
   });
 
   /* bolum cizgileri de kendi basina acilir */
@@ -448,14 +462,14 @@ body.kilit{overflow:hidden}
     giris.forEach(function(g){
       if(g.isIntersecting){ g.target.classList.add('gor'); io.unobserve(g.target); }
     });
-  },{rootMargin:'0px 0px -6% 0px',threshold:0.04});
+  },{rootMargin:'0px 0px -20% 0px',threshold:0.15});
   hedefler.forEach(function(el){ io.observe(el); });
 
   /* ekranin ustunde kalanlar hemen acilsin (kaydirmadan gorunenler) */
   requestAnimationFrame(function(){
     hedefler.forEach(function(el){
       var r=el.getBoundingClientRect();
-      if(r.top<window.innerHeight*0.94) el.classList.add('gor');
+      if(r.top<window.innerHeight*0.78) el.classList.add('gor');
     });
   });
 
