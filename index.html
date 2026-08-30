@@ -186,6 +186,14 @@ h2{font-size:clamp(26px,2.9vw,34px);margin-bottom:14px}
 /* ---- kimim ---- */
 .who{display:grid;grid-template-columns:1fr 300px;gap:52px;align-items:start}
 .who p{font-size:19px;margin-bottom:20px}
+.kariyer{margin-top:30px;padding-top:24px;border-top:1px solid var(--rule)}
+.k-bas{font-size:11.5px;letter-spacing:1.6px;text-transform:uppercase;color:var(--goldink);font-weight:600;margin-bottom:14px}
+.k-sat{display:flex;gap:18px;align-items:baseline;padding:9px 0;border-bottom:1px solid var(--rule)}
+.k-sat b{flex:0 0 auto;min-width:92px;font-family:'Playfair Display',Georgia,serif;font-size:15.5px;color:var(--navy);font-variant-numeric:tabular-nums}
+.k-sat span{font-size:16px;color:var(--body);line-height:1.45}
+.k-not{margin-top:14px;font-size:14.5px}
+.k-not a{color:var(--goldink);text-decoration:none;border-bottom:1px solid var(--gold);padding-bottom:2px}
+@media(max-width:560px){.k-sat{flex-direction:column;gap:2px}.k-sat b{min-width:0}}
 .portre{
   width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;display:block;
   border:1px solid var(--rule);background:var(--white)
@@ -450,7 +458,7 @@ footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 2
       <div class="proof-in">
         <div><b>6 yıl</b><span>Sigortacılık · 2001–2007</span></div>
         <div><b>16 yıl</b><span>Bankacılık · 2007–2023</span></div>
-        <div><b>3 banka</b><span>Bireysel · ticari · KOBİ bankacılığı</span></div>
+        <div><b>Kredi tahsisi</b><span>Dosya hazırlama ve değerlendirme</span></div>
       <div><b>22 yıl</b><span>Toplam finans sektörü</span></div>
       </div>
     </div>
@@ -575,6 +583,17 @@ footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 2
           <p>Kredilerin etkin maliyeti — komisyon, masraf ve vade yapısı dâhil — banka bazında
             karşılaştırılır. Yeni bir talep öncesinde dosyanın hangi soruyla karşılaşacağı
             önceden bilinir; eksik olan, banka sormadan tamamlanır.</p>
+
+        <div class="kariyer">
+          <div class="k-bas">Kurumlar ve görevler</div>
+          <div class="k-sat"><b>2021–2023</b><span>Anadolubank — Müdür yardımcısı</span></div>
+          <div class="k-sat"><b>2012–2021</b><span>TEB — İşletme ilişkileri portföy yöneticisi</span></div>
+          <div class="k-sat"><b>2007–2012</b><span>HSBC — Bireysel bankacılık, portföy yönetimi</span></div>
+          <div class="k-sat"><b>2005–2007</b><span>Fortis Emeklilik ve Hayat — Bağımsız finansal danışman</span></div>
+          <div class="k-sat"><b>2001–2005</b><span>AvivaSA Emeklilik ve Hayat — Finansal danışman</span></div>
+          <div class="k-not"><a href="https://www.linkedin.com/in/caglayancengel/" rel="noopener me" target="_blank">LinkedIn'de doğrulanabilir →</a></div>
+        </div>
+
         </div>
       </div>
 
@@ -677,25 +696,6 @@ footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 2
           takılacağı ve neyin önceden cevaplanması gerektiği de burada belirlenirdi. Aynı bakış bugün firma tarafında
           kullanılıyor. Dosya bankaya gitmeden önce burada açılıyor, eksik olan banka
           sormadan tamamlanıyor.</p>
-        <details>
-          <summary>O masada ne yapılırdı</summary>
-          <p>Talep alındığında mali veriler ve evraklar üzerinden spread çalışması yapılırdı —
-            bankanın mali tabloyu kendi analiz formatına dönüştürdüğü çalışma. Firmanın
-            borçlanma kapasitesi, teminat yapısı ve nakit üretimi bu çalışmada görünür hâle
-            gelirdi.</p>
-          <p>Veride tutarsızlık görüldüğünde firma ya da mali müşaviriyle görüşülür; güncel
-            mizan istenir veya tahsis biriminin soracağı soruların cevabı önceden hazırlanırdı.
-            Dosya şube müdürüne iletilir, gerektiğinde şube kredi komitesinde değerlendirilirdi.
-            Şube yetkisi dâhilindeyse görüş orada verilir, yetki aşıldığında teklif tahsise
-            gönderilirdi.</p>
-          <p>Bireysel bankacılık dönemi farklı bir tarafı gösterdi: paranın hangi üründe,
-            hangi vadede ve hangi maliyetle durduğu. Mevduat, vadeli işlem, tahvil-bono ve
-            emeklilik fonları bu dönemin çalışma alanıydı. Firma tarafında bu bilgi
-            <strong>atıl nakdin nerede beklediği</strong> sorusunda kullanılır — krediyi
-            kapatmak mı, nakitte tutmak mı sorusu bir hesap işidir.
-            <em>Yatırım tavsiyesi verilmez; ölçülen şey firmanın kendi parasının nerede
-            durduğudur.</em></p>
-        </details>
       </div>
       <picture>
         <source srcset="portre.webp" type="image/webp">
