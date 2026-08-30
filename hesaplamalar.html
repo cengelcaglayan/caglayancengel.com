@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hesaplamalar — Çağlayan Çengel</title>
+<meta name="description" content="Firmanızın bankada nasıl göründüğünü ölçün. Bilanço teşhisi, borç servis kapasitesi ve nakit dönüş süresi — verileriniz tarayıcınızdan çıkmaz.">
+<link rel="icon" href="logo.png">
+<link rel="canonical" href="https://caglayancengel.com/hesaplamalar.html">
+<link rel="stylesheet" href="fonts.css">
+<style>
+:root{
+  --paper:#FBFAF6; --white:#fff; --band:#F4F1E9;
+  --navy:#0F1C2E; --navy2:#1D3050; --body:#3D4857; --soft:#5A6472;
+  --gold:#C8A951; --goldink:#7A6220; --rule:#E4DED0;
+  --kirmizi:#8C2F1E; --yesil:#2F5D3A; --sari:#7A6220;
+  --maxw:1120px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{background:var(--paper);color:var(--body);
+  font-family:'IBM Plex Sans',system-ui,sans-serif;font-size:18px;line-height:1.72;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:'Playfair Display',Georgia,serif;font-weight:700;line-height:1.2;color:var(--navy)}
+a{color:var(--goldink)}
+strong{color:var(--navy);font-weight:600}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 26px}
+section{padding:68px 0}
+.band{background:var(--band)}
+.kicker{font-size:12.5px;letter-spacing:2.1px;text-transform:uppercase;color:var(--goldink);font-weight:600;margin-bottom:11px}
+h2{font-size:clamp(24px,2.6vw,31px);margin-bottom:11px}
+.rule{width:40px;height:2px;background:var(--gold);margin:0 0 22px}
+
+.top{border-bottom:1px solid var(--rule);background:var(--white)}
+.top .wrap{display:flex;align-items:center;gap:14px;padding:16px 26px}
+.top img{width:34px;height:34px;object-fit:contain}
+.top .nm{font-family:'Playfair Display',serif;font-weight:700;color:var(--navy);font-size:17px;letter-spacing:1.4px}
+.top .sp{flex:1}
+.top a{font-size:14.5px;color:var(--navy);text-decoration:none;border-bottom:1px solid var(--gold);padding:2px 0}
+
+.hero{background:var(--white);padding:64px 0 52px;border-bottom:1px solid var(--rule)}
+.h1{font-family:'Playfair Display',serif;font-weight:700;color:var(--navy);
+  font-size:clamp(29px,4vw,44px);line-height:1.12;max-width:20ch}
+.sub{margin-top:20px;font-size:19px;color:var(--body);max-width:60ch}
+.gizlilik{margin-top:24px;padding:13px 18px;background:var(--band);border-left:2px solid var(--gold);
+  font-size:15px;color:var(--soft);max-width:64ch}
+
+/* arac karti */
+.arac{background:var(--white);border:1px solid var(--rule);border-radius:3px;overflow:hidden;margin-top:30px}
+.arac-bas{padding:24px 28px 20px;border-bottom:1px solid var(--rule)}
+.arac-no{font-size:11.5px;letter-spacing:1.6px;text-transform:uppercase;color:var(--goldink);font-weight:600}
+.arac-bas h3{font-size:21px;margin-top:6px}
+.arac-bas p{font-size:15.5px;color:var(--soft);margin-top:7px;max-width:60ch}
+.arac-ic{display:grid;grid-template-columns:1fr 340px;gap:0}
+.girdiler{padding:24px 28px}
+.gg{display:grid;grid-template-columns:1fr 1fr;gap:14px 18px}
+label{display:block;font-size:13.5px;color:var(--soft);margin-bottom:5px;letter-spacing:.2px}
+input{width:100%;padding:11px 13px;font-family:inherit;font-size:16px;color:var(--navy);
+  border:1px solid var(--rule);border-radius:2px;background:var(--paper)}
+input:focus{outline:none;border-color:var(--gold);background:var(--white)}
+.cikti{background:var(--navy);color:#D5DBE4;padding:24px 26px}
+.cikti .cb{font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);font-weight:600}
+.buyuk{font-family:'Playfair Display',serif;font-size:42px;color:#fff;line-height:1.05;margin:10px 0 2px}
+.buyuk small{font-size:19px;color:#9FB0C6}
+.cikti .alt{font-size:14.5px;color:#C7CFDA;margin-top:4px}
+.yorum{margin-top:16px;padding-top:15px;border-top:1px solid #2A3B55;font-size:15px;line-height:1.6;color:#C7CFDA}
+.rozet{display:inline-block;font-size:11.5px;letter-spacing:1.1px;text-transform:uppercase;font-weight:600;
+  padding:4px 10px;border-radius:2px;margin-top:12px}
+.r-iyi{background:#2F5D3A;color:#DCEBE0}
+.r-dikkat{background:#7A6220;color:#F6EDD5}
+.r-risk{background:#8C2F1E;color:#F6E1DC}
+
+/* skor tablosu */
+.skor{padding:0 28px 26px}
+.skor table{width:100%;border-collapse:collapse;font-size:15px;margin-top:6px}
+.skor th,.skor td{text-align:right;padding:9px 10px;border-bottom:1px solid var(--rule)}
+.skor th:first-child,.skor td:first-child{text-align:left}
+.skor thead th{font-size:11.5px;letter-spacing:1px;text-transform:uppercase;color:var(--soft);border-bottom:1px solid var(--navy)}
+.d-iyi{color:var(--yesil);font-weight:600}
+.d-risk{color:var(--kirmizi);font-weight:600}
+.d-bos{color:var(--soft)}
+
+.cta{margin-top:30px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.btn{display:inline-block;padding:15px 32px;font-size:15px;font-weight:600;letter-spacing:.7px;text-decoration:none;border-radius:2px}
+.b1{background:var(--gold);color:var(--navy)}
+.b2{border:1px solid var(--rule);color:var(--navy)}
+
+footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 24px}
+.fbar{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.fbar img{width:34px;height:34px;object-fit:contain}
+.fmid{display:flex;flex-direction:column;line-height:1.35}
+.f-nm{font-family:'Playfair Display',serif;font-weight:700;color:var(--gold);font-size:16px;letter-spacing:2.4px}
+.f-rl{font-size:12px;letter-spacing:1.4px;text-transform:uppercase;color:var(--soft);margin-top:3px}
+.f-sl{font-family:'Playfair Display',serif;font-style:italic;color:var(--navy);font-size:14px;margin:0 0 0 auto}
+.f-ml{margin-top:14px;font-size:14.5px}
+.f-ml a{color:var(--navy);text-decoration:none;border-bottom:1px solid var(--gold);padding:2px 0}
+.f-lg{margin-top:14px;padding-top:14px;border-top:1px solid var(--rule);font-size:12px;color:var(--soft);line-height:1.75}
+
+@media(max-width:900px){
+  .arac-ic{grid-template-columns:1fr}
+  .cikti{border-top:1px solid #2A3B55}
+}
+@media(max-width:820px){
+  body{font-size:17px}
+  section{padding:50px 0}
+  .gg{grid-template-columns:1fr}
+  .fbar .f-sl{margin:8px 0 0;width:100%}
+}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="wrap">
+    <img src="logo.png" alt="">
+    <span class="nm">ÇAĞLAYAN ÇENGEL</span>
+    <span class="sp"></span>
+    <a href="/">Ana sayfa</a>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="kicker">Hesaplamalar</p>
+    <h1 class="h1">Firmanız bankada nasıl görünüyor?</h1>
+    <p class="sub">
+      Bilançodan okunacak birkaç rakamla, kredi tahsis masasının baktığı oranlar hesaplanır.
+      Eşikler bankaların kullandığı bantlardır — temenni değil.
+    </p>
+    <div class="gizlilik">
+      🔒 <strong>Girdiğiniz rakamlar hiçbir yere gönderilmez.</strong> Hesaplama tarayıcınızın
+      içinde yapılır; sunucuya kayıt düşmez, saklanmaz, görülmez.
+    </div>
+  </div>
+</header>
+
+<!-- ============ ARAÇ 1 — HIZLI TEŞHİS ============ -->
+<section>
+  <div class="wrap">
+    <p class="kicker">Ana araç</p>
+    <h2>Bilanço teşhisi — sekiz oran, sekiz banka bandı</h2>
+    <div class="rule"></div>
+    <p style="max-width:62ch">
+      Bilanço ve gelir tablosundan on rakam. Karşılığında bankanın baktığı sekiz oran ve
+      her birinin kabul bandına göre durumu.
+    </p>
+
+    <div class="arac">
+      <div class="arac-bas">
+        <span class="arac-no">Araç 01 · Teşhis</span>
+        <h3>Hızlı bilanço teşhisi</h3>
+        <p>Rakamları bin veya milyon ayırmadan, olduğu gibi girin.</p>
+      </div>
+      <div class="arac-ic">
+        <div class="girdiler">
+          <div class="gg">
+            <div><label>Dönen varlıklar</label><input id="t_dv" type="number" placeholder="47445874"></div>
+            <div><label>Stoklar</label><input id="t_stok" type="number" placeholder="18530891"></div>
+            <div><label>Kısa vadeli yükümlülük</label><input id="t_kvyk" type="number" placeholder="45361643"></div>
+            <div><label>Toplam aktif</label><input id="t_aktif" type="number" placeholder="69477761"></div>
+            <div><label>Özkaynak</label><input id="t_ozk" type="number" placeholder="10842928"></div>
+            <div><label>Toplam banka borcu</label><input id="t_borc" type="number" placeholder="32097701"></div>
+            <div><label>Net satışlar (yıllık)</label><input id="t_ns" type="number" placeholder="88662838"></div>
+            <div><label>FAVÖK / EBITDA</label><input id="t_favok" type="number" placeholder="2781162"></div>
+            <div><label>Yıllık borç servisi<br><span style="font-size:12px">(anapara + faiz)</span></label><input id="t_bs" type="number" placeholder="3500000"></div>
+            <div><label>Net kâr</label><input id="t_nk" type="number" placeholder="47219"></div>
+          </div>
+        </div>
+        <div class="cikti">
+          <div class="cb">Teşhis çıktısı</div>
+          <div class="buyuk" id="t_skor">—<small id="t_skor_alt"></small></div>
+          <div class="alt" id="t_ozet">Rakamları girin, oranlar anında hesaplanır.</div>
+          <div id="t_rozet"></div>
+          <div class="yorum" id="t_yorum"></div>
+        </div>
+      </div>
+      <div class="skor">
+        <table>
+          <thead><tr><th>Oran</th><th>Sonuç</th><th>Banka bandı</th><th>Durum</th></tr></thead>
+          <tbody id="t_tablo">
+            <tr><td class="d-bos" colspan="4">Rakam bekleniyor…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ARAÇ 2 — DSCR ============ -->
+<section class="band">
+  <div class="wrap">
+    <p class="kicker">Araç 02</p>
+    <h2>Borç servis karşılama gücü</h2>
+    <div class="rule"></div>
+    <p style="max-width:62ch">
+      Kredi kararındaki tek en belirleyici oran. Bankanın sorduğu soru şudur: mevcut borcun
+      üstüne yeni bir taksit binerse, işletme bunu <strong>kendi nakdiyle</strong> ödeyebilir mi?
+    </p>
+
+    <div class="arac">
+      <div class="arac-bas">
+        <span class="arac-no">Araç 02 · Kredi tahsis</span>
+        <h3>DSCR ve ek kredi kapasitesi</h3>
+      </div>
+      <div class="arac-ic">
+        <div class="girdiler">
+          <div class="gg">
+            <div><label>Yıllık FAVÖK</label><input id="d_favok" type="number" placeholder="14743137"></div>
+            <div><label>Yıllık borç servisi</label><input id="d_bs" type="number" placeholder="10500000"></div>
+            <div><label>Toplam finansal borç</label><input id="d_borc" type="number" placeholder="57466294"></div>
+            <div><label>Nakit ve benzerleri</label><input id="d_nakit" type="number" placeholder="660023"></div>
+          </div>
+        </div>
+        <div class="cikti">
+          <div class="cb">Tahsis çıktısı</div>
+          <div class="buyuk" id="d_dscr">—<small>×</small></div>
+          <div class="alt" id="d_alt">Net finansal borç / FAVÖK: —</div>
+          <div id="d_rozet"></div>
+          <div class="yorum" id="d_yorum">FAVÖK ve borç servisini girin.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ARAÇ 3 — NAKİT DÖNGÜSÜ ============ -->
+<section>
+  <div class="wrap">
+    <p class="kicker">Araç 03</p>
+    <h2>Paranın kaç gün dışarıda kaldığı</h2>
+    <div class="rule"></div>
+    <p style="max-width:62ch">
+      Alacak ve stokta bekleyen gün sayısından, tedarikçiye ödeme gününü çıkarın. Kalan gün,
+      firmanın <strong>kendi parasıyla finanse ettiği</strong> süredir. Kredi ihtiyacı çoğu zaman
+      buradan doğar.
+    </p>
+
+    <div class="arac">
+      <div class="arac-bas">
+        <span class="arac-no">Araç 03 · İşletme sermayesi</span>
+        <h3>Nakit dönüş süresi</h3>
+      </div>
+      <div class="arac-ic">
+        <div class="girdiler">
+          <div class="gg">
+            <div><label>Alacak tahsil süresi (gün)</label><input id="n_dso" type="number" placeholder="120"></div>
+            <div><label>Stok bekleme süresi (gün)</label><input id="n_dio" type="number" placeholder="98"></div>
+            <div><label>Tedarikçiye ödeme (gün)</label><input id="n_dpo" type="number" placeholder="30"></div>
+            <div><label>Yıllık net satış</label><input id="n_ns" type="number" placeholder="88662838"></div>
+          </div>
+        </div>
+        <div class="cikti">
+          <div class="cb">İşletme sermayesi çıktısı</div>
+          <div class="buyuk" id="n_ccc">—<small> gün</small></div>
+          <div class="alt" id="n_alt">Bağlanan işletme sermayesi: —</div>
+          <div id="n_rozet"></div>
+          <div class="yorum" id="n_yorum">Gün sayılarını girin.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ ARAÇ 4 — TAKSİTLİ KREDİNİN GERÇEK MALİYETİ ============ -->
+<section class="band">
+  <div class="wrap">
+    <p class="kicker">Araç 04</p>
+    <h2>Bankanın söylediği oran, ödediğiniz oran değildir</h2>
+    <div class="rule"></div>
+    <p style="max-width:62ch">
+      Teklif kâğıdında bir oran yazar. Kullandırım ücreti, BSMV, komisyon ve sigorta
+      düşüldükten sonra hesaba giren para daha azdır — <strong>taksit ise aynı kalır.</strong>
+      Gerçek maliyet buradan çıkar.
+    </p>
+
+    <div class="arac">
+      <div class="arac-bas">
+        <span class="arac-no">Araç 04 · Kredi maliyeti</span>
+        <h3>Taksitli kredide efektif maliyet</h3>
+        <p>Masrafsız bir teklif için masraf alanlarını boş bırakın.</p>
+      </div>
+      <div class="arac-ic">
+        <div class="girdiler">
+          <div class="gg">
+            <div><label>Anapara (TL)</label><input id="k_ana" type="number" placeholder="2175234"></div>
+            <div><label>Aylık faiz oranı (%)</label><input id="k_faiz" type="number" step="0.01" placeholder="3,61"></div>
+            <div><label>Vade (ay)</label><input id="k_vade" type="number" placeholder="24"></div>
+            <div><label>Kullandırım ücreti (%)</label><input id="k_kul" type="number" step="0.01" placeholder="3,7"></div>
+            <div><label>KKDF (%)</label><input id="k_kkdf" type="number" step="0.01" placeholder="0"></div>
+            <div><label>BSMV (%)</label><input id="k_bsmv" type="number" step="0.01" placeholder="5"></div>
+            <div><label>İlave komisyon (TL)</label><input id="k_kom" type="number" placeholder="0"></div>
+            <div><label>Sigorta (TL)</label><input id="k_sig" type="number" placeholder="0"></div>
+          </div>
+        </div>
+        <div class="cikti">
+          <div class="cb">Gerçek maliyet</div>
+          <div class="buyuk" id="k_efektif">—<small>/ay</small></div>
+          <div class="alt" id="k_alt">Teklifteki oran: —</div>
+          <div id="k_rozet"></div>
+          <div class="yorum" id="k_yorum">Anapara, faiz ve vadeyi girin.</div>
+        </div>
+      </div>
+      <div class="skor">
+        <table>
+          <thead><tr><th>Kalem</th><th>Tutar</th></tr></thead>
+          <tbody id="k_tablo"><tr><td class="d-bos" colspan="2">Rakam bekleniyor…</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ARAÇ 5 — POS ============ -->
+<section>
+  <div class="wrap">
+    <p class="kicker">Araç 05</p>
+    <h2>Ertesi gün mü, blokeli mi?</h2>
+    <div class="rule"></div>
+    <p style="max-width:62ch">
+      Ertesi gün ödeyen POS daha yüksek komisyon alır. Blokeli POS ucuzdur ama parayı geç verir.
+      Aradaki fark, <strong>o gün sayısı için ödediğiniz faizdir</strong> — hangisinin ucuz
+      olduğu buna bağlıdır.
+    </p>
+
+    <div class="arac">
+      <div class="arac-bas">
+        <span class="arac-no">Araç 05 · POS</span>
+        <h3>POS komisyon karşılaştırması</h3>
+      </div>
+      <div class="arac-ic">
+        <div class="girdiler">
+          <div class="gg">
+            <div><label>Aylık POS cirosu (TL)</label><input id="p_ciro" type="number" placeholder="950000"></div>
+            <div><label>Ertesi gün komisyon (%)</label><input id="p_k1" type="number" step="0.01" placeholder="2,82"></div>
+            <div><label>Blokeli komisyon (%)</label><input id="p_k2" type="number" step="0.01" placeholder="1,51"></div>
+            <div><label>Blokaj süresi (gün)</label><input id="p_gun" type="number" placeholder="30"></div>
+            <div><label>Aylık kredi faiziniz (%)<br><span style="font-size:12px">paranın size maliyeti</span></label><input id="p_maliyet" type="number" step="0.01" placeholder="3,5"></div>
+          </div>
+        </div>
+        <div class="cikti">
+          <div class="cb">Aylık fark</div>
+          <div class="buyuk" id="p_fark">—</div>
+          <div class="alt" id="p_alt">Yıllık etki: —</div>
+          <div id="p_rozet"></div>
+          <div class="yorum" id="p_yorum">Ciro ve iki komisyon oranını girin.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta">
+      <a class="btn b1" href="/#iletisim">Tam analiz için görüşelim</a>
+      <a class="btn b2" href="ornek-rapor.html">Örnek raporu gör</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap fbar">
+    <img src="logo.png" alt="Çağlayan Çengel logosu">
+    <div class="fmid">
+      <span class="f-nm">ÇAĞLAYAN ÇENGEL</span>
+      <span class="f-rl">Finansal Yönetim Danışmanı · Muğla</span>
+    </div>
+    <div class="f-sl">KOBİ'lere Güven Veren Finansal Rehberlik</div>
+  </div>
+  <div class="wrap f-ml">
+    <a href="tel:+905337619443">0533 761 94 43</a> &nbsp;·&nbsp;
+    <a href="mailto:info&#64;caglayancengel&#46;com"><span>info</span><span style="display:none">nospam</span><span>&#64;caglayancengel&#46;com</span></a> &nbsp;·&nbsp;
+    <a href="https://www.linkedin.com/in/caglayancengel/" rel="noopener me" target="_blank">LinkedIn</a> &nbsp;·&nbsp;
+    <a href="gizlilik.html">Gizlilik ve KVKK</a>
+  </div>
+  <div class="wrap f-lg">
+    © 2026 Çağlayan Çengel · Buradaki hesaplamalar genel bilgilendirme amaçlıdır; girilen
+    veriler kaydedilmez. Sonuçlar bir kredi taahhüdü, yatırım danışmanlığı veya yatırım
+    tavsiyesi niteliği taşımaz. Bankaların kabul bantları kuruma ve sektöre göre değişebilir.
+  </div>
+</footer>
+
+<script>
+const N = v => { const x = parseFloat(String(v).replace(/[^\d.-]/g,'')); return isFinite(x) ? x : null; };
+const TL = n => n===null||!isFinite(n) ? '—' : n.toLocaleString('tr-TR',{maximumFractionDigits:0}) + ' ₺';
+const OR = n => n===null||!isFinite(n) ? '—' : n.toLocaleString('tr-TR',{minimumFractionDigits:2,maximumFractionDigits:2});
+const YZ = n => n===null||!isFinite(n) ? '—' : '%' + (n*100).toLocaleString('tr-TR',{maximumFractionDigits:1});
+
+/* ---------- ARAÇ 1 ---------- */
+const T = ['t_dv','t_stok','t_kvyk','t_aktif','t_ozk','t_borc','t_ns','t_favok','t_bs','t_nk'];
+function teshis(){
+  const g = {}; T.forEach(k => g[k] = N(document.getElementById(k).value));
+  const dolu = T.filter(k => g[k] !== null).length;
+  if (dolu < 4){
+    document.getElementById('t_tablo').innerHTML = '<tr><td class="d-bos" colspan="4">Rakam bekleniyor…</td></tr>';
+    return;
+  }
+  const b = (p,q) => (p===null||q===null||q===0) ? null : p/q;
+  const satirlar = [
+    ['Cari oran',            b(g.t_dv, g.t_kvyk),                       1.5, 'ust', OR, '> 1,50'],
+    ['Asit-test (likidite)', b(g.t_dv===null||g.t_stok===null?null:g.t_dv-g.t_stok, g.t_kvyk), 1.0, 'ust', OR, '> 1,00'],
+    ['Borç / Özkaynak',      b(g.t_aktif===null||g.t_ozk===null?null:g.t_aktif-g.t_ozk, g.t_ozk), 2.0, 'alt', OR, '< 2,00'],
+    ['Özkaynak oranı',       b(g.t_ozk, g.t_aktif),                     0.30,'ust', YZ, '> %30'],
+    ['FAVÖK marjı',          b(g.t_favok, g.t_ns),                      0.08,'ust', YZ, '> %8'],
+    ['Net kâr marjı',        b(g.t_nk, g.t_ns),                         0.01,'ust', YZ, '> %1'],
+    ['Net borç / FAVÖK',     b(g.t_borc, g.t_favok),                    3.0, 'alt', OR, '< 3,00'],
+    ['DSCR',                 b(g.t_favok, g.t_bs),                      1.25,'ust', OR, '> 1,25'],
+    ['Stok / Aktif',         b(g.t_stok, g.t_aktif),                    0.30,'alt', YZ, '< %30'],
+  ];
+  let gecen = 0, olculen = 0, kotu = [];
+  const satirHTML = satirlar.map(([ad, deger, esik, yon, bicim, bant]) => {
+    if (deger === null || !isFinite(deger))
+      return `<tr><td>${ad}</td><td class="d-bos">—</td><td class="d-bos">${bant}</td><td class="d-bos">rakam yok</td></tr>`;
+    olculen++;
+    const gecti = yon === 'ust' ? deger >= esik : deger <= esik;
+    if (gecti) gecen++; else kotu.push(ad);
+    return `<tr><td>${ad}</td><td class="${gecti?'d-iyi':'d-risk'}">${bicim(deger)}</td>`
+         + `<td class="d-bos">${bant}</td><td class="${gecti?'d-iyi':'d-risk'}">${gecti?'bandın içinde':'bandın dışında'}</td></tr>`;
+  }).join('');
+  document.getElementById('t_tablo').innerHTML = satirHTML;
+
+  document.getElementById('t_skor').innerHTML = gecen + '<small>/' + olculen + '</small>';
+  document.getElementById('t_ozet').textContent = olculen + ' oran ölçüldü, ' + gecen + ' tanesi banka bandının içinde.';
+
+  let rz, yorum;
+  const oran = olculen ? gecen/olculen : 0;
+  if (oran >= 0.75){
+    rz = '<span class="rozet r-iyi">Bandın içinde</span>';
+    yorum = 'Tablo bankada güçlü duruyor. Yine de tek bir oran dosyayı tıkayabilir — bandın dışında kalan varsa önce o konuşulur.';
+  } else if (oran >= 0.5){
+    rz = '<span class="rozet r-dikkat">Sınırda</span>';
+    yorum = 'Dosya reddedilecek tabloda değil ama pazarlık gücü zayıf. Bandın dışında kalanlar: ' + kotu.join(', ') + '.';
+  } else {
+    rz = '<span class="rozet r-risk">Bandın dışında</span>';
+    yorum = 'Bu tabloyla tahsis komitesinde zorlanırsınız. Öncelikli kalemler: ' + kotu.slice(0,3).join(', ') + '.';
+  }
+  document.getElementById('t_rozet').innerHTML = rz;
+  document.getElementById('t_yorum').textContent = yorum;
+}
+
+/* ---------- ARAÇ 2 ---------- */
+function dscr(){
+  const f = N(d_favok.value), bs = N(d_bs.value), bc = N(d_borc.value), nk = N(d_nakit.value);
+  if (f === null || bs === null || bs === 0){ return; }
+  const o = f/bs;
+  document.getElementById('d_dscr').innerHTML = OR(o) + '<small>×</small>';
+  const netBorc = (bc===null?null:bc-(nk||0));
+  const nbf = (netBorc===null||f===0)?null:netBorc/f;
+  document.getElementById('d_alt').textContent = 'Net finansal borç / FAVÖK: ' + (nbf===null?'—':OR(nbf) + '×');
+  let rz, y;
+  if (o >= 1.25){ rz='<span class="rozet r-iyi">Karşılıyor</span>';
+    y='Borç servisi mevcut nakit üretimiyle karşılanıyor. Ek kredi kapasitesi konuşulabilir.'; }
+  else if (o >= 1.0){ rz='<span class="rozet r-dikkat">Sınırda</span>';
+    y='Borç ödeniyor ama tampon yok. Tek bir tahsilat gecikmesi taksidi aksatır; komite bunu görür.'; }
+  else { rz='<span class="rozet r-risk">Karşılamıyor</span>';
+    y='İşletme kendi nakdiyle borcunu ödeyemiyor. Yeni limit yerine önce mevcut borcun vadesi konuşulmalı.'; }
+  if (nbf !== null && nbf > 3 && o >= 1.0) y += ' Ayrıca net borç FAVÖK’ün ' + OR(nbf) + ' katı — bankanın üst bandı 3.';
+  document.getElementById('d_rozet').innerHTML = rz;
+  document.getElementById('d_yorum').textContent = y;
+}
+
+/* ---------- ARAÇ 3 ---------- */
+function ccc(){
+  const dso = N(n_dso.value), dio = N(n_dio.value), dpo = N(n_dpo.value), ns = N(n_ns.value);
+  if (dso === null || dio === null || dpo === null) return;
+  const c = dso + dio - dpo;
+  document.getElementById('n_ccc').innerHTML = c.toLocaleString('tr-TR',{maximumFractionDigits:0}) + '<small> gün</small>';
+  const bagli = ns ? ns/365*c : null;
+  document.getElementById('n_alt').textContent = 'Bağlanan işletme sermayesi: ' + (bagli===null?'—':TL(bagli));
+  let rz, y;
+  if (c <= 60){ rz='<span class="rozet r-iyi">Sağlıklı</span>';
+    y='Para çok kısa süre dışarıda kalıyor. İşletme büyürken ek finansman ihtiyacı sınırlı olur.'; }
+  else if (c <= 120){ rz='<span class="rozet r-dikkat">Uzun</span>';
+    y='Nakit döngüsü uzamış. Büyüme hızlandıkça kredi ihtiyacı da aynı hızda büyür.'; }
+  else { rz='<span class="rozet r-risk">Çok uzun</span>';
+    y='Paranın dışarıda kaldığı süre bankanın rahatsız olduğu bantta. Ciro artışı burada nakde değil, alacağa ve stoka gider.'; }
+  if (bagli) y += ' Bugünkü ciroyla ' + TL(bagli) + ' işletme sermayesi bu döngüde bağlı duruyor.';
+  document.getElementById('n_rozet').innerHTML = rz;
+  document.getElementById('n_yorum').textContent = y;
+}
+
+
+/* ---------- ARAÇ 4 — TAKSİTLİ KREDİ ---------- */
+function taksit(){
+  const A=N(k_ana.value), f=N(k_faiz.value), n=N(k_vade.value);
+  if(A===null||f===null||n===null||n<=0) return;
+  const fa=f/100, kkdf=(N(k_kkdf.value)||0)/100, bsmv=(N(k_bsmv.value)||0)/100;
+  const kulO=(N(k_kul.value)||0)/100, kom=N(k_kom.value)||0, sig=N(k_sig.value)||0;
+  const kulUc=A*kulO, kulBsmv=kulUc*bsmv, komBsmv=kom*bsmv;
+  const pesin=kulUc+kulBsmv+kom+komBsmv+sig;
+  const net=A-pesin;
+  const r=fa*(1+kkdf+bsmv);
+  const tk = r===0 ? A/n : A*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1);
+  const toplam=tk*n;
+  /* net kullandirilan uzerinden gercek aylik oran — Newton */
+  let i=r>0?r:0.01;
+  for(let k=0;k<80;k++){
+    const p=Math.pow(1+i,n);
+    const fv = net*i*p/(p-1) - tk;
+    const d  = net*(p*(p-1)-i*n*p)/Math.pow(p-1,2);
+    if(Math.abs(d)<1e-12) break;
+    const yeni=i-fv/d;
+    if(!isFinite(yeni)||yeni<=0) break;
+    if(Math.abs(yeni-i)<1e-10){ i=yeni; break; }
+    i=yeni;
+  }
+  document.getElementById('k_efektif').innerHTML = '%' + (i*100).toLocaleString('tr-TR',{minimumFractionDigits:2,maximumFractionDigits:2}) + '<small>/ay</small>';
+  document.getElementById('k_alt').textContent = 'Teklifteki oran: %' + f.toLocaleString('tr-TR',{maximumFractionDigits:2}) + ' · aylık taksit ' + TL(tk);
+  document.getElementById('k_tablo').innerHTML =
+     `<tr><td>Peşin kesilen masraflar</td><td class="d-risk">${TL(pesin)}</td></tr>`
+   + `<tr><td>Hesabınıza giren para</td><td>${TL(net)}</td></tr>`
+   + `<tr><td>Aylık taksit</td><td>${TL(tk)}</td></tr>`
+   + `<tr><td>Toplam geri ödeme</td><td>${TL(toplam)}</td></tr>`
+   + `<tr><td><strong>Toplam maliyet</strong></td><td class="d-risk"><strong>${TL(toplam-net)}</strong></td></tr>`;
+  const fark=(i*100)-f;
+  let rz,y;
+  if(fark<0.1){ rz='<span class="rozet r-iyi">Şeffaf</span>'; y='Teklifteki oranla gerçek maliyet birbirine yakın. Masraf yükü düşük.'; }
+  else if(fark<0.6){ rz='<span class="rozet r-dikkat">Masraf yükü var</span>';
+    y='Gerçek maliyet, teklifteki orandan ' + fark.toLocaleString('tr-TR',{maximumFractionDigits:2}) + ' puan yüksek. Masraflar pazarlık konusudur.'; }
+  else { rz='<span class="rozet r-risk">Masraf ağır</span>';
+    y='Gerçek maliyet teklifteki orandan ' + fark.toLocaleString('tr-TR',{maximumFractionDigits:2}) + ' puan yüksek. ' + TL(pesin) + ' peşin kesiliyor; bu tutar üzerinden de faiz ödüyorsunuz.'; }
+  document.getElementById('k_rozet').innerHTML=rz;
+  document.getElementById('k_yorum').textContent=y;
+}
+
+/* ---------- ARAÇ 5 — POS ---------- */
+function pos(){
+  const c=N(p_ciro.value), k1=N(p_k1.value), k2=N(p_k2.value);
+  if(c===null||k1===null||k2===null) return;
+  const gun=N(p_gun.value)||0, ay=(N(p_maliyet.value)||0)/100;
+  const kom1=c*k1/100, kom2=c*k2/100;
+  const komFark=kom1-kom2;                    /* blokelinin komisyon avantaji */
+  const paraMaliyeti=c*ay*(gun/30);           /* blokede bekleyen paranin maliyeti */
+  const net=komFark-paraMaliyeti;             /* + ise blokeli avantajli */
+  document.getElementById('p_fark').innerHTML = TL(Math.abs(net));
+  document.getElementById('p_alt').textContent = 'Yıllık etki: ' + TL(Math.abs(net)*12)
+    + ' · komisyon farkı ' + TL(komFark) + ', bekleyen paranın maliyeti ' + TL(paraMaliyeti);
+  let rz,y;
+  if(Math.abs(net)<c*0.001){ rz='<span class="rozet r-dikkat">Başa baş</span>';
+    y='İki seçenek neredeyse eşit. Karar komisyondan değil, nakit ihtiyacınızın aciliyetinden verilir.'; }
+  else if(net>0){ rz='<span class="rozet r-iyi">Blokeli avantajlı</span>';
+    y='Blokeli POS ayda ' + TL(net) + ' daha ucuz — ancak paranız ' + gun + ' gün bekliyor. Nakit sıkışıklığı varsa bu avantaj kâğıt üstünde kalır.'; }
+  else { rz='<span class="rozet r-iyi">Ertesi gün avantajlı</span>';
+    y='Ertesi gün ödeyen POS ayda ' + TL(-net) + ' daha ucuza geliyor. Yüksek komisyona rağmen paranın erken gelmesi kazandırıyor.'; }
+  document.getElementById('p_rozet').innerHTML=rz;
+  document.getElementById('p_yorum').textContent=y;
+}
+
+document.querySelectorAll('input').forEach(i => i.addEventListener('input', () => { teshis(); dscr(); ccc(); taksit(); pos(); }));
+</script>
+</body>
+</html>

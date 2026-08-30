@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Örnek Rapor — Çağlayan Çengel</title>
+<meta name="description" content="Gerçek bir imalat firmasının mali tablosundan çıkarılmış anonim örnek rapor. 80-90 milyon ciro bandındaki bir firmada 47 bin lira kâr — aradaki para nereye gitti?">
+<meta name="author" content="Çağlayan Çengel">
+<link rel="canonical" href="https://caglayancengel.com/ornek-rapor.html">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="tr_TR">
+<meta property="og:title" content="Örnek Rapor — 80-90 milyon ciro, 47 bin lira kâr">
+<meta property="og:description" content="Gerçek bir firmanın mali tablosu. Rakamlar gerçek, kimlik anonim.">
+<meta property="og:image" content="https://caglayancengel.com/og.png">
+<meta property="og:url" content="https://caglayancengel.com/ornek-rapor.html">
+<meta name="theme-color" content="#0F1C2E">
+<link rel="icon" href="logo.png">
+<link rel="apple-touch-icon" href="logo.png">
+<link rel="stylesheet" href="fonts.css">
+<style>
+:root{
+  --paper:#FBFAF6; --white:#fff; --band:#F4F1E9;
+  --navy:#0F1C2E; --navy2:#1D3050; --body:#3D4857; --soft:#5A6472;
+  --gold:#C8A951; --goldink:#7A6220; --rule:#E4DED0;
+  --kirmizi:#8C2F1E; --yesil:#2F5D3A; --sari:#7A6220;
+  --maxw:1120px; --read:66ch;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{
+  background:var(--paper);color:var(--body);
+  font-family:'IBM Plex Sans',system-ui,-apple-system,sans-serif;
+  font-size:18px;line-height:1.72;font-weight:400;-webkit-font-smoothing:antialiased
+}
+h1,h2,h3{font-family:'Playfair Display',Georgia,serif;font-weight:700;line-height:1.22;color:var(--navy)}
+p{max-width:var(--read)}
+a{color:var(--goldink)}
+strong{color:var(--navy);font-weight:600}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 26px}
+.narrow{max-width:860px;margin:0 auto;padding:0 26px}
+section{padding:76px 0}
+.band{background:var(--band)}
+.kicker{font-size:12.5px;letter-spacing:2.1px;text-transform:uppercase;color:var(--goldink);font-weight:600;margin-bottom:12px}
+h2{font-size:clamp(25px,2.7vw,32px);margin-bottom:12px}
+.rule{width:40px;height:2px;background:var(--gold);margin:0 0 24px}
+
+/* ust cubuk */
+.top{border-bottom:1px solid var(--rule);background:var(--white)}
+.top .wrap{display:flex;align-items:center;gap:14px;padding-top:16px;padding-bottom:16px}
+.top img{width:34px;height:34px;object-fit:contain}
+.top .nm{font-family:'Playfair Display',serif;font-weight:700;color:var(--navy);font-size:17px;letter-spacing:1.4px}
+.top .sp{flex:1}
+.top a.geri{font-size:14.5px;color:var(--navy);text-decoration:none;border-bottom:1px solid var(--gold);padding:2px 0}
+
+/* hero */
+.hero{background:var(--white);padding:72px 0 64px;border-bottom:1px solid var(--rule)}
+.h1{font-family:'Playfair Display',serif;font-weight:700;color:var(--navy);
+  font-size:clamp(30px,4.1vw,46px);line-height:1.12;letter-spacing:-.015em;max-width:19ch}
+.sub{margin-top:22px;font-size:19.5px;line-height:1.6;color:var(--body);max-width:58ch}
+.uyari{
+  margin-top:30px;padding:16px 20px;background:var(--band);border-left:2px solid var(--gold);
+  font-size:15.5px;line-height:1.65;max-width:62ch;color:var(--soft)
+}
+
+/* buyuk rakam */
+.vurgu{display:flex;gap:52px;flex-wrap:wrap;margin-top:40px;padding-top:30px;border-top:1px solid var(--rule)}
+.vurgu div{min-width:150px}
+.vurgu b{display:block;font-family:'Playfair Display',serif;font-size:34px;color:var(--navy);line-height:1.1}
+.vurgu span{display:block;font-size:14px;color:var(--soft);margin-top:5px;letter-spacing:.3px}
+
+/* bulgu satiri — Koc deseni */
+.bulgu{border-top:1px solid var(--rule);padding:22px 0}
+.bulgu:last-of-type{border-bottom:1px solid var(--rule)}
+.bh{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:7px}
+.bh h3{font-size:19px;flex:1;min-width:230px}
+.etiket{
+  font-size:12px;letter-spacing:1.1px;text-transform:uppercase;font-weight:600;
+  padding:4px 11px;border-radius:2px;white-space:nowrap
+}
+.e-risk{background:#F3E4E0;color:var(--kirmizi)}
+.e-dikkat{background:#F4EEDC;color:var(--sari)}
+.e-iyi{background:#E4EDE6;color:var(--yesil)}
+.bulgu p{font-size:16.5px;line-height:1.68;color:var(--body);max-width:68ch}
+.bulgu .kaynak{font-size:13.5px;color:var(--soft);margin-top:6px}
+
+/* tablo */
+.tw{overflow-x:auto;margin-top:26px;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:15.5px}
+th,td{text-align:right;padding:11px 14px;border-bottom:1px solid var(--rule)}
+th:first-child,td:first-child{text-align:left}
+thead th{
+  font-size:12.5px;letter-spacing:1px;text-transform:uppercase;color:var(--soft);
+  font-weight:600;border-bottom:1px solid var(--navy)
+}
+tbody tr:hover{background:var(--white)}
+td.kotu{color:var(--kirmizi);font-weight:600}
+td.iyi{color:var(--yesil);font-weight:600}
+
+/* sonuc kutusu */
+.sonuc{background:var(--navy);color:#D5DBE4;padding:44px 0}
+.sonuc h2{color:#fff}
+.sonuc p{color:#C7CFDA;max-width:64ch}
+.sonuc strong{color:#fff}
+.sonuc .kicker{color:var(--gold)}
+.sonuc .rule{background:var(--gold)}
+
+/* cta */
+.cta{margin-top:34px;display:flex;gap:13px;flex-wrap:wrap;align-items:center}
+.btn{display:inline-block;padding:16px 34px;font-size:15px;font-weight:600;letter-spacing:.8px;
+  text-decoration:none;border-radius:2px;transition:.2s}
+.b1{background:var(--gold);color:var(--navy)}
+.b1:hover{background:#E6C97A}
+.b2{border:1px solid var(--rule);color:var(--navy)}
+
+/* footer */
+footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 24px}
+.fbar{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.fbar img{width:34px;height:34px;object-fit:contain}
+.fmid{display:flex;flex-direction:column;line-height:1.35}
+.f-nm{font-family:'Playfair Display',serif;font-weight:700;color:var(--gold);font-size:16px;letter-spacing:2.4px}
+.f-rl{font-size:12px;letter-spacing:1.4px;text-transform:uppercase;color:var(--soft);margin-top:3px}
+.f-sl{font-family:'Playfair Display',serif;font-style:italic;color:var(--navy);font-size:14px;margin:0 0 0 auto}
+.f-ml{margin-top:14px;font-size:14.5px}
+.f-ml a{color:var(--navy);text-decoration:none;border-bottom:1px solid var(--gold);padding:2px 0}
+.f-lg{margin-top:14px;padding-top:14px;border-top:1px solid var(--rule);font-size:12px;color:var(--soft);line-height:1.75}
+
+@media(max-width:820px){
+  body{font-size:17px}
+  section{padding:56px 0}
+  .hero{padding:52px 0 48px}
+  .vurgu{gap:30px}
+  .vurgu b{font-size:29px}
+  .fbar .f-sl{margin:8px 0 0;width:100%}
+}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="wrap">
+    <img src="logo.png" alt="">
+    <span class="nm">ÇAĞLAYAN ÇENGEL</span>
+    <span class="sp"></span>
+    <a class="geri" href="/">Ana sayfa</a>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="kicker">Örnek Rapor · Anonim</p>
+    <h1 class="h1">80–90 milyon ciro, 47 bin lira kâr.</h1>
+    <p class="sub">
+      Firma büyüyordu. Cirosu bir yılda %18 arttı, aktifi ikiye katlandı, fabrika çalışıyordu.
+      Yıl sonunda kasada kalan para: <strong>47 bin lira</strong>. Aradaki para nereye gitti?
+    </p>
+
+    <div class="uyari">
+      Aşağıdaki rapor <strong>gerçek bir firmanın mali tablosundan</strong> çıkarılmıştır.
+      Oranlar gerçektir; tutarlar banda çevrilmiş veya yuvarlanmıştır. Firma adı, sektör
+      ayrıntısı ve dönem tarihleri kimliği gizlemek için değiştirilmiştir. Müşteri verisi izinsiz paylaşılmaz —
+      bu örnek, danışmanlık ilişkisi bulunmayan bir dosyadan hazırlanmıştır.
+    </div>
+
+    <div class="vurgu">
+      <div><b>80–90 mn ₺</b><span>Yıllık ciro bandı</span></div>
+      <div><b>47 bin ₺</b><span>Net kâr</span></div>
+      <div><b>%0,05</b><span>Net kâr marjı</span></div>
+      <div><b>C</b><span>Banka notu</span></div>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="narrow">
+    <p class="kicker">Bulgu 01</p>
+    <h2>Faaliyet kârının %92'si bankaya gitti</h2>
+    <div class="rule"></div>
+    <p>
+      Firma esas işinden <strong>2,8 milyon lira</strong> faaliyet kârı üretti. Bu, işin
+      gerçekten kazandığı paradır. Aynı yıl bankaya ödenen finansman gideri
+      <strong>2,6 milyon lira</strong> oldu. Geriye 47 bin lira kaldı.
+    </p>
+
+    <div class="tw">
+      <table>
+        <thead>
+          <tr><th>Gelir tablosu</th><th>Birinci yıl</th><th>İkinci yıl</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Net satışlar</td><td>70–80 mn</td><td>80–90 mn</td></tr>
+          <tr><td>Brüt kâr marjı</td><td>%10,7</td><td>%23,0</td></tr>
+          <tr><td>Faaliyet gideri / ciro</td><td>%9,0</td><td>%19,9</td></tr>
+          <tr><td><strong>Faaliyet kârı</strong></td><td>1,2 mn</td><td>2,8 mn</td></tr>
+          <tr><td>Finansman gideri</td><td class="kotu">−1,5 mn</td><td class="kotu">−2,6 mn</td></tr>
+          <tr><td><strong>Net kâr</strong></td><td>78 bin</td><td class="kotu">47 bin</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="kaynak" style="font-size:13.5px;color:var(--soft);margin-top:10px">
+      Gelir tablosu kuruşuna kadar kapanıyor: faaliyet kârı − finansman gideri ± olağandışı
+      kalemler = net kâr. Rakamlar mizandan alınmıştır, tahmin yoktur.
+    </p>
+
+    <p style="margin-top:22px">
+      Yıl sonunda "kâr ettik" denir ve doğrudur — ama kârın tamamına yakınını faiz aldı.
+      Mali tabloda bu iki satır ayrı ayrı durur; yan yana konmadıkça aralarındaki ilişki
+      görünmez. <strong>Yan yana konduğunda iş görünür hale gelir.</strong>
+    </p>
+  </div>
+</section>
+
+<section class="band">
+  <div class="narrow">
+    <p class="kicker">Bulgu 02</p>
+    <h2>Büyüme nakde değil, stoka gitti</h2>
+    <div class="rule"></div>
+
+    <div class="bulgu">
+      <div class="bh"><h3>Stok</h3><span class="etiket e-risk">8,6 kat arttı</span></div>
+      <p>Stok üç dönemde <strong>8,6 katına</strong> çıktı. Üçüncü dönemde
+        <strong>aktifin %47,7'si stok</strong>. Satılmamış mal, ödenmiş paradır.</p>
+    </div>
+
+    <div class="bulgu">
+      <div class="bh"><h3>Bankadaki nakit</h3><span class="etiket e-risk">%94 eridi</span></div>
+      <p>Bankadaki para üç dönemde <strong>on altıda birine</strong> indi.
+        Ciro büyürken kasa boşaldı.</p>
+    </div>
+
+    <div class="bulgu">
+      <div class="bh"><h3>Ticari alacak</h3><span class="etiket e-dikkat">2,7 kat arttı</span></div>
+      <p>Bir yılda 2,7 katına çıktı. Mal satıldı, fatura kesildi, para henüz gelmedi.
+        Alacak da stok gibi nakit değildir.</p>
+    </div>
+
+    <div class="bulgu">
+      <div class="bh"><h3>Banka borcu</h3><span class="etiket e-risk">2,4 kat arttı</span></div>
+      <p>Bir yılda 2,4 katına çıktı. Stoku ve alacağı finanse eden para
+        bankadan geldi — ve faizi yukarıdaki tabloda görünüyor.</p>
+    </div>
+
+    <p style="margin-top:26px">
+      Bu dört satır tek bir cümlenin parçalarıdır: <strong>firma büyüdü ama büyümeyi
+      kendi kârıyla değil, banka parasıyla finanse etti.</strong> Bilanço ikiye katlandı,
+      kasadaki para on altıda birine indi.
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="narrow">
+    <p class="kicker">Bulgu 03</p>
+    <h2>Bankanın gördüğü tablo</h2>
+    <div class="rule"></div>
+    <p>
+      Aynı rakamlar bankanın derecelendirme motoruna girdiğinde şu tabloyu üretti.
+      Sağdaki sütun, bankanın kabul ettiği bandı gösterir.
+    </p>
+
+    <div class="tw">
+      <table>
+        <thead>
+          <tr><th>Oran</th><th>İkinci yıl</th><th>Banka bandı</th><th>Sonuç</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Cari oran</td><td>1,05</td><td>&gt; 1,50</td><td class="kotu">Altında</td></tr>
+          <tr><td>Asit-test (likidite)</td><td>0,64</td><td>&gt; 1,00</td><td class="kotu">Altında</td></tr>
+          <tr><td>Borç / Özkaynak</td><td>5,41</td><td>&lt; 2,00</td><td class="kotu">2,7 kat aşım</td></tr>
+          <tr><td>Özkaynak oranı</td><td>%15,6</td><td>&gt; %30</td><td class="kotu">Yarısı</td></tr>
+          <tr><td>Net kâr marjı</td><td>%0,05</td><td>&gt; %1</td><td class="kotu">Yirmide bir</td></tr>
+          <tr><td><strong>Banka notu</strong></td><td colspan="3"><strong class="kotu">C</strong> — kredilendirilebilir bandın altı</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="margin-top:24px">
+      Stok çıkarıldığında firmanın kısa vadeli borcunu karşılama gücü <strong>0,64</strong>.
+      Yani 100 liralık borcun 64 lirası karşılanabiliyor. Cari oran 1,05 ile "sınırda iyi"
+      görünüyor — <strong>çünkü içindeki stok onu ayakta tutuyor.</strong> Banka bu iki oranı
+      birlikte okur; tek başına cari orana bakan bir tablo bu farkı göstermez.
+    </p>
+  </div>
+</section>
+
+<section class="band">
+  <div class="narrow">
+    <p class="kicker">Bulgu 04</p>
+    <h2>Ve sonra doğru hamle yapıldı</h2>
+    <div class="rule"></div>
+    <p>
+      Üçüncü dönemde ortaklar sermayeyi <strong>yaklaşık dört katına</strong> çıkardı.
+      Şirkete dışarıdan gerçek para girdi. Tablo şöyle değişti:
+    </p>
+
+    <div class="tw">
+      <table>
+        <thead>
+          <tr><th>Oran</th><th>Sermaye artışı öncesi</th><th>Sonrası</th><th></th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Borç / Özkaynak</td><td class="kotu">5,41</td><td class="iyi">1,09</td><td>Beşte bire indi</td></tr>
+          <tr><td>Özkaynak oranı</td><td class="kotu">%15,6</td><td class="iyi">%47,9</td><td>Üç katına çıktı</td></tr>
+          <tr><td>Cari oran</td><td>1,05</td><td class="iyi">2,01</td><td>İkiye katlandı</td></tr>
+          <tr><td>Finansman gideri</td><td class="kotu">2,6 mn</td><td class="iyi">35 bin</td><td>Neredeyse sıfır</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="margin-top:24px">
+      Aynı firma, aynı fabrika, aynı iş. Değişen tek şey <strong>kaynak yapısı</strong>.
+      Banka notu bu tabloyla artık C bandında değildir.
+    </p>
+
+    <div class="bulgu" style="margin-top:28px">
+      <div class="bh"><h3>Ama bir uyarı kaldı</h3><span class="etiket e-dikkat">İzlenmeli</span></div>
+      <p>Altı ayda faaliyet gideri, <strong>bir önceki yılın tamamını aştı.</strong>
+        Faaliyet kârı 340 bine düştü. Borç sorunu çözüldü,
+        <strong>gider sorunu yerinde duruyor.</strong> Bir sonraki dönemde izlenecek kalem budur.</p>
+    </div>
+  </div>
+</section>
+
+<section class="sonuc">
+  <div class="narrow">
+    <p class="kicker">Bu rapor nasıl çıktı</p>
+    <h2>Anket değil, belge.</h2>
+    <div class="rule"></div>
+    <p>
+      Yukarıdaki hiçbir cümle firmaya sorularak yazılmadı. Hepsi <strong>mizandan,
+      beyannameden ve bilançodan</strong> okundu. Firma "nakit yönetiminiz nasıl?" diye
+      bir ankete cevap vermedi; rakamları konuştu.
+    </p>
+    <p style="margin-top:16px">
+      Bir firmanın ne söylediği ile tablosunun ne söylediği çoğu zaman aynı değildir.
+      İkisini yan yana koymak bu işin kendisidir — <strong>bankanın göreceği tablo,
+      banka görmeden önce görünür hale gelir.</strong>
+    </p>
+
+    <div class="cta">
+      <a class="btn b1" href="/#iletisim">Önce durumu konuşalım</a>
+      <a class="btn b2" href="/" style="color:#D5DBE4;border-color:#33445E">Ana sayfaya dön</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap fbar">
+    <img src="logo.png" alt="Çağlayan Çengel logosu">
+    <div class="fmid">
+      <span class="f-nm">ÇAĞLAYAN ÇENGEL</span>
+      <span class="f-rl">Finansal Yönetim Danışmanı · Muğla</span>
+    </div>
+    <div class="f-sl">KOBİ'lere Güven Veren Finansal Rehberlik</div>
+  </div>
+  <div class="wrap f-ml">
+    <a href="tel:+905337619443">0533 761 94 43</a> &nbsp;·&nbsp;
+    <a href="mailto:info&#64;caglayancengel&#46;com"><span>info</span><span style="display:none">nospam</span><span>&#64;caglayancengel&#46;com</span></a> &nbsp;·&nbsp;
+    <a href="https://www.linkedin.com/in/caglayancengel/" rel="noopener me" target="_blank">LinkedIn</a> &nbsp;·&nbsp;
+    <a href="gizlilik.html">Gizlilik ve KVKK</a>
+  </div>
+  <div class="wrap f-lg">
+    © 2026 Çağlayan Çengel · Bu sayfadaki rapor örneği anonimleştirilmiştir; firma kimliği,
+    sektör ayrıntısı ve dönem tarihleri değiştirilmiştir. İçerik genel bilgilendirme amaçlıdır;
+    yatırım danışmanlığı veya yatırım tavsiyesi niteliği taşımaz.
+  </div>
+</footer>
+
+</body>
+</html>
