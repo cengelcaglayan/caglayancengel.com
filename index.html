@@ -485,6 +485,27 @@ body.kilit{overflow:hidden}
   .ct-r{text-align:left}
   .ct-alt,.ct-sos{justify-content:flex-start}
 }
+/* ---- olcut: blok basliklari ve eksik listesi ---- */
+.olc-blok{grid-column:1/-1;margin:26px 0 4px;font-size:12.5px;letter-spacing:2.2px;text-transform:uppercase;
+  color:var(--goldink);font-weight:600;padding-bottom:7px;border-bottom:2px solid var(--gold)}
+.olc-blok:first-child{margin-top:6px}
+.olc-blok em{font-style:normal;font-weight:400;letter-spacing:.6px;text-transform:none;color:#8A93A0;font-size:13px}
+.olc-eksik{margin-top:26px;padding:24px 26px;background:var(--white);border:1px solid var(--rule);border-radius:3px}
+.olc-eksik b{display:block;font-size:15.5px;color:var(--navy);margin-bottom:12px}
+.olc-eksik ul{margin:0 0 20px;padding-left:18px;columns:2;column-gap:34px}
+.olc-eksik li{font-size:15px;color:var(--body);line-height:1.5;margin-bottom:7px;break-inside:avoid}
+.olc-btn{margin:0}
+.olc-btn-alt{display:block;margin-top:10px;font-size:13px;color:#7A8492}
+@media(max-width:700px){.olc-eksik ul{columns:1}}
+/* ---- iletisim: sade karekod ---- */
+.ct-qr{display:inline-flex;align-items:center;gap:15px;margin-top:24px;padding:13px 16px 13px 13px;
+  border:1px solid #2A3B55;border-radius:3px;text-decoration:none;text-align:left;background:rgba(255,255,255,.03)}
+.ct-qr-kod{flex:0 0 auto;width:78px;height:78px;padding:6px;background:#fff;border-radius:2px}
+.ct-qr-kod svg{width:100%;height:100%;display:block}
+.ct-qr-yz{display:flex;flex-direction:column;gap:4px}
+.ct-qr-yz b{font-size:14px;color:#fff;font-weight:600}
+.ct-qr-yz span{font-size:12.8px;color:#9FB0C6;line-height:1.45;max-width:30ch}
+@media(max-width:820px){.ct-qr{margin-top:20px}}
 </style>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"ProfessionalService",
@@ -800,7 +821,7 @@ body.kilit{overflow:hidden}
     <p style="max-width:64ch">
       Finans, kredi almaktan ibaret değildir. Aşağıdakiler bir firmanın finans düzenini
       oluşturan temel parçalardır. İşaretleyin — kaçı sizde çalışıyor?
-      <strong>Cevaplarınız hiçbir yere gönderilmez.</strong>
+      <strong>Cevaplarınız tarayıcınızdan çıkmaz</strong> — siz göndermeyi seçmedikçe.
     </p>
 
 <div class="olc-sonuc" id="olc_sonuc">
@@ -813,22 +834,34 @@ body.kilit{overflow:hidden}
     </div>
 
     <div class="olc">
+      <div class="olc-blok">Kayıt <em>· rakam nereden geliyor</em></div>
+      <label><input type="checkbox"><span>Ön muhasebe kaydı günü gününe giriliyor, ay sonuna bırakılmıyor</span></label>
+      <label><input type="checkbox"><span>Kasa, banka ve kayıt birbirini doğruluyor; rakam tek kaynağa güvenilmiyor</span></label>
       <label><input type="checkbox"><span>Yıllık bütçe var ve gerçekleşenle ay ay karşılaştırılıyor</span></label>
+      <label><input type="checkbox"><span>Alacaklar yaşlandırılıyor — hangi müşteride kaç gündür para beklendiği biliniyor</span></label>
+
+      <div class="olc-blok">Para <em>· ne zaman girip çıkıyor</em></div>
+      <label><input type="checkbox"><span>Ödeme takvimi var; hangi gün hangi ödemenin çıkacağı önceden belli</span></label>
       <label><input type="checkbox"><span>Önümüzdeki 3 ayın nakit akışı önceden görülebiliyor</span></label>
-      <label><input type="checkbox"><span>Alacaklar yaşlandırılıyor — hangi müşteride kaç gündür para beklediği biliniyor</span></label>
-      <label><input type="checkbox"><span>Stok devir hızı ölçülüyor, ölü stok ayrıştırılıyor</span></label>
-      <label><input type="checkbox"><span>Kasa ve banka hareketleri kayıtla düzenli karşılaştırılıyor</span></label>
-      <label><input type="checkbox"><span>Giderler kalem kalem izleniyor, dönemler arası kıyaslanıyor</span></label>
       <label><input type="checkbox"><span>Tüm bankalardaki limit, risk ve teminat tek tabloda görülüyor</span></label>
-      <label><input type="checkbox"><span>Kredilerin gerçek maliyeti (komisyon ve masraf dâhil) karşılaştırılıyor</span></label>
+      <label><input type="checkbox"><span>Kredilerin gerçek maliyeti — komisyon ve masraf dâhil — karşılaştırılıyor</span></label>
+
+      <div class="olc-blok">Karar <em>· rakam bir işe yarıyor mu</em></div>
+      <label><input type="checkbox"><span>Stok devir hızı ölçülüyor, ölü stok ayrıştırılıyor</span></label>
       <label><input type="checkbox"><span>Hangi ürünün veya müşterinin gerçekte kâr bıraktığı biliniyor</span></label>
-      <label><input type="checkbox"><span>Yatırım kararı öncesi geri dönüş süresi hesaplanıyor</span></label>
-      <label><input type="checkbox"><span>Ödeme takvimi var — hangi gün hangi ödemenin çıkacağı önceden belli</span></label>
-      <label><input type="checkbox"><span>Bu işlerin sorumlusu belli ve düzenli olarak yapılıyor</span></label>
+      <label><input type="checkbox"><span>Bu işlerin sorumlusu belli — kim, ne zaman yapacak yazılı</span></label>
+      <label><input type="checkbox"><span>On gün işletmeden uzak kalındığında işin durumu — nakit, alacak, borç — uzaktan görülebiliyor</span></label>
+    </div>
+
+    <div class="olc-eksik" id="olc_eksik" hidden>
+      <b id="olc_eksik_bas"></b>
+      <ul id="olc_eksik_liste"></ul>
+      <a class="btn btn-fill olc-btn" id="olc_wa" href="#" target="_blank" rel="noopener">Sonucu göndererek yazın</a>
+      <span class="olc-btn-alt">Mesaj hazır gelir; göndermeden önce değiştirebilirsiniz.</span>
     </div>
 
     <p style="margin-top:26px;max-width:64ch">
-      Bu on iki maddenin çoğu Türkiye'deki KOBİ'lerde ön muhasebeye devredilmiş durumdadır.
+      Bu maddelerin çoğu Türkiye'deki KOBİ'lerde ön muhasebeye devredilmiş durumdadır.
       Ön muhasebe kaydı tutar; <strong>bu maddeler kayıt değil, yönetim işidir.</strong>
       Aradaki boşluk çoğu firmada kimsenin görevi değildir — çalışma tam olarak orayı kapatır.
     </p>
@@ -1004,7 +1037,10 @@ body.kilit{overflow:hidden}
         <a class="wa" href="https://www.instagram.com/finans_caglayancengel/" rel="noopener me" target="_blank"><svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true" style="vertical-align:-2px;margin-right:5px"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41-.56-.22-.96-.48-1.38-.9-.42-.42-.68-.82-.9-1.38-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16M12 0C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.14.63c-.79.3-1.46.72-2.12 1.38C1.36 2.67.94 3.34.63 4.14.33 4.9.13 5.78.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91.3.79.72 1.46 1.38 2.12.66.66 1.33 1.08 2.12 1.38.76.3 1.64.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.56.79-.3 1.46-.72 2.12-1.38.66-.66 1.08-1.33 1.38-2.12.3-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.26-2.15-.56-2.91-.3-.79-.72-1.46-1.38-2.12C21.33 1.36 20.66.94 19.86.63c-.76-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0m0 5.84A6.16 6.16 0 1 0 18.16 12 6.16 6.16 0 0 0 12 5.84M12 16a4 4 0 1 1 4-4 4 4 0 0 1-4 4m7.85-10.4a1.44 1.44 0 1 1-1.44-1.44 1.44 1.44 0 0 1 1.44 1.44"/></svg> Instagram</a>
       </div>
 
-      
+      <a class="ct-qr" href="kart.html">
+        <span class="ct-qr-kod"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29 29" shape-rendering="crispEdges" role="img" aria-label="Karekod: dijital kartvizit"><rect width="29" height="29" fill="#fff"/><path d="M0 0h7v1h-7zM10 0h1v1h-1zM12 0h3v1h-3zM16 0h5v1h-5zM22 0h7v1h-7zM0 1h1v1h-1zM6 1h1v1h-1zM8 1h3v1h-3zM12 1h1v1h-1zM14 1h2v1h-2zM18 1h2v1h-2zM22 1h1v1h-1zM28 1h1v1h-1zM0 2h1v1h-1zM2 2h3v1h-3zM6 2h1v1h-1zM10 2h1v1h-1zM13 2h2v1h-2zM18 2h1v1h-1zM22 2h1v1h-1zM24 2h3v1h-3zM28 2h1v1h-1zM0 3h1v1h-1zM2 3h3v1h-3zM6 3h1v1h-1zM9 3h1v1h-1zM11 3h4v1h-4zM18 3h1v1h-1zM22 3h1v1h-1zM24 3h3v1h-3zM28 3h1v1h-1zM0 4h1v1h-1zM2 4h3v1h-3zM6 4h1v1h-1zM8 4h3v1h-3zM12 4h1v1h-1zM14 4h2v1h-2zM18 4h2v1h-2zM22 4h1v1h-1zM24 4h3v1h-3zM28 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM13 5h1v1h-1zM15 5h2v1h-2zM19 5h2v1h-2zM22 5h1v1h-1zM28 5h1v1h-1zM0 6h7v1h-7zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM22 6h7v1h-7zM9 7h1v1h-1zM11 7h10v1h-10zM0 8h1v1h-1zM2 8h1v1h-1zM4 8h1v1h-1zM6 8h1v1h-1zM11 8h1v1h-1zM14 8h4v1h-4zM20 8h1v1h-1zM24 8h1v1h-1zM27 8h1v1h-1zM0 9h5v1h-5zM7 9h1v1h-1zM9 9h3v1h-3zM14 9h1v1h-1zM16 9h1v1h-1zM20 9h3v1h-3zM25 9h1v1h-1zM28 9h1v1h-1zM0 10h3v1h-3zM6 10h2v1h-2zM12 10h2v1h-2zM16 10h2v1h-2zM22 10h1v1h-1zM24 10h1v1h-1zM26 10h3v1h-3zM0 11h1v1h-1zM2 11h1v1h-1zM5 11h1v1h-1zM8 11h1v1h-1zM12 11h1v1h-1zM15 11h4v1h-4zM20 11h1v1h-1zM24 11h1v1h-1zM27 11h1v1h-1zM0 12h1v1h-1zM2 12h2v1h-2zM6 12h2v1h-2zM9 12h2v1h-2zM17 12h1v1h-1zM20 12h3v1h-3zM25 12h1v1h-1zM27 12h2v1h-2zM0 13h1v1h-1zM2 13h2v1h-2zM5 13h1v1h-1zM8 13h1v1h-1zM13 13h1v1h-1zM16 13h1v1h-1zM20 13h1v1h-1zM22 13h1v1h-1zM25 13h1v1h-1zM28 13h1v1h-1zM1 14h2v1h-2zM5 14h2v1h-2zM8 14h5v1h-5zM14 14h1v1h-1zM16 14h1v1h-1zM20 14h1v1h-1zM23 14h1v1h-1zM25 14h1v1h-1zM27 14h2v1h-2zM3 15h1v1h-1zM5 15h1v1h-1zM7 15h1v1h-1zM10 15h6v1h-6zM17 15h2v1h-2zM20 15h1v1h-1zM25 15h1v1h-1zM27 15h1v1h-1zM1 16h3v1h-3zM5 16h6v1h-6zM12 16h1v1h-1zM14 16h9v1h-9zM25 16h1v1h-1zM27 16h2v1h-2zM1 17h1v1h-1zM4 17h1v1h-1zM11 17h1v1h-1zM14 17h1v1h-1zM16 17h1v1h-1zM20 17h3v1h-3zM25 17h2v1h-2zM28 17h1v1h-1zM0 18h1v1h-1zM2 18h3v1h-3zM6 18h3v1h-3zM11 18h1v1h-1zM13 18h1v1h-1zM16 18h2v1h-2zM22 18h3v1h-3zM27 18h2v1h-2zM1 19h3v1h-3zM7 19h3v1h-3zM16 19h5v1h-5zM23 19h1v1h-1zM25 19h1v1h-1zM27 19h1v1h-1zM0 20h1v1h-1zM5 20h2v1h-2zM8 20h1v1h-1zM12 20h1v1h-1zM15 20h3v1h-3zM20 20h5v1h-5zM8 21h1v1h-1zM12 21h2v1h-2zM19 21h2v1h-2zM24 21h1v1h-1zM26 21h3v1h-3zM0 22h7v1h-7zM9 22h1v1h-1zM11 22h2v1h-2zM14 22h1v1h-1zM16 22h5v1h-5zM22 22h1v1h-1zM24 22h2v1h-2zM27 22h2v1h-2zM0 23h1v1h-1zM6 23h1v1h-1zM10 23h1v1h-1zM13 23h6v1h-6zM20 23h1v1h-1zM24 23h2v1h-2zM27 23h1v1h-1zM0 24h1v1h-1zM2 24h3v1h-3zM6 24h1v1h-1zM8 24h1v1h-1zM10 24h2v1h-2zM14 24h1v1h-1zM17 24h1v1h-1zM20 24h5v1h-5zM27 24h2v1h-2zM0 25h1v1h-1zM2 25h3v1h-3zM6 25h1v1h-1zM9 25h1v1h-1zM11 25h2v1h-2zM14 25h1v1h-1zM16 25h2v1h-2zM20 25h1v1h-1zM23 25h2v1h-2zM26 25h3v1h-3zM0 26h1v1h-1zM2 26h3v1h-3zM6 26h1v1h-1zM8 26h1v1h-1zM10 26h2v1h-2zM16 26h1v1h-1zM18 26h1v1h-1zM20 26h1v1h-1zM23 26h3v1h-3zM28 26h1v1h-1zM0 27h1v1h-1zM6 27h1v1h-1zM11 27h4v1h-4zM17 27h4v1h-4zM22 27h1v1h-1zM24 27h1v1h-1zM27 27h1v1h-1zM0 28h7v1h-7zM8 28h1v1h-1zM10 28h2v1h-2zM13 28h2v1h-2zM17 28h1v1h-1zM19 28h2v1h-2zM24 28h1v1h-1zM27 28h2v1h-2z" fill="#0F1C2E"/></svg></span>
+        <span class="ct-qr-yz"><b>Kartviziti telefonunuza kaydedin</b><span>Okutun ya da dokunun — rehbere tek dokunuşla eklenir.</span></span>
+      </a>
     </div>
   </div>
 </section>
@@ -1045,24 +1081,38 @@ body.kilit{overflow:hidden}
 (function(){
   const kutular=document.querySelectorAll('.olc input');
   if(!kutular.length) return;
+  const N=kutular.length;
   const skor=document.getElementById('olc_skor'), yorum=document.getElementById('olc_yorum');
+  const eksikKap=document.getElementById('olc_eksik'), eksikBas=document.getElementById('olc_eksik_bas'),
+        eksikListe=document.getElementById('olc_eksik_liste'), waBtn=document.getElementById('olc_wa');
   function guncelle(){
-    const n=[...kutular].filter(k=>k.checked).length;
-    skor.innerHTML=n+'<small>/12</small>';
+    const secili=[...kutular];
+    const n=secili.filter(k=>k.checked).length;
+    skor.innerHTML=n+'<small>/'+N+'</small>';
     let m;
     if(n===0) m='Kutuları işaretleyin.';
-    else if(n<=3) m='Finans düzeni büyük ölçüde kurulmamış. Bu tabloda firma, sorunu ancak nakit sıkıştığında fark eder.';
-    else if(n<=6) m='Parçalar var, düzen yok. Çoğu firmada bu maddeler farklı kişilerde ve farklı dosyalarda durur; bir arada okunmaz.';
-    else if(n<=9) m='Düzenin önemli bölümü kurulu. Eksik kalan maddeler genellikle en pahalı olanlardır — çünkü görünmeyen yerde birikirler.';
-    else if(n<12) m='Güçlü bir düzen. İşaretlenmeyen maddeler tamamlandığında finans fonksiyonu bütünlenir.';
+    else if(n<=4) m='Rakamlar var ama sistem yok. Bu tabloda önce hangi üç maddenin kurulacağı işin türüne göre değişir — sıralamayı yanlış kurmak en pahalı hatadır.';
+    else if(n<=8) m='Temel duruyor, üstü eksik. Bu bantta en sık görülen durum şudur: kayıt düzgün tutulur, ama rakam karar anında elde olmaz.';
+    else if(n<N) m='Sistem büyük ölçüde kurulmuş. Bu noktada soru "ne eksik" değil, "kim yokken de yürüyor mu" olur.';
     else m='On iki maddenin tamamı çalışıyorsa firmanızda finans fonksiyonu kurulmuş demektir.';
     yorum.textContent=m;
-    const yuzde=Math.round(n/12*100);
+    const yuzde=Math.round(n/N*100);
     const bar=document.getElementById('olc_bar'), yz=document.getElementById('olc_yuzde');
     bar.style.width=yuzde+'%'; yz.textContent='%'+yuzde;
-    bar.className = 'olc-bar ' + (n===0 ? '' : (n<=3 ? 'd1' : (n<=6 ? 'd2' : (n<=9 ? 'd3' : 'd4'))));
+    bar.className = 'olc-bar ' + (n===0 ? '' : (n<=4 ? 'd1' : (n<=8 ? 'd2' : (n<N ? 'd3' : 'd4'))));
     const kutu=document.getElementById('olc_sonuc');
     kutu.classList.remove('parla'); void kutu.offsetWidth; kutu.classList.add('parla');
+
+    /* isaretlenmeyenler geri listelenir — yuzde bir histir, bu liste bir gundemdir */
+    const eksikler=secili.filter(k=>!k.checked).map(k=>k.nextElementSibling.textContent.trim());
+    if(n===0||eksikler.length===0){ eksikKap.hidden=true; eksikListe.innerHTML=''; eksikBas.textContent=''; return; }
+    eksikKap.hidden=false;
+    eksikBas.textContent='İşaretlemediğiniz '+eksikler.length+' madde:';
+    eksikListe.innerHTML='';
+    eksikler.forEach(function(t){ const li=document.createElement('li'); li.textContent=t; eksikListe.appendChild(li); });
+    const kisa=eksikler.map(function(t){ return '· '+t; }).join('\n');
+    const msg='Merhaba. Sitedeki kontrol listesinde '+N+' maddeden '+n+"'i bende çıktı.\n\nİşaretlemediklerim:\n"+kisa+'\n\nKonuşabilir miyiz?';
+    waBtn.href='https://wa.me/905337619443?text='+encodeURIComponent(msg);
   }
   kutular.forEach(k=>k.addEventListener('change',guncelle));
 })();
