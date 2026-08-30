@@ -82,6 +82,8 @@ h2{font-size:clamp(26px,2.9vw,34px);margin-bottom:14px}
 .top .wrap{display:flex;align-items:center;gap:14px;padding-top:16px;padding-bottom:16px}
 .top img{width:48px;height:48px;object-fit:contain}
 .top .nm{font-family:'Playfair Display',serif;font-weight:700;color:var(--navy);font-size:17px;letter-spacing:1.4px}
+.top .marka{display:flex;align-items:center;gap:14px;text-decoration:none;transition:opacity .2s ease}
+.top .marka:hover{opacity:.72}
 .top .sp{flex:1}
 .topnav{display:flex;gap:26px;align-items:center;margin-right:8px}
 .topnav a{
@@ -283,6 +285,8 @@ footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 2
   margin-top:14px;padding-top:14px;border-top:1px solid var(--rule);
   font-size:12px;color:var(--soft);line-height:1.75
 }
+.f-yz{display:block;margin-top:9px}
+.f-yz a{color:inherit;text-decoration:none;border-bottom:1px solid var(--gold)}
 
 /* ---- mobilde sabit arama cubugu ---- */
 .stick{display:none}
@@ -535,6 +539,7 @@ body.kilit{overflow:hidden}
 /* ---- 360px alti: ust cubuk sikismasin (320px'de hamburger tasiyordu) ---- */
 @media(max-width:380px){
   .top .wrap{gap:9px;padding-left:16px;padding-right:16px}
+  .top .marka{gap:9px}
   .top img{width:38px;height:38px}
   .top .nm{font-size:14px;letter-spacing:.7px}
   .wa-top{padding:9px 11px}
@@ -626,8 +631,7 @@ body.kilit{overflow:hidden}
 
 <div class="top">
   <div class="wrap">
-    <img src="logo.png" alt="">
-    <span class="nm">ÇAĞLAYAN ÇENGEL</span>
+    <a class="marka" href="/" aria-label="Ana sayfa — başa dön"><img src="logo.png" alt=""><span class="nm">ÇAĞLAYAN ÇENGEL</span></a>
     <span class="sp"></span>
     <nav class="topnav">
       <a href="#ne-yaparim">Kapsam</a>
@@ -1113,6 +1117,7 @@ body.kilit{overflow:hidden}
 <div class="wrap f-lg">
     © 2026 Çağlayan Çengel · Bu sitedeki içerik genel bilgilendirme amaçlıdır;
     yatırım danışmanlığı veya yatırım tavsiyesi niteliği taşımaz.
+    <span class="f-yz">Bu site, Çağlayan Çengel tarafından <a href="gizlilik.html#araclar">yapay zekâ destekli araçlarla</a> tasarlanmış ve yayına alınmıştır.</span>
   </div>
 </footer>
 
@@ -1171,6 +1176,18 @@ body.kilit{overflow:hidden}
   function g(){ b.classList.toggle('gor', window.scrollY>520); }
   window.addEventListener('scroll',g,{passive:true}); g();
   b.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+})();
+
+(function(){
+  var m=document.querySelector('.top .marka'); if(!m) return;
+  m.addEventListener('click',function(e){
+    var p=location.pathname;
+    if(p==='/'||p==='/index.html'){
+      e.preventDefault();
+      window.scrollTo({top:0,behavior:'smooth'});
+      history.replaceState(null,'',p);
+    }
+  });
 })();
 
 (function(){
