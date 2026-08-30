@@ -196,7 +196,7 @@ footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 2
   font-size:16px;font-weight:600
 }
 body.kilit{overflow:hidden}
-@media(max-width:1023px){.hmb{display:flex}}
+@media(max-width:1023px){.hmb{display:flex}.top .wrap>a:not(.wa-top),.top .wrap>.mgrup{display:none}}
 </style>
 <style>
 /* ================= HAREKET KATMANI v1 · 30.08.2026 ================= */
@@ -221,9 +221,9 @@ body.kilit{overflow:hidden}
 @keyframes acilis{to{opacity:1;transform:none}}
 
 /* --- kaydirinca beliren bloklar --- */
-.js-anim .rv{opacity:0;transform:translateY(26px);will-change:opacity,transform;
+.js-anim .rv{opacity:0;transform:translateY(26px);
   transition:opacity .8s cubic-bezier(.22,.61,.36,1),transform .8s cubic-bezier(.22,.61,.36,1)}
-.js-anim .rv.gor{opacity:1;transform:none;will-change:auto}
+.js-anim .rv.gor{opacity:1;transform:none}
 
 /* ic ogeler biraz daha kisa yoldan gelir */
 .js-anim .rv-ic{opacity:0;transform:translateY(18px);
@@ -235,11 +235,7 @@ body.kilit{overflow:hidden}
   transition:transform .85s cubic-bezier(.22,.61,.36,1)}
 .js-anim .rule.gor{transform:scaleX(1)}
 
-/* gorseller hafif olcekle gelir */
-.js-anim .rv img,.js-anim .rv-ic img,.js-anim .rv svg,.js-anim .rv-ic svg{
-  transition:transform .9s cubic-bezier(.22,.61,.36,1)}
-.js-anim .rv:not(.gor) img,.js-anim .rv-ic:not(.gor) img,
-.js-anim .rv:not(.gor) svg,.js-anim .rv-ic:not(.gor) svg{transform:scale(1.035)}
+/* gorsel olcek animasyonu kaldirildi — tasma ve katman artefakti yapiyordu */
 
 /* --- ust cubuk kaydirinca golgelenir --- */
 .js-anim .top{transition:box-shadow .3s ease,background-color .3s ease}
@@ -624,6 +620,8 @@ body.kilit{overflow:hidden}
 
       /* blok icinde tekrar eden kardesler varsa (kartlar, adimlar, sorular)
          blogun kendisi degil, cocuklari tek tek gelir — hareket her seviyede olur */
+      /* tablo/grafik iceren blok bolunmez — transform ic yerlesimi bozabilir */
+      if(el.querySelector('table,svg')){ isaretle(el,'rv',s); s++; return; }
       var ic=[]; Array.prototype.forEach.call(el.children,function(c){ if(c.nodeType===1) ic.push(c); });
       var tekrarli = ic.length>=2 && ic.length<=14 && ic.every(function(c){return c.tagName===ic[0].tagName});
 
