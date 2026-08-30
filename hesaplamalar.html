@@ -214,9 +214,25 @@ body.kilit{overflow:hidden}
 @keyframes acilis{to{opacity:1;transform:none}}
 
 /* --- kaydirinca beliren bloklar --- */
-.js-anim .rv{opacity:0;transform:translateY(22px);will-change:opacity,transform;
-  transition:opacity .7s cubic-bezier(.22,.61,.36,1),transform .7s cubic-bezier(.22,.61,.36,1)}
+.js-anim .rv{opacity:0;transform:translateY(26px);will-change:opacity,transform;
+  transition:opacity .8s cubic-bezier(.22,.61,.36,1),transform .8s cubic-bezier(.22,.61,.36,1)}
 .js-anim .rv.gor{opacity:1;transform:none;will-change:auto}
+
+/* ic ogeler biraz daha kisa yoldan gelir */
+.js-anim .rv-ic{opacity:0;transform:translateY(18px);
+  transition:opacity .7s cubic-bezier(.22,.61,.36,1),transform .7s cubic-bezier(.22,.61,.36,1)}
+.js-anim .rv-ic.gor{opacity:1;transform:none}
+
+/* bolum cizgisi soldan acilir */
+.js-anim .rule{transform-origin:left center;transform:scaleX(0);
+  transition:transform .85s cubic-bezier(.22,.61,.36,1)}
+.js-anim .rule.gor{transform:scaleX(1)}
+
+/* gorseller hafif olcekle gelir */
+.js-anim .rv img,.js-anim .rv-ic img,.js-anim .rv svg,.js-anim .rv-ic svg{
+  transition:transform .9s cubic-bezier(.22,.61,.36,1)}
+.js-anim .rv:not(.gor) img,.js-anim .rv-ic:not(.gor) img,
+.js-anim .rv:not(.gor) svg,.js-anim .rv-ic:not(.gor) svg{transform:scale(1.035)}
 
 /* --- ust cubuk kaydirinca golgelenir --- */
 .js-anim .top{transition:box-shadow .3s ease,background-color .3s ease}
@@ -235,7 +251,9 @@ body.kilit{overflow:hidden}
   .js-anim .hero .kicker,.js-anim .hero .h1,.js-anim .hero .sub,.js-anim .hero .pull,
   .js-anim .hero .ayrim,.js-anim .hero .cta,.js-anim .hero .proof,
   .js-anim .hero .rapor-ust,.js-anim .hero .r-kunye{animation:none;opacity:1;transform:none}
-  .js-anim .rv,.js-anim .rv.gor{transition:none;opacity:1;transform:none}
+  .js-anim .rv,.js-anim .rv.gor,.js-anim .rv-ic,.js-anim .rv-ic.gor{transition:none;opacity:1;transform:none}
+  .js-anim .rule{transform:none;transition:none}
+  .js-anim .rv img,.js-anim .rv-ic img,.js-anim .rv svg,.js-anim .rv-ic svg{transform:none;transition:none}
   .js-anim .step,.js-anim .kart,.js-anim .cikti-kart,.js-anim .arac-kart{transition:none}
   #okuma{display:none}
 }
@@ -643,8 +661,8 @@ body.kilit{overflow:hidden}
   <div class="wrap f-ml">
     <a href="tel:+905337619443">0533 761 94 43</a> &nbsp;·&nbsp;
     <a href="mailto:info&#64;caglayancengel&#46;com"><span>info</span><span style="display:none">nospam</span><span>&#64;caglayancengel&#46;com</span></a> &nbsp;·&nbsp;
-    <a href="https://www.linkedin.com/in/caglayancengel/" rel="noopener me" target="_blank">LinkedIn</a> &nbsp;·&nbsp;
-    <a href="https://www.instagram.com/finans_caglayancengel/" rel="noopener me" target="_blank">Instagram</a> &nbsp;·&nbsp;
+    <a href="https://www.linkedin.com/in/caglayancengel/" rel="noopener me" target="_blank"><svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true" style="vertical-align:-2px;margin-right:5px"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05a3.74 3.74 0 0 1 3.37-1.85c3.6 0 4.27 2.37 4.27 5.46zM5.34 7.43a2.07 2.07 0 1 1 2.06-2.07 2.07 2.07 0 0 1-2.06 2.07M7.12 20.45H3.56V9h3.56zM22.22 0H1.77A1.75 1.75 0 0 0 0 1.73v20.54A1.75 1.75 0 0 0 1.77 24h20.45A1.76 1.76 0 0 0 24 22.27V1.73A1.76 1.76 0 0 0 22.22 0"/></svg>LinkedIn</a> &nbsp;·&nbsp;
+    <a href="https://www.instagram.com/finans_caglayancengel/" rel="noopener me" target="_blank"><svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true" style="vertical-align:-2px;margin-right:5px"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41-.56-.22-.96-.48-1.38-.9-.42-.42-.68-.82-.9-1.38-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16M12 0C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.14.63c-.79.3-1.46.72-2.12 1.38C1.36 2.67.94 3.34.63 4.14.33 4.9.13 5.78.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91.3.79.72 1.46 1.38 2.12.66.66 1.33 1.08 2.12 1.38.76.3 1.64.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.56.79-.3 1.46-.72 2.12-1.38.66-.66 1.08-1.33 1.38-2.12.3-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.26-2.15-.56-2.91-.3-.79-.72-1.46-1.38-2.12C21.33 1.36 20.66.94 19.86.63c-.76-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0m0 5.84A6.16 6.16 0 1 0 18.16 12 6.16 6.16 0 0 0 12 5.84M12 16a4 4 0 1 1 4-4 4 4 0 0 1-4 4m7.85-10.4a1.44 1.44 0 1 1-1.44-1.44 1.44 1.44 0 0 1 1.44 1.44"/></svg>Instagram</a> &nbsp;·&nbsp;
     <a href="gizlilik.html">Gizlilik ve KVKK</a>
   </div>
   <div class="wrap f-lg">
@@ -984,17 +1002,36 @@ document.querySelectorAll('input').forEach(i => i.addEventListener('input', () =
   /* --- 2 · kaydirinca beliren bloklar --- */
   var kaplar=document.querySelectorAll('section > .wrap, section > .narrow, main > .wrap, main > .narrow');
   var hedefler=[];
+
+  function isaretle(el,sinif,sira){
+    el.classList.add(sinif);
+    el.style.transitionDelay=(Math.min(sira,8)*70)+'ms';
+    hedefler.push(el);
+  }
+
   kaplar.forEach(function(kap){
     var s=0;
     Array.prototype.forEach.call(kap.children,function(el){
       var p=getComputedStyle(el).position;
       if(p==='sticky'||p==='fixed'||p==='-webkit-sticky') return;   /* sticky bozulmasin */
-      el.classList.add('rv');
-      el.style.transitionDelay=(Math.min(s,5)*55)+'ms';
-      s++;
-      hedefler.push(el);
+
+      /* blok icinde tekrar eden kardesler varsa (kartlar, adimlar, sorular)
+         blogun kendisi degil, cocuklari tek tek gelir — hareket her seviyede olur */
+      var ic=[]; Array.prototype.forEach.call(el.children,function(c){ if(c.nodeType===1) ic.push(c); });
+      var tekrarli = ic.length>=2 && ic.length<=14 && ic.every(function(c){return c.tagName===ic[0].tagName});
+
+      if(tekrarli){
+        el.classList.add('rv-kap');
+        ic.forEach(function(c,j){ isaretle(c,'rv-ic',j); });
+        s++;
+      }else{
+        isaretle(el,'rv',s); s++;
+      }
     });
   });
+
+  /* bolum cizgileri de kendi basina acilir */
+  document.querySelectorAll('.rule').forEach(function(el){ hedefler.push(el); });
   var io=new IntersectionObserver(function(giris){
     giris.forEach(function(g){
       if(g.isIntersecting){ g.target.classList.add('gor'); io.unobserve(g.target); }
@@ -1036,7 +1073,7 @@ document.querySelectorAll('input').forEach(i => i.addEventListener('input', () =
 
   /* --- son guvenlik agi: 2,5 sn sonra hâlâ gizli kalan ekrandaki bloklar acilir --- */
   setTimeout(function(){
-    document.querySelectorAll('.rv:not(.gor)').forEach(function(el){
+    document.querySelectorAll('.rv:not(.gor),.rv-ic:not(.gor),.rule:not(.gor)').forEach(function(el){
       var r=el.getBoundingClientRect();
       if(r.top<window.innerHeight&&r.bottom>0) el.classList.add('gor');
     });
