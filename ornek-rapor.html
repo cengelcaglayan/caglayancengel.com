@@ -727,5 +727,61 @@ body.kilit{overflow:hidden}
   }
 })();
 </script>
+<script>
+/* ===== ZIYARET SAYACI · olay katmani · 30.08.2026 =====
+   Cerezsiz sayaca yalnizca "ne yapildi" bilgisi gider; girilen rakamlar GITMEZ.
+   Sayac bagli degilse bu kod hicbir sey yapmaz — istek de gitmez. */
+(function(){
+  function olay(yol, baslik){
+    try{
+      if(window.goatcounter && typeof window.goatcounter.count==='function'){
+        window.goatcounter.count({path:yol, title:baslik||yol, event:true});
+      }
+    }catch(e){}
+  }
+  window.__olay = olay;
+  var sayildi = {};
+  function birKez(anahtar, yol, baslik){
+    if(sayildi[anahtar]) return;
+    sayildi[anahtar]=1; olay(yol, baslik);
+  }
+
+  /* --- hesaplama araclari: hangi arac kullanildi (rakamlar gonderilmez) --- */
+  document.addEventListener('input', function(e){
+    var g=e.target;
+    if(!g || g.type!=='number') return;
+    var bolum=g.closest('section[id]');
+    var id = bolum ? bolum.id : 'bilinmeyen';
+    var ad = bolum ? (bolum.querySelector('h3,h2')||{}).textContent : '';
+    birKez('arac-'+id, 'arac/'+id, ('Araç kullanıldı: '+(ad||id)).trim().slice(0,90));
+  }, true);
+
+  /* --- olcut listesi: baslandi / tamamlandi --- */
+  var kutular=document.querySelectorAll('.olc input');
+  if(kutular.length){
+    kutular.forEach(function(k){
+      k.addEventListener('change', function(){
+        birKez('olcut-basladi','olcut/baslandi','Ölçüt listesi işaretlendi');
+        var n=[...kutular].filter(x=>x.checked).length;
+        if(n===kutular.length) birKez('olcut-tam','olcut/tamami-isaretli','Ölçüt: tamamı işaretli');
+      });
+    });
+  }
+
+  /* --- iletisim eylemleri --- */
+  document.addEventListener('click', function(e){
+    var a=e.target.closest && e.target.closest('a');
+    if(!a) return;
+    var h=a.getAttribute('href')||'';
+    if(h.indexOf('wa.me/')>-1)            olay('iletisim/whatsapp','WhatsApp tıklandı');
+    else if(h.indexOf('tel:')===0)        olay('iletisim/telefon','Telefon tıklandı');
+    else if(h.indexOf('mailto:')===0)     olay('iletisim/eposta','E-posta tıklandı');
+    else if(h.indexOf('.vcf')>-1)         olay('kartvizit/rehbere-eklendi','Rehbere kaydet');
+    else if(h.indexOf('kart.html')>-1)    olay('kartvizit/sayfa','Dijital kartvizit');
+    else if(h.indexOf('instagram.com')>-1)olay('sosyal/instagram','Instagram');
+    else if(h.indexOf('linkedin.com')>-1) olay('sosyal/linkedin','LinkedIn');
+  }, true);
+})();
+</script>
 </body>
 </html>
