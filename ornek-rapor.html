@@ -84,6 +84,12 @@ h2{font-size:clamp(25px,2.7vw,32px);margin-bottom:12px}
 .bulgu .kaynak{font-size:13.5px;color:var(--soft);margin-top:6px}
 
 /* tablo */
+.gr{margin:30px 0 6px;padding:22px 24px;background:var(--white);border:1px solid var(--rule);border-radius:3px}
+.gr svg{width:100%;height:auto;display:block}
+.gr-e{font-family:'IBM Plex Sans',sans-serif;font-size:11px;letter-spacing:1.4px;fill:#5A6472;font-weight:600}
+.gr-d{font-family:'IBM Plex Sans',sans-serif;font-size:14px;font-weight:600}
+.gr-x{font-family:'IBM Plex Sans',sans-serif;font-size:11.5px;fill:#5A6472}
+.gr figcaption{margin-top:14px;font-size:14.5px;color:var(--soft);line-height:1.55}
 .tw{overflow-x:auto;margin-top:26px;-webkit-overflow-scrolling:touch}
 table{border-collapse:collapse;width:100%;min-width:560px;font-size:15.5px}
 th,td{text-align:right;padding:11px 14px;border-bottom:1px solid var(--rule)}
@@ -234,6 +240,24 @@ footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 2
       kalemler = net kâr. Rakamlar mizandan alınmıştır, tahmin yoktur.
     </p>
 
+
+    <figure class="gr">
+      <svg viewBox="0 0 640 190" role="img" aria-label="Faaliyet kârının yüzde 92'si finansman giderine gitti">
+        <text x="0" y="14" class="gr-e">FAALİYET KÂRI</text>
+        <rect x="0" y="24" width="600" height="30" fill="#2F5D3A" rx="2"/>
+        <text x="610" y="44" class="gr-d" text-anchor="end" fill="#fff">2,8 mn ₺</text>
+
+        <text x="0" y="86" class="gr-e">FİNANSMAN GİDERİ</text>
+        <rect x="0" y="96" width="554" height="30" fill="#8C2F1E" rx="2"/>
+        <text x="564" y="116" class="gr-d" text-anchor="end" fill="#fff">2,6 mn ₺ · %92</text>
+
+        <text x="0" y="158" class="gr-e">GERİYE KALAN</text>
+        <rect x="0" y="168" width="10" height="18" fill="#C8A951" rx="2"/>
+        <text x="22" y="182" class="gr-d" fill="#0F1C2E">47 bin ₺</text>
+      </svg>
+      <figcaption>İşin kazandığı paranın neredeyse tamamı faize gitti.</figcaption>
+    </figure>
+
     <p style="margin-top:22px">
       Yıl sonunda "kâr ettik" denir ve doğrudur — ama kârın tamamına yakınını faiz aldı.
       Mali tabloda bu iki satır ayrı ayrı durur; yan yana konmadıkça aralarındaki ilişki
@@ -271,6 +295,30 @@ footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 2
       <p>Bir yılda 2,4 katına çıktı. Stoku ve alacağı finanse eden para
         bankadan geldi — ve faizi yukarıdaki tabloda görünüyor.</p>
     </div>
+
+
+    <figure class="gr">
+      <svg viewBox="0 0 640 210" role="img" aria-label="Üç dönemde stok arttı, nakit eridi">
+        <line x1="0" y1="170" x2="640" y2="170" stroke="#E4DED0"/>
+        <text x="0" y="14" class="gr-e">STOK — 8,6 KATINA ÇIKTI</text>
+        <rect x="10"  y="153" width="52" height="17" fill="#8C2F1E" rx="2"/>
+        <rect x="90"  y="109" width="52" height="61" fill="#8C2F1E" rx="2"/>
+        <rect x="170" y="28"  width="52" height="142" fill="#8C2F1E" rx="2"/>
+
+        <text x="330" y="14" class="gr-e">NAKİT — 16'DA BİRE İNDİ</text>
+        <rect x="340" y="28"  width="52" height="142" fill="#2F5D3A" rx="2"/>
+        <rect x="420" y="104" width="52" height="66" fill="#2F5D3A" rx="2"/>
+        <rect x="500" y="161" width="52" height="9"  fill="#2F5D3A" rx="2"/>
+
+        <text x="36"  y="188" class="gr-x" text-anchor="middle">1. yıl</text>
+        <text x="116" y="188" class="gr-x" text-anchor="middle">2. yıl</text>
+        <text x="196" y="188" class="gr-x" text-anchor="middle">3. dönem</text>
+        <text x="366" y="188" class="gr-x" text-anchor="middle">1. yıl</text>
+        <text x="446" y="188" class="gr-x" text-anchor="middle">2. yıl</text>
+        <text x="526" y="188" class="gr-x" text-anchor="middle">3. dönem</text>
+      </svg>
+      <figcaption>Ciro büyürken para stoka gitti, kasa boşaldı. İki çubuk aynı firmanın aynı dönemleri.</figcaption>
+    </figure>
 
     <p style="margin-top:26px">
       Bu dört satır tek bir cümlenin parçalarıdır: <strong>firma büyüdü ama büyümeyi
