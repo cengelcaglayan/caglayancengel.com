@@ -66,6 +66,7 @@ h2{font-size:clamp(26px,2.9vw,34px);margin-bottom:14px}
   font-family:'Playfair Display',Georgia,serif;font-size:17.5px;line-height:1.4;
   color:var(--navy);box-shadow:0 1px 3px rgba(15,28,46,.05)
 }
+.hizli li b{color:var(--goldink);font-weight:700}
 .hizli li::after{
   content:"";position:absolute;left:-1px;bottom:-9px;width:0;height:0;
   border:9px solid transparent;border-top-color:var(--rule);border-bottom:0;border-left:0
@@ -352,11 +353,15 @@ footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 2
 }
 .olc input:checked + span{color:var(--navy)}
 .olc-sonuc{
-  margin-top:30px;padding:22px 26px;background:var(--navy);color:#C7CFDA;
+  position:sticky;top:8px;z-index:5;margin:26px 0 4px;padding:22px 26px;background:var(--navy);color:#C7CFDA;
   display:flex;align-items:center;gap:22px;flex-wrap:wrap;border-radius:3px
 }
 .olc-sonuc b{font-family:'Playfair Display',Georgia,serif;font-size:38px;color:#fff;line-height:1}
 .olc-sonuc b small{font-size:19px;color:#9FB0C6}
+.olc-sonuc.parla{animation:parla .5s ease}
+@keyframes parla{0%{background:var(--navy)}35%{background:#28405F}100%{background:var(--navy)}}
+.olc-sonuc b{transition:transform .2s}
+.olc-sonuc.parla b{transform:scale(1.12)}
 .olc-sonuc span{font-size:16px;line-height:1.55;flex:1;min-width:240px}
 @media(max-width:560px){.olc{grid-template-columns:1fr;gap:0}}
 </style>
@@ -440,11 +445,11 @@ footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 2
     </p>
 
     <ul class="hizli">
-      <li>Para neden yetmiyor?</li>
-      <li>Bankalara toplam borcum ne?</li>
-      <li>Limitimin ne kadarı gerçekten kullanılabilir?</li>
-      <li>Önümüzdeki aylarda hangi ödeme sıkıştıracak?</li>
-      <li>Bankaya gittiğimde dosya nerede sorgulanacak?</li>
+      <li>Para neden yetmiyor<b>?</b></li>
+      <li>Bankalara toplam borcum ne<b>?</b></li>
+      <li>Limitimin ne kadarı gerçekten kullanılabilir<b>?</b></li>
+      <li>Önümüzdeki aylarda hangi ödeme sıkıştıracak<b>?</b></li>
+      <li>Bankaya gittiğimde dosya nerede sorgulanacak<b>?</b></li>
       <li>Kredileri ödüyorum ama limitlerim dolu görünüyor.</li>
       <li>Kredileri düzenli ödedim ama firmamın puanı düşmüş.</li>
     </ul>
@@ -598,6 +603,11 @@ footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 2
       <strong>Cevaplarınız hiçbir yere gönderilmez.</strong>
     </p>
 
+<div class="olc-sonuc" id="olc_sonuc">
+      <b id="olc_skor">0<small>/12</small></b>
+      <span id="olc_yorum">Kutuları işaretleyin.</span>
+    </div>
+
     <div class="olc">
       <label><input type="checkbox"><span>Yıllık bütçe var ve gerçekleşenle ay ay karşılaştırılıyor</span></label>
       <label><input type="checkbox"><span>Önümüzdeki 3 ayın nakit akışı önceden görülebiliyor</span></label>
@@ -611,11 +621,6 @@ footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 2
       <label><input type="checkbox"><span>Yatırım kararı öncesi geri dönüş süresi hesaplanıyor</span></label>
       <label><input type="checkbox"><span>Ödeme takvimi var — hangi gün hangi ödemenin çıkacağı önceden belli</span></label>
       <label><input type="checkbox"><span>Bu işlerin sorumlusu belli ve düzenli olarak yapılıyor</span></label>
-    </div>
-
-    <div class="olc-sonuc" id="olc_sonuc">
-      <b id="olc_skor">0<small>/12</small></b>
-      <span id="olc_yorum">Kutuları işaretleyin.</span>
     </div>
 
     <p style="margin-top:26px;max-width:64ch">
@@ -835,6 +840,8 @@ footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 2
     else if(n<12) m='Güçlü bir düzen. İşaretlenmeyen maddeler tamamlandığında finans fonksiyonu bütünlenir.';
     else m='On iki maddenin tamamı çalışıyorsa firmanızda finans fonksiyonu kurulmuş demektir.';
     yorum.textContent=m;
+    const kutu=document.getElementById('olc_sonuc');
+    kutu.classList.remove('parla'); void kutu.offsetWidth; kutu.classList.add('parla');
   }
   kutular.forEach(k=>k.addEventListener('change',guncelle));
 })();
