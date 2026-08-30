@@ -58,19 +58,28 @@ section{padding:104px 0}
 h2{font-size:clamp(26px,2.9vw,34px);margin-bottom:14px}
 .rule{width:40px;height:2px;background:var(--gold);margin:0 0 26px}
 .hizli{
-  list-style:none;margin:26px 0 0;padding:0;display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(258px,1fr));gap:0 30px;max-width:78ch
+  list-style:none;margin:30px 0 6px;padding:0;display:flex;flex-wrap:wrap;gap:14px 16px
 }
 .hizli li{
-  font-family:'Playfair Display',Georgia,serif;font-size:19px;color:var(--navy);
-  padding:13px 0 13px 20px;border-bottom:1px solid var(--rule);position:relative;line-height:1.35
+  position:relative;background:var(--white);border:1px solid var(--rule);
+  border-radius:14px 14px 14px 3px;padding:14px 20px;max-width:38ch;
+  font-family:'Playfair Display',Georgia,serif;font-size:17.5px;line-height:1.4;
+  color:var(--navy);box-shadow:0 1px 3px rgba(15,28,46,.05)
 }
-.hizli li::before{content:"—";position:absolute;left:0;color:var(--gold)}
+.hizli li::after{
+  content:"";position:absolute;left:-1px;bottom:-9px;width:0;height:0;
+  border:9px solid transparent;border-top-color:var(--rule);border-bottom:0;border-left:0
+}
+.hizli li::before{
+  content:"";position:absolute;left:0;bottom:-7px;width:0;height:0;z-index:1;
+  border:8px solid transparent;border-top-color:var(--white);border-bottom:0;border-left:0
+}
+@media(max-width:560px){.hizli li{max-width:none;width:100%}}
 
 /* ---- ust cubuk ---- */
 .top{border-bottom:1px solid var(--rule);background:var(--white)}
 .top .wrap{display:flex;align-items:center;gap:14px;padding-top:16px;padding-bottom:16px}
-.top img{width:42px;height:42px;object-fit:contain}
+.top img{width:48px;height:48px;object-fit:contain}
 .top .nm{font-family:'Playfair Display',serif;font-weight:700;color:var(--navy);font-size:17px;letter-spacing:1.4px}
 .top .sp{flex:1}
 .topnav{display:flex;gap:26px;align-items:center;margin-right:8px}
@@ -102,9 +111,13 @@ h2{font-size:clamp(26px,2.9vw,34px);margin-bottom:14px}
 }
 .pull span{display:block;margin-top:10px;font-size:17px;color:var(--body)}
 .vurgu-cumle{
-  display:block;margin:12px 0 8px;font-family:'Playfair Display',Georgia,serif;
-  font-size:clamp(18px,2.1vw,21px);line-height:1.4;color:var(--navy);font-weight:700
+  display:block;margin:18px 0 6px;padding:14px 0 14px 18px;
+  border-left:3px solid var(--gold);background:linear-gradient(90deg,#F4F1E9 0%,transparent 92%);
+  font-family:'Playfair Display',Georgia,serif;
+  font-size:clamp(19px,2.3vw,23px);line-height:1.36;color:var(--navy);font-weight:700
 }
+.vurgu-cumle em{color:var(--goldink);font-style:italic}
+.vurgu-alt{display:block;margin-top:8px;font-size:17px;color:var(--body)}
 .ayrim{
   margin-top:30px;padding:18px 22px;background:var(--band);border-left:2px solid var(--gold);
   font-size:17px;line-height:1.62;max-width:62ch;color:var(--body)
@@ -247,6 +260,7 @@ footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 2
 .fbar{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
 .fbar img{width:40px;height:40px;object-fit:contain}
 .fmid{display:flex;flex-direction:column;line-height:1.35}
+.f-sl2{font-family:'Playfair Display',serif;font-style:italic;color:var(--goldink);font-size:13.5px;margin-top:5px}
 .f-nm{font-family:'Playfair Display',serif;font-weight:700;color:var(--goldink);font-size:16px;letter-spacing:2.4px}
 .f-rl{font-size:12px;letter-spacing:1.4px;text-transform:uppercase;color:var(--soft);margin-top:3px}
 .f-sl{font-family:'Playfair Display',serif;font-style:italic;color:var(--goldink);font-size:14.5px;margin:0 0 0 auto}
@@ -357,15 +371,15 @@ footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 2
     <h1 class="h1">Firmanın gerçek rakamı, bankanın gördüğü hâliyle.</h1>
     <p class="sub">
       KOBİ ve aile şirketlerinde mali tablo, banka ekstresi, Findeks kaydı ve POS verisi
-      tek tabloda birleştirilir. Kredi dosyası bankaya gitmeden önce burada açılır:
-      hangi rakamın ne söylediği, banka sormadan görünür hâle gelir.
+      tek tabloda birleştirilir. Kredi dosyası bankaya gitmeden önce burada açılır. Hangi rakamın ne söylediği, banka sormadan görünür hâle gelir.
     </p>
 
     <div class="pull">
       <q>Bizim sistem tıkandı.</q>
       <span>Tıkanan çoğu zaman sistem değildir. Yıllardır işi yürüten düzen, ölçek büyüdüğünde
-        ve piyasa sıkıştığında yetmemeye başlar. <strong class="vurgu-cumle">Alışkanlık iyi günde yürür; sistem kötü günde de
-        yürür.</strong> Bu çalışma ikincisini kurar.</span>
+        ve piyasa sıkıştığında yetmemeye başlar. </span>
+      <span class="vurgu-cumle">Alışkanlık iyi günde yürür;<br><em>sistem kötü günde de yürür.</em></span>
+      <span class="vurgu-alt">Bu çalışma ikincisini kurar.</span>
     </div>
 
     <p class="ayrim">
@@ -382,7 +396,7 @@ footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 2
       <div class="proof-in">
         <div><b>6 yıl</b><span>Sigortacılık · 2001–2007</span></div>
         <div><b>16 yıl</b><span>Bankacılık · 2007–2023</span></div>
-        <div><b>Ticari kredi</b><span>KOBİ portföy yönetimi</span></div>
+        <div><b>Ticari kredi</b><span>İşletme ve KOBİ bankacılığı</span></div>
       <div><b>22 yıl</b><span>Toplam finans sektörü</span></div>
       </div>
     </div>
@@ -396,8 +410,7 @@ footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 2
     <h2>Aynı yerden çıkan farklı sorular</h2>
     <div class="rule"></div>
     <p class="intro">
-      Firmalar bu noktaya farklı sorularla gelir. Soruların kaynağı ortaktır: veri vardır,
-      bir arada değildir.
+      Firmalar bu noktaya farklı sorularla gelir. Soruların kaynağı ortaktır. Veri vardır, bir arada değildir.
     </p>
 
     <ul class="hizli">
@@ -538,7 +551,7 @@ footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 2
         <p><strong>Bir talebin alınıp alınmayacağına, dosyanın tahsise iletilip iletilmeyeceğine
           bu masada karar verilirdi.</strong> Hangi soruyla karşılaşacağı, hangi rakama
           takılacağı ve neyin önceden cevaplanması gerektiği de burada belirlenirdi. Aynı bakış bugün firma tarafında
-          kullanılıyor: dosya bankaya gitmeden önce burada açılıyor, eksik olan banka
+          kullanılıyor. Dosya bankaya gitmeden önce burada açılıyor, eksik olan banka
           sormadan tamamlanıyor.</p>
         <details>
           <summary>Kredi masasında yürüyen süreç</summary>
@@ -692,8 +705,8 @@ footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 2
     <div class="fmid">
       <span class="f-nm">ÇAĞLAYAN ÇENGEL</span>
       <span class="f-rl">Finansal Yönetim Danışmanı</span>
+      <span class="f-sl2">KOBİ'lere Güven Veren Finansal Rehberlik</span>
     </div>
-    <div class="f-sl">KOBİ'lere Güven Veren Finansal Rehberlik</div>
   </div>
   <div class="wrap f-ml">
     <a href="tel:+905337619443">0533 761 94 43</a> &nbsp;·&nbsp;
