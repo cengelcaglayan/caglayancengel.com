@@ -334,6 +334,31 @@ footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 2
 .wa-top:hover{background:#075E54}
 .wa-top svg{opacity:.95}
 @media(max-width:520px){.wa-top span{display:none}.wa-top{padding:10px 12px}}
+
+.olc{margin-top:28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:0 34px}
+.olc label{
+  display:flex;gap:13px;align-items:flex-start;padding:13px 0;border-bottom:1px solid var(--rule);
+  cursor:pointer;font-size:16.5px;line-height:1.5;color:var(--body);transition:.15s
+}
+.olc label:hover{color:var(--navy)}
+.olc input{
+  appearance:none;-webkit-appearance:none;flex:0 0 auto;width:19px;height:19px;margin-top:3px;
+  border:1.5px solid var(--rule);border-radius:2px;background:var(--white);cursor:pointer;position:relative
+}
+.olc input:checked{background:var(--goldink);border-color:var(--goldink)}
+.olc input:checked::after{
+  content:"";position:absolute;left:5.5px;top:1.5px;width:5px;height:10px;
+  border:solid #fff;border-width:0 2px 2px 0;transform:rotate(42deg)
+}
+.olc input:checked + span{color:var(--navy)}
+.olc-sonuc{
+  margin-top:30px;padding:22px 26px;background:var(--navy);color:#C7CFDA;
+  display:flex;align-items:center;gap:22px;flex-wrap:wrap;border-radius:3px
+}
+.olc-sonuc b{font-family:'Playfair Display',Georgia,serif;font-size:38px;color:#fff;line-height:1}
+.olc-sonuc b small{font-size:19px;color:#9FB0C6}
+.olc-sonuc span{font-size:16px;line-height:1.55;flex:1;min-width:240px}
+@media(max-width:560px){.olc{grid-template-columns:1fr;gap:0}}
 </style>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"ProfessionalService",
@@ -356,6 +381,7 @@ footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 2
     <span class="sp"></span>
     <nav class="topnav">
       <a href="#ne-yaparim">Kapsam</a>
+      <a href="#olcut">Ölçüt</a>
       <a href="hesaplamalar.html">Hesaplamalar</a>
       <a href="#kimim">Deneyim</a>
       <a href="#iletisim">İletişim</a>
@@ -491,8 +517,25 @@ footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 2
             işletme sermayesi ihtiyacı ve bankanın ödeme gücü olarak gördüğü tutar.</p>
         </div>
       </div>
+      
       <div class="svc-row">
         <div class="svc-no">02</div>
+        <div>
+          <h3>Nakit, alacak ve stok — paranın nerede beklediği</h3>
+          <p>Paranın hangi gün, hangi bankadan, hangi kesintiyle geldiği izlenir. POS
+            komisyonları sözleşme oranıyla ekstre üzerinden karşılaştırılır; blokaj süreleri
+            ve valör farkları maliyete dâhil edilir. Uygulanan oranın sözleşmeden sapması,
+            çoğu firmada yıllık olarak ölçüldüğünde görünür büyüklüğe ulaşır.</p>
+          <p>Tahsilat ve ödeme vadeleri karşılaştırıldığında, işletmenin kaç günlük finansmanı
+            kendi kaynağından karşıladığı ortaya çıkar. Bu süre, kredi ihtiyacının gerçek
+            sebebini gösteren ölçüdür.</p>
+          <p>Alacaklar ve stoklar yaşlandırılır: hangi müşteride kaç gündür para beklediği,
+            hangi stok kaleminin devretmediği tek tabloda görünür. Kasa ve banka hareketleri
+            kayıtla karşılaştırılır; gider kalemleri dönem dönem izlenir. Ciro büyürken kasanın
+            neden boşaldığı çoğu firmada bu üç kalemden birinde durur.</p>
+        </div>
+      </div><div class="svc-row">
+        <div class="svc-no">03</div>
         <div>
           <h3>Kredi portföyünün tek tabloda yönetimi</h3>
           <p>Bankalardaki kredi, limit ve teminat bilgisi tek tabloda toplanır; anapara ve
@@ -506,17 +549,18 @@ footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 2
             önceden bilinir; eksik olan, banka sormadan tamamlanır.</p>
         </div>
       </div>
+
       <div class="svc-row">
-        <div class="svc-no">03</div>
+        <div class="svc-no">04</div>
         <div>
-          <h3>Nakit dönüşünün ve tahsilat maliyetinin ölçülmesi</h3>
-          <p>Paranın hangi gün, hangi bankadan, hangi kesintiyle geldiği izlenir. POS
-            komisyonları sözleşme oranıyla ekstre üzerinden karşılaştırılır; blokaj süreleri
-            ve valör farkları maliyete dâhil edilir. Uygulanan oranın sözleşmeden sapması,
-            çoğu firmada yıllık olarak ölçüldüğünde görünür büyüklüğe ulaşır.</p>
-          <p>Tahsilat ve ödeme vadeleri karşılaştırıldığında, işletmenin kaç günlük finansmanı
-            kendi kaynağından karşıladığı ortaya çıkar. Bu süre, kredi ihtiyacının gerçek
-            sebebini gösteren ölçüdür.</p>
+          <span class="tag">Karar öncesi</span>
+          <h3>Yatırım, bütçe ve fiyat kararlarının rakamla sınanması</h3>
+          <p>Makine alınacak, şube açılacak, eldeki parayla kredi kapatılacak ya da yeni bir
+            ürün fiyatlanacak. Bu kararların hepsi aynı soruyu sorar: firma bunu kaldırır mı,
+            kaldırırsa hangi ay sıkışır? Karar öncesinde rakamla sınanır — sonrasında değil.</p>
+          <p>Yatırımın kendini kaç ayda ödeyeceği, kredi kapatmanın mı yoksa nakitte tutmanın mı
+            daha ucuz olduğu, hangi ürünün gerçekte kâr bıraktığı ölçülür. Yıllık bütçe kurulur
+            ve gerçekleşenle ay ay karşılaştırılır; sapma büyüdüğünde nedeni aranır.</p>
         </div>
       </div>
     </div>
@@ -541,10 +585,51 @@ footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 2
 </section>
 
 <!-- ================= KIMIM ================= -->
+
+<!-- ================= OZ DEGERLENDIRME ================= -->
+<section id="olcut">
+  <div class="wrap">
+    <p class="kicker">Finans nedir</p>
+    <h2>Bu sistemin ne kadarı sizde var?</h2>
+    <div class="rule"></div>
+    <p style="max-width:64ch">
+      Finans, kredi almaktan ibaret değildir. Aşağıdakiler bir firmanın finans düzenini
+      oluşturan temel parçalardır. İşaretleyin — kaçı sizde çalışıyor?
+      <strong>Cevaplarınız hiçbir yere gönderilmez.</strong>
+    </p>
+
+    <div class="olc">
+      <label><input type="checkbox"><span>Yıllık bütçe var ve gerçekleşenle ay ay karşılaştırılıyor</span></label>
+      <label><input type="checkbox"><span>Önümüzdeki 3 ayın nakit akışı önceden görülebiliyor</span></label>
+      <label><input type="checkbox"><span>Alacaklar yaşlandırılıyor — hangi müşteride kaç gündür para beklediği biliniyor</span></label>
+      <label><input type="checkbox"><span>Stok devir hızı ölçülüyor, ölü stok ayrıştırılıyor</span></label>
+      <label><input type="checkbox"><span>Kasa ve banka hareketleri kayıtla düzenli karşılaştırılıyor</span></label>
+      <label><input type="checkbox"><span>Giderler kalem kalem izleniyor, dönemler arası kıyaslanıyor</span></label>
+      <label><input type="checkbox"><span>Tüm bankalardaki limit, risk ve teminat tek tabloda görülüyor</span></label>
+      <label><input type="checkbox"><span>Kredilerin gerçek maliyeti (komisyon ve masraf dâhil) karşılaştırılıyor</span></label>
+      <label><input type="checkbox"><span>Hangi ürünün veya müşterinin gerçekte kâr bıraktığı biliniyor</span></label>
+      <label><input type="checkbox"><span>Yatırım kararı öncesi geri dönüş süresi hesaplanıyor</span></label>
+      <label><input type="checkbox"><span>Ödeme takvimi var — hangi gün hangi ödemenin çıkacağı önceden belli</span></label>
+      <label><input type="checkbox"><span>Bu işlerin sorumlusu belli ve düzenli olarak yapılıyor</span></label>
+    </div>
+
+    <div class="olc-sonuc" id="olc_sonuc">
+      <b id="olc_skor">0<small>/12</small></b>
+      <span id="olc_yorum">Kutuları işaretleyin.</span>
+    </div>
+
+    <p style="margin-top:26px;max-width:64ch">
+      Bu on iki maddenin çoğu Türkiye'deki KOBİ'lerde ön muhasebeye devredilmiş durumdadır.
+      Ön muhasebe kaydı tutar; <strong>bu maddeler kayıt değil, yönetim işidir.</strong>
+      Aradaki boşluk çoğu firmada kimsenin görevi değildir — çalışma tam olarak orayı kapatır.
+    </p>
+  </div>
+</section>
+
 <section id="kimim">
   <div class="wrap">
     <p class="kicker">Deneyim</p>
-    <h2>Dosya bankada hangi soruya takılır</h2>
+    <h2>Kararın verildiği taraftan gelen bakış</h2>
     <div class="rule"></div>
     <div class="who">
       <div>
@@ -557,7 +642,7 @@ footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 2
           kullanılıyor. Dosya bankaya gitmeden önce burada açılıyor, eksik olan banka
           sormadan tamamlanıyor.</p>
         <details>
-          <summary>Kredi masasında yürüyen süreç</summary>
+          <summary>O masada ne yapılırdı</summary>
           <p>Talep alındığında mali veriler ve evraklar üzerinden spread çalışması yapılırdı —
             bankanın mali tabloyu kendi analiz formatına dönüştürdüğü çalışma. Firmanın
             borçlanma kapasitesi, teminat yapısı ve nakit üretimi bu çalışmada görünür hâle
@@ -577,9 +662,11 @@ footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 2
 
     <div class="pr">
       <div>
-        <h3>Ölçülür, varsayılmaz</h3>
-        <p>Veri okunamıyorsa o satır boş bırakılır ve işaretlenir. Yanlış veri, eksik veriden
-          daha risklidir; üzerine karar kurulur.</p>
+        <h3>Çalışmanın çıktısı</h3>
+        <p>Yazılı bulgu raporu, kurulan takip tabloları ve bunları firmanın kendi ekibinin
+          işletebileceği bir düzen. Rapor teslim edilip bırakılmaz; tablolar firmada çalışır
+          hâlde kurulur. Bütçe, ödeme takvimi veya banka dosyası isteniyorsa çalışmanın
+          kapsamına girer.</p>
       </div>
       <div>
         <h3>Bulgu yumuşatılmaz</h3>
@@ -588,7 +675,9 @@ footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 2
       </div>
       <div>
         <h3>Rakam kâğıda geçer</h3>
-        <p>Kurulan tablolar firmada kalır; ekip devralır ve danışman olmadan da işletilir.
+        <p>Firmaya kendi düzeni kurulur: takip tabloları, ödeme takvimi ve raporlama biçimi
+          firmada kalır, ekip devralır. Ölçümde kullanılan analiz modeli çalışmanın aracıdır;
+          devredilen şey araç değil, işleyen düzendir.
           Sistem firmanın olur.</p>
       </div>
     </div>
@@ -610,7 +699,9 @@ footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 2
       <div class="step">
         <b>02</b>
         <h3>Veri</h3>
-        <p>Mizan, mali tablolar, banka ekstreleri, Findeks kaydı ve POS dökümü toplanır.</p>
+        <p>Mizan, mali tablolar, banka ekstreleri, Findeks kaydı ve POS dökümü toplanır.
+          <strong>Çalışma bu verinin eksiksiz paylaşılmasına bağlıdır; veri gelmezse ölçüm
+          de yapılamaz.</strong></p>
       </div>
       <div class="step">
         <b>03</b>
@@ -638,7 +729,7 @@ footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 2
     <div class="rule"></div>
     <div class="sss">
       <details>
-        <summary>Mali müşavirin yerine mi geçiyor?</summary>
+        <summary>Mali müşavirimle nasıl çalışıyorsunuz?</summary>
         <p>Hayır. Mali müşavir vergi ve mevzuat tarafını yönetir; o görev yerinde kalır.
           Bu çalışma aynı veriyi bankanın ve yönetimin baktığı açıdan okur. İki iş çakışmaz;
           uygulamada mali müşavirle birlikte yürütülür.</p>
@@ -728,5 +819,25 @@ footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 2
   <a class="c2" href="https://wa.me/905337619443">WhatsApp</a>
 </div>
 
+<script>
+(function(){
+  const kutular=document.querySelectorAll('.olc input');
+  if(!kutular.length) return;
+  const skor=document.getElementById('olc_skor'), yorum=document.getElementById('olc_yorum');
+  function guncelle(){
+    const n=[...kutular].filter(k=>k.checked).length;
+    skor.innerHTML=n+'<small>/12</small>';
+    let m;
+    if(n===0) m='Kutuları işaretleyin.';
+    else if(n<=3) m='Finans düzeni büyük ölçüde kurulmamış. Bu tabloda firma, sorunu ancak nakit sıkıştığında fark eder.';
+    else if(n<=6) m='Parçalar var, düzen yok. Çoğu firmada bu maddeler farklı kişilerde ve farklı dosyalarda durur; bir arada okunmaz.';
+    else if(n<=9) m='Düzenin önemli bölümü kurulu. Eksik kalan maddeler genellikle en pahalı olanlardır — çünkü görünmeyen yerde birikirler.';
+    else if(n<12) m='Güçlü bir düzen. İşaretlenmeyen maddeler tamamlandığında finans fonksiyonu bütünlenir.';
+    else m='On iki maddenin tamamı çalışıyorsa firmanızda finans fonksiyonu kurulmuş demektir.';
+    yorum.textContent=m;
+  }
+  kutular.forEach(k=>k.addEventListener('change',guncelle));
+})();
+</script>
 </body>
 </html>
