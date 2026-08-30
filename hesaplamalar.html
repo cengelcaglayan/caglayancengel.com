@@ -287,7 +287,7 @@ body.kilit{overflow:hidden}
 
 <div class="top">
   <div class="wrap">
-    <a class="marka" href="/" aria-label="Ana sayfa — başa dön"><img src="logo.png" alt=""><span class="nm">ÇAĞLAYAN ÇENGEL</span></a>
+    <a class="marka" href="/" aria-label="Ana sayfa — başa dön"><img src="logo.png" alt="Çağlayan Çengel"><span class="nm">ÇAĞLAYAN ÇENGEL</span></a>
     <span class="sp"></span>
 <span class="mgrup"><a href="hesaplamalar.html">Hesaplamalar</a><div class="altm"><div class="altm-bas">Hesaplama araçları</div><a href="hesaplamalar.html#a1">Bilanço teşhisi</a><a href="hesaplamalar.html#a2">Borç servisi · DSCR</a><a href="hesaplamalar.html#a3">Nakit döngüsü</a><a href="hesaplamalar.html#a4">Taksitli ticari kredi</a><a href="hesaplamalar.html#a5">Rotatif kredi</a><a href="hesaplamalar.html#a6">Spot kredi</a><a href="hesaplamalar.html#a7">Çek/senet iskonto</a><a href="hesaplamalar.html#a8">POS komisyonu</a></div></span>
     <a href="/">Ana sayfa</a>
@@ -488,7 +488,7 @@ body.kilit{overflow:hidden}
       <div class="arac-bas">
         <span class="arac-no">Araç 04 · Ticari kredi maliyeti</span>
         <h3>Taksitli ticari kredide efektif maliyet</h3>
-        <p>Masrafsız bir teklif için masraf alanlarını boş bırakın. Alanlar ticari krediye göre gelir: KKDF %0, BSMV %5. Bireysel kredide bu iki oran farklıdır (KKDF %15, BSMV %15) — o hesap için oranları elle girin.</p>
+        <p><strong>BSMV %5 dolu gelir</strong> — ticari kredide faiz ve masraflar bu vergiye tabidir, kaldırılırsa maliyet olduğundan düşük çıkar. Ticari kredide KKDF %0'dır, o yüzden boştur. Kullandırım ücreti ve komisyon alanlarını, teklifte yoksa boş bırakın — boş alan sıfır sayılır. Bireysel kredide iki oran da farklıdır (KKDF %15, BSMV %15); o hesap için elle değiştirin.</p>
       </div>
       <div class="arac-ic">
         <div class="girdiler">
@@ -498,7 +498,7 @@ body.kilit{overflow:hidden}
             <div><label>Vade (ay)</label><input id="k_vade" type="number" placeholder="24"></div>
             <div><label>Kullandırım ücreti (%)</label><input id="k_kul" type="number" step="0.01" placeholder="3,7"></div>
             <div><label>KKDF (%)</label><input id="k_kkdf" type="number" step="0.01" placeholder="0"></div>
-            <div><label>BSMV (%)</label><input id="k_bsmv" type="number" step="0.01" placeholder="5"></div>
+            <div><label>BSMV (%)</label><input id="k_bsmv" type="number" step="0.01" value="5" placeholder="5"></div>
             <div><label>İlave komisyon (TL)</label><input id="k_kom" type="number" placeholder="0"></div>
             <div><label>Sigorta (TL)</label><input id="k_sig" type="number" placeholder="0"></div>
           </div>
@@ -547,7 +547,7 @@ body.kilit{overflow:hidden}
           <div><label>Yıllık faiz (%)</label><input id="r_faiz" type="number" step="0.01" placeholder="55"></div>
           <div><label>Kullanım süresi (gün)</label><input id="r_gun" type="number" placeholder="92"></div>
           <div><label>Dönem sonu komisyon (%)</label><input id="r_kom" type="number" step="0.01" placeholder="1"></div>
-          <div><label>BSMV (%)</label><input id="r_bsmv" type="number" step="0.01" placeholder="5"></div>
+          <div><label>BSMV (%)</label><input id="r_bsmv" type="number" step="0.01" value="5" placeholder="5"></div>
           <div><label>KKDF (%)</label><input id="r_kkdf" type="number" step="0.01" placeholder="0"></div>
         </div></div>
         <div class="cikti">
@@ -589,7 +589,7 @@ body.kilit{overflow:hidden}
           <div><label>Yıllık faiz (%)</label><input id="s_faiz" type="number" step="0.01" placeholder="55"></div>
           <div><label>Vade (gün)</label><input id="s_gun" type="number" placeholder="365"></div>
           <div><label>Kullandırım ücreti (%)</label><input id="s_kul" type="number" step="0.001" placeholder="1,1"></div>
-          <div><label>BSMV (%)</label><input id="s_bsmv" type="number" step="0.01" placeholder="5"></div>
+          <div><label>BSMV (%)</label><input id="s_bsmv" type="number" step="0.01" value="5" placeholder="5"></div>
           <div><label>KKDF (%)</label><input id="s_kkdf" type="number" step="0.01" placeholder="0"></div>
         </div></div>
         <div class="cikti">
@@ -632,7 +632,7 @@ body.kilit{overflow:hidden}
           <div><label>Yıllık iskonto faizi (%)</label><input id="i_faiz" type="number" step="0.01" placeholder="45"></div>
           <div><label>Ortalama vade (gün)</label><input id="i_gun" type="number" placeholder="90"></div>
           <div><label>Kullandırım ücreti (%)</label><input id="i_kul" type="number" step="0.001" placeholder="1,1"></div>
-          <div><label>BSMV (%)</label><input id="i_bsmv" type="number" step="0.01" placeholder="5"></div>
+          <div><label>BSMV (%)</label><input id="i_bsmv" type="number" step="0.01" value="5" placeholder="5"></div>
           <div><label>Gün esası</label><input id="i_esas" type="number" placeholder="360"></div>
         </div></div>
         <div class="cikti">
