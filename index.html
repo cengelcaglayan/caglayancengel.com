@@ -376,6 +376,18 @@ footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 2
 .olc-bar-kutu{flex:1;height:8px;border-radius:4px;background:#2A3B55;overflow:hidden}
 .olc-yuzde{font-size:15px;font-weight:600;color:#fff;min-width:42px;text-align:right;font-variant-numeric:tabular-nums}
 @media(max-width:560px){.olc{grid-template-columns:1fr;gap:0}}
+
+.basa{
+  position:fixed;right:22px;bottom:22px;z-index:60;width:46px;height:46px;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--navy);color:#fff;border:0;border-radius:3px;cursor:pointer;
+  opacity:0;visibility:hidden;transform:translateY(8px);transition:.22s;
+  box-shadow:0 2px 10px rgba(15,28,46,.22)
+}
+.basa.gor{opacity:1;visibility:visible;transform:none}
+.basa:hover{background:var(--goldink)}
+.basa svg{width:17px;height:17px}
+@media(max-width:820px){.basa{bottom:76px;right:16px;width:42px;height:42px}}
 </style>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"ProfessionalService",
@@ -835,6 +847,11 @@ footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 2
   </div>
 </footer>
 
+<button class="basa" id="basaDon" aria-label="Sayfa başına dön" title="Başa dön">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+
+
 <div class="stick">
   <a class="c1" href="tel:+905337619443">Ara</a>
   <a class="c2" href="https://wa.me/905337619443">WhatsApp</a>
@@ -864,6 +881,13 @@ footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 2
     kutu.classList.remove('parla'); void kutu.offsetWidth; kutu.classList.add('parla');
   }
   kutular.forEach(k=>k.addEventListener('change',guncelle));
+})();
+
+(function(){
+  const b=document.getElementById('basaDon'); if(!b) return;
+  function g(){ b.classList.toggle('gor', window.scrollY>520); }
+  window.addEventListener('scroll',g,{passive:true}); g();
+  b.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
 })();
 </script>
 </body>
