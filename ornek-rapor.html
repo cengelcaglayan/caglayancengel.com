@@ -775,7 +775,11 @@ body.kilit{overflow:hidden}
     var a=e.target.closest && e.target.closest('a');
     if(!a) return;
     var h=a.getAttribute('href')||'';
-    if(h.indexOf('wa.me/')>-1)            olay('iletisim/whatsapp','WhatsApp tıklandı');
+    if(h.indexOf('wa.me/')>-1){
+      var ar=a.getAttribute('data-arac');
+      if(ar) olay('iletisim/whatsapp-'+ar,'WhatsApp — '+ar+' aracından');
+      else   olay('iletisim/whatsapp','WhatsApp tıklandı');
+    }
     else if(h.indexOf('tel:')===0)        olay('iletisim/telefon','Telefon tıklandı');
     else if(h.indexOf('mailto:')===0)     olay('iletisim/eposta','E-posta tıklandı');
     else if(h.indexOf('.vcf')>-1)         olay('kartvizit/rehbere-eklendi','Rehbere kaydet');
