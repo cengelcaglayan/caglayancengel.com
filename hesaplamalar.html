@@ -112,6 +112,18 @@ footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 2
 .wa-top:hover{background:#075E54}
 .wa-top svg{opacity:.95}
 @media(max-width:520px){.wa-top span{display:none}.wa-top{padding:10px 12px}}
+
+.aracbar{position:sticky;top:0;z-index:30;background:var(--white);border-bottom:1px solid var(--rule);
+  box-shadow:0 1px 6px rgba(15,28,46,.05)}
+.aracbar .in{max-width:var(--maxw);margin:0 auto;padding:0 26px;display:flex;gap:6px;
+  overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+.aracbar a{flex:0 0 auto;padding:14px 14px 12px;font-size:14px;color:var(--soft);text-decoration:none;
+  border-bottom:2px solid transparent;white-space:nowrap;transition:.15s;font-weight:500}
+.aracbar a:hover{color:var(--navy)}
+.aracbar a.act{color:var(--navy);border-bottom-color:var(--gold);font-weight:600}
+.aracbar b{flex:0 0 auto;padding:14px 12px 12px;font-size:11.5px;letter-spacing:1.4px;
+  text-transform:uppercase;color:var(--goldink);white-space:nowrap}
+section[id]{scroll-margin-top:62px}
 </style>
 </head>
 <body>
@@ -141,8 +153,22 @@ footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 2
   </div>
 </header>
 
+<nav class="aracbar" aria-label="Hesaplama araçları">
+  <div class="in">
+    <b>Araçlar</b>
+    <a href="#a1">Bilanço teşhisi</a>
+    <a href="#a2">Borç servisi</a>
+    <a href="#a3">Nakit döngüsü</a>
+    <a href="#a4">Taksitli kredi</a>
+    <a href="#a5">Rotatif</a>
+    <a href="#a6">Spot kredi</a>
+    <a href="#a7">Çek/senet iskonto</a>
+    <a href="#a8">POS</a>
+  </div>
+</nav>
+
 <!-- ============ ARAÇ 1 — HIZLI TEŞHİS ============ -->
-<section>
+<section id="a1">
   <div class="wrap">
     <p class="kicker">Ana araç</p>
     <h2>Bilanço teşhisi — sekiz oran, sekiz banka bandı</h2>
@@ -194,7 +220,7 @@ footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 2
 </section>
 
 <!-- ============ ARAÇ 2 — DSCR ============ -->
-<section class="band">
+<section class="band" id="a2">
   <div class="wrap">
     <p class="kicker">Araç 02</p>
     <h2>Borç servis karşılama gücü</h2>
@@ -231,7 +257,7 @@ footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 2
 </section>
 
 <!-- ============ ARAÇ 3 — NAKİT DÖNGÜSÜ ============ -->
-<section>
+<section id="a3">
   <div class="wrap">
     <p class="kicker">Araç 03</p>
     <h2>Paranın kaç gün dışarıda kaldığı</h2>
@@ -270,7 +296,7 @@ footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 2
 </section>
 
 <!-- ============ ARAÇ 4 — TAKSİTLİ KREDİNİN GERÇEK MALİYETİ ============ -->
-<section class="band">
+<section class="band" id="a4">
   <div class="wrap">
     <p class="kicker">Araç 04</p>
     <h2>Bankanın söylediği oran, ödediğiniz oran değildir</h2>
@@ -318,10 +344,120 @@ footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 2
   </div>
 </section>
 
-<!-- ============ ARAÇ 5 — POS ============ -->
-<section>
+
+<!-- ============ 05 ROTATİF ============ -->
+<section id="a5">
   <div class="wrap">
     <p class="kicker">Araç 05</p>
+    <h2>Rotatif kredinin gerçek yıllık maliyeti</h2>
+    <div class="rule"></div>
+    <p style="max-width:62ch">
+      Rotatif ucuz görünür çünkü faiz gün sayısına göre işler. Ama dönem sonu komisyonu ve
+      vergiler eklenip <strong>yıllığa çevrildiğinde</strong> tablo değişir.
+    </p>
+    <div class="arac">
+      <div class="arac-bas"><span class="arac-no">Araç 05 · Rotatif</span>
+        <h3>Rotatif kredi maliyeti</h3></div>
+      <div class="arac-ic">
+        <div class="girdiler"><div class="gg">
+          <div><label>Anapara (TL)</label><input id="r_ana" type="number" placeholder="1000000"></div>
+          <div><label>Yıllık faiz (%)</label><input id="r_faiz" type="number" step="0.01" placeholder="55"></div>
+          <div><label>Kullanım süresi (gün)</label><input id="r_gun" type="number" placeholder="92"></div>
+          <div><label>Dönem sonu komisyon (%)</label><input id="r_kom" type="number" step="0.01" placeholder="1"></div>
+          <div><label>BSMV (%)</label><input id="r_bsmv" type="number" step="0.01" placeholder="5"></div>
+          <div><label>KKDF (%)</label><input id="r_kkdf" type="number" step="0.01" placeholder="0"></div>
+        </div></div>
+        <div class="cikti">
+          <div class="cb">Yıllık toplam maliyet</div>
+          <div class="buyuk" id="r_yil">—</div>
+          <div class="alt" id="r_alt">Dönem maliyeti: —</div>
+          <div id="r_rozet"></div>
+          <div class="yorum" id="r_yorum">Anapara, faiz ve gün sayısını girin.</div>
+        </div>
+      </div>
+      <div class="skor"><table><thead><tr><th>Kalem</th><th>Tutar</th></tr></thead>
+        <tbody id="r_tablo"><tr><td class="d-bos" colspan="2">Rakam bekleniyor…</td></tr></tbody></table></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 06 SPOT ============ -->
+<section class="band" id="a6">
+  <div class="wrap">
+    <p class="kicker">Araç 06</p>
+    <h2>Spot kredi — tek ödemeli</h2>
+    <div class="rule"></div>
+    <p style="max-width:62ch">
+      Vade sonunda anapara ve faiz birlikte ödenir. Kısa vadede ucuz görünen spot, yıllığa
+      çevrildiğinde taksitli krediden pahalı çıkabilir.
+    </p>
+    <div class="arac">
+      <div class="arac-bas"><span class="arac-no">Araç 06 · Spot</span>
+        <h3>Spot kredi maliyeti</h3></div>
+      <div class="arac-ic">
+        <div class="girdiler"><div class="gg">
+          <div><label>Anapara (TL)</label><input id="s_ana" type="number" placeholder="5000000"></div>
+          <div><label>Yıllık faiz (%)</label><input id="s_faiz" type="number" step="0.01" placeholder="55"></div>
+          <div><label>Vade (gün)</label><input id="s_gun" type="number" placeholder="365"></div>
+          <div><label>Kullandırım ücreti (%)</label><input id="s_kul" type="number" step="0.001" placeholder="1,1"></div>
+          <div><label>BSMV (%)</label><input id="s_bsmv" type="number" step="0.01" placeholder="5"></div>
+          <div><label>KKDF (%)</label><input id="s_kkdf" type="number" step="0.01" placeholder="0"></div>
+        </div></div>
+        <div class="cikti">
+          <div class="cb">Yıllık toplam maliyet</div>
+          <div class="buyuk" id="s_yil">—</div>
+          <div class="alt" id="s_alt">Vade sonunda ödenecek: —</div>
+          <div id="s_rozet"></div>
+          <div class="yorum" id="s_yorum">Anapara, faiz ve vadeyi girin.</div>
+        </div>
+      </div>
+      <div class="skor"><table><thead><tr><th>Kalem</th><th>Tutar</th></tr></thead>
+        <tbody id="s_tablo"><tr><td class="d-bos" colspan="2">Rakam bekleniyor…</td></tr></tbody></table></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 07 İSKONTO ============ -->
+<section id="a7">
+  <div class="wrap">
+    <p class="kicker">Araç 07</p>
+    <h2>Çek/senet kırdırmanın maliyeti</h2>
+    <div class="rule"></div>
+    <p style="max-width:62ch">
+      Vadeli çeki bankaya kırdırdığınızda eline geçen para nominalin altındadır. Aradaki
+      fark, <strong>o gün sayısı için ödenen faizdir</strong> — ve yıllığa çevrildiğinde
+      çoğu zaman kredi faizinden yüksektir.
+    </p>
+    <div class="arac">
+      <div class="arac-bas"><span class="arac-no">Araç 07 · İskonto</span>
+        <h3>Çek/senet iskonto maliyeti</h3></div>
+      <div class="arac-ic">
+        <div class="girdiler"><div class="gg">
+          <div><label>Nominal tutar (TL)</label><input id="i_nom" type="number" placeholder="1000000"></div>
+          <div><label>Yıllık iskonto faizi (%)</label><input id="i_faiz" type="number" step="0.01" placeholder="45"></div>
+          <div><label>Ortalama vade (gün)</label><input id="i_gun" type="number" placeholder="90"></div>
+          <div><label>Kullandırım ücreti (%)</label><input id="i_kul" type="number" step="0.001" placeholder="1,1"></div>
+          <div><label>BSMV (%)</label><input id="i_bsmv" type="number" step="0.01" placeholder="5"></div>
+          <div><label>Gün esası</label><input id="i_esas" type="number" placeholder="360"></div>
+        </div></div>
+        <div class="cikti">
+          <div class="cb">Yıllık efektif maliyet</div>
+          <div class="buyuk" id="i_yil">—</div>
+          <div class="alt" id="i_alt">Elinize geçen: —</div>
+          <div id="i_rozet"></div>
+          <div class="yorum" id="i_yorum">Nominal tutar, faiz ve vadeyi girin.</div>
+        </div>
+      </div>
+      <div class="skor"><table><thead><tr><th>Kalem</th><th>Tutar</th></tr></thead>
+        <tbody id="i_tablo"><tr><td class="d-bos" colspan="2">Rakam bekleniyor…</td></tr></tbody></table></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ POS ============ -->
+<section id="a8">
+  <div class="wrap">
+    <p class="kicker">Araç 08</p>
     <h2>Ertesi gün mü, blokeli mi?</h2>
     <div class="rule"></div>
     <p style="max-width:62ch">
@@ -332,7 +468,7 @@ footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 2
 
     <div class="arac">
       <div class="arac-bas">
-        <span class="arac-no">Araç 05 · POS</span>
+        <span class="arac-no">Araç 08 · POS</span>
         <h3>POS komisyon karşılaştırması</h3>
       </div>
       <div class="arac-ic">
@@ -550,7 +686,98 @@ function pos(){
   document.getElementById('p_yorum').textContent=y;
 }
 
-document.querySelectorAll('input').forEach(i => i.addEventListener('input', () => { teshis(); dscr(); ccc(); taksit(); pos(); }));
+
+/* ---------- 05 ROTATİF ---------- */
+function rotatif(){
+  const A=N(r_ana.value), fy=N(r_faiz.value), g=N(r_gun.value);
+  if(A===null||fy===null||g===null||g<=0) return;
+  const f=fy/100, bsmv=(N(r_bsmv.value)||0)/100, kkdf=(N(r_kkdf.value)||0)/100, komO=(N(r_kom.value)||0)/100;
+  const faiz=A*f*g/360, fBsmv=faiz*bsmv, fKkdf=faiz*kkdf;
+  const kom=A*komO, kBsmv=kom*bsmv;
+  const toplam=faiz+fBsmv+fKkdf+kom+kBsmv;
+  const yillik=toplam*360/g, oran=A?yillik/A:0;
+  document.getElementById('r_yil').innerHTML='%'+(oran*100).toLocaleString('tr-TR',{maximumFractionDigits:1});
+  document.getElementById('r_alt').textContent=g+' günlük dönem maliyeti: '+TL(toplam)+' · nominal faiz %'+fy;
+  document.getElementById('r_tablo').innerHTML=
+    `<tr><td>Faiz (${g} gün)</td><td>${TL(faiz)}</td></tr>`
+   +`<tr><td>Faiz üzerinden BSMV${fKkdf?' + KKDF':''}</td><td>${TL(fBsmv+fKkdf)}</td></tr>`
+   +`<tr><td>Dönem sonu komisyon + BSMV</td><td class="d-risk">${TL(kom+kBsmv)}</td></tr>`
+   +`<tr><td><strong>Dönem toplam ödeme</strong></td><td><strong>${TL(toplam)}</strong></td></tr>`
+   +`<tr><td>Yıllığa çevrilmiş</td><td class="d-risk">${TL(yillik)}</td></tr>`;
+  const fark=oran*100-fy;
+  let rz,y;
+  if(fark<5){rz='<span class="rozet r-iyi">Nominale yakın</span>';y='Vergi ve komisyon yükü sınırlı; ilan edilen orana yakın maliyetle çalışıyorsunuz.';}
+  else if(fark<15){rz='<span class="rozet r-dikkat">Yük var</span>';y='Gerçek maliyet nominal faizin '+fark.toLocaleString('tr-TR',{maximumFractionDigits:1})+' puan üstünde. Dönem sonu komisyonu kısa vadede ağır basar.';}
+  else{rz='<span class="rozet r-risk">Ağır</span>';y='Gerçek yıllık maliyet nominal faizin '+fark.toLocaleString('tr-TR',{maximumFractionDigits:1})+' puan üstünde. Kısa kullanımda komisyon, faizden büyük olabiliyor; taksitli krediyle karşılaştırın.';}
+  document.getElementById('r_rozet').innerHTML=rz; document.getElementById('r_yorum').textContent=y;
+}
+/* ---------- 06 SPOT ---------- */
+function spot(){
+  const A=N(s_ana.value), fy=N(s_faiz.value), g=N(s_gun.value);
+  if(A===null||fy===null||g===null||g<=0) return;
+  const f=fy/100,bsmv=(N(s_bsmv.value)||0)/100,kkdf=(N(s_kkdf.value)||0)/100,kulO=(N(s_kul.value)||0)/100;
+  const faiz=A*f*g/360, fBsmv=faiz*bsmv, fKkdf=faiz*kkdf;
+  const kul=A*kulO, kBsmv=kul*bsmv;
+  const toplam=faiz+fBsmv+fKkdf+kul+kBsmv;
+  const yillik = g>=360 ? toplam : toplam*360/g;
+  const oran=A?yillik/A:0;
+  document.getElementById('s_yil').innerHTML='%'+(oran*100).toLocaleString('tr-TR',{maximumFractionDigits:1});
+  document.getElementById('s_alt').textContent='Vade sonunda ödenecek: '+TL(A+toplam)+' (anapara + '+TL(toplam)+')';
+  document.getElementById('s_tablo').innerHTML=
+    `<tr><td>Faiz (${g} gün)</td><td>${TL(faiz)}</td></tr>`
+   +`<tr><td>Faiz üzerinden BSMV${fKkdf?' + KKDF':''}</td><td>${TL(fBsmv+fKkdf)}</td></tr>`
+   +`<tr><td>Kullandırım ücreti + BSMV</td><td class="d-risk">${TL(kul+kBsmv)}</td></tr>`
+   +`<tr><td><strong>Toplam bankaya ödeme</strong></td><td><strong>${TL(toplam)}</strong></td></tr>`;
+  const fark=oran*100-fy;
+  let rz,y;
+  if(g<90){rz='<span class="rozet r-dikkat">Kısa vade</span>';y='Kısa vadede kullandırım ücreti yıllığa çevrilince büyür. Gerçek maliyet %'+(oran*100).toLocaleString('tr-TR',{maximumFractionDigits:1})+', nominal faiz %'+fy+'.';}
+  else if(fark<4){rz='<span class="rozet r-iyi">Nominale yakın</span>';y='Masraf yükü düşük, ilan edilen orana yakın çalışıyorsunuz.';}
+  else{rz='<span class="rozet r-dikkat">Masraf yükü</span>';y='Gerçek maliyet nominal faizin '+fark.toLocaleString('tr-TR',{maximumFractionDigits:1})+' puan üstünde.';}
+  document.getElementById('s_rozet').innerHTML=rz; document.getElementById('s_yorum').textContent=y;
+}
+/* ---------- 07 İSKONTO ---------- */
+function iskonto(){
+  const nom=N(i_nom.value), fy=N(i_faiz.value), g=N(i_gun.value);
+  if(nom===null||fy===null||g===null||g<=0) return;
+  const esas=N(i_esas.value)||360, f=fy/100, bsmv=(N(i_bsmv.value)||0)/100, kulO=(N(i_kul.value)||0)/100;
+  const isk=nom*f*g/esas, iBsmv=isk*bsmv;
+  const kul=nom*kulO, kBsmv=kul*bsmv;
+  const kesinti=isk+iBsmv+kul+kBsmv;
+  const net=nom-kesinti;
+  if(net<=0) return;
+  const basit=(kesinti/net)*(esas/g);
+  const bilesik=Math.pow(1+kesinti/net, esas/g)-1;
+  document.getElementById('i_yil').innerHTML='%'+(bilesik*100).toLocaleString('tr-TR',{maximumFractionDigits:1});
+  document.getElementById('i_alt').textContent='Elinize geçen: '+TL(net)+' · basit yıllık %'+(basit*100).toLocaleString('tr-TR',{maximumFractionDigits:1});
+  document.getElementById('i_tablo').innerHTML=
+    `<tr><td>İskonto (faiz) — ${g} gün</td><td>${TL(isk)}</td></tr>`
+   +`<tr><td>Faiz üzerinden BSMV</td><td>${TL(iBsmv)}</td></tr>`
+   +`<tr><td>Kullandırım ücreti + BSMV</td><td class="d-risk">${TL(kul+kBsmv)}</td></tr>`
+   +`<tr><td><strong>Toplam kesinti</strong></td><td class="d-risk"><strong>${TL(kesinti)}</strong></td></tr>`
+   +`<tr><td>Nominal</td><td>${TL(nom)}</td></tr>`
+   +`<tr><td><strong>Elinize geçen</strong></td><td class="d-iyi"><strong>${TL(net)}</strong></td></tr>`;
+  let rz,y;
+  const b=bilesik*100;
+  if(b<fy+8){rz='<span class="rozet r-iyi">Makul</span>';y='Efektif maliyet ilan edilen iskonto oranına yakın. Masraf yükü düşük.';}
+  else if(b<fy+20){rz='<span class="rozet r-dikkat">Masraf ağırlıklı</span>';y='Efektif maliyet %'+b.toLocaleString('tr-TR',{maximumFractionDigits:1})+' — ilan edilen %'+fy+' iskonto oranının belirgin üstünde. Kullandırım ücreti kısa vadede ağır basıyor.';}
+  else{rz='<span class="rozet r-risk">Pahalı</span>';y='Efektif maliyet %'+b.toLocaleString('tr-TR',{maximumFractionDigits:1})+'. Bu bantta çek kırdırmak yerine rotatif veya spot krediyle karşılaştırma yapılmalı.';}
+  document.getElementById('i_rozet').innerHTML=rz; document.getElementById('i_yorum').textContent=y;
+}
+/* ---------- nav bar aktif bolum ---------- */
+(function(){
+  const baglar=[...document.querySelectorAll('.aracbar a')];
+  const bolumler=baglar.map(a=>document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  function guncelle(){
+    let akt=0;
+    bolumler.forEach((b,i)=>{ if(b.getBoundingClientRect().top<=120) akt=i; });
+    baglar.forEach((a,i)=>a.classList.toggle('act',i===akt));
+  }
+  window.addEventListener('scroll',guncelle,{passive:true}); guncelle();
+})();
+
+document.querySelectorAll('input').forEach(i => i.addEventListener('input', () => {
+  teshis(); dscr(); ccc(); taksit(); rotatif(); spot(); iskonto(); pos();
+}));
 </script>
 </body>
 </html>
