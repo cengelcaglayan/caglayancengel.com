@@ -929,7 +929,7 @@ body.kilit{overflow:hidden}
     </p>
 
 <div class="olc-sonuc" id="olc_sonuc">
-      <b id="olc_skor">0<small>/12</small></b>
+      <b id="olc_skor">0<small>/13</small></b>
       <div class="olc-bar-sar">
         <div class="olc-bar-kutu"><div class="olc-bar" id="olc_bar"></div></div>
         <span class="olc-yuzde" id="olc_yuzde">%0</span>
@@ -943,6 +943,7 @@ body.kilit{overflow:hidden}
       <label><input type="checkbox"><span>Kasa, banka ve kayıt birbirini doğruluyor; rakam tek kaynağa güvenilmiyor</span></label>
       <label><input type="checkbox"><span>Yıllık bütçe var ve gerçekleşenle ay ay karşılaştırılıyor</span></label>
       <label><input type="checkbox"><span>Alacaklar yaşlandırılıyor — hangi müşteride kaç gündür para beklendiği biliniyor</span></label>
+      <label><input type="checkbox"><span>Şirketin parası ile ortakların parası birbirine karışmıyor; ortaklara giden para kayıtlı ve geri dönüşü takip ediliyor</span></label>
 
       <div class="olc-blok">Para <em>· ne zaman girip çıkıyor</em></div>
       <label><input type="checkbox"><span>Ödeme takvimi var; hangi gün hangi ödemenin ve hangi çekin çıkacağı önceden belli</span></label>
@@ -994,7 +995,9 @@ body.kilit{overflow:hidden}
       <div class="step">
         <b>03</b>
         <h3>Ölçüm</h3>
-        <p>Veri tek tabloda birleştirilir, kaynaklar mutabakata bağlanır, bulgular yazılı sunulur.</p>
+        <p>Veri tek tabloda birleştirilir, kaynaklar mutabakata bağlanır, bulgular yazılı sunulur.
+          Hesaplama ve tutarsızlık taraması <strong>yapay zekâ destekli araçlarla</strong> yapılır;
+          <a href="gizlilik.html#araclar">değerlendirme, yorum ve rapor danışmana aittir</a>.</p>
       </div>
       <div class="step">
         <b>04</b>
@@ -1140,7 +1143,7 @@ body.kilit{overflow:hidden}
     else if(n<=4) m='Rakamlar var ama sistem yok. Bu tabloda önce hangi üç maddenin kurulacağı işin türüne göre değişir — sıralamayı yanlış kurmak en pahalı hatadır.';
     else if(n<=8) m='Temel duruyor, üstü eksik. Bu bantta en sık görülen durum şudur: kayıt düzgün tutulur, ama rakam karar anında elde olmaz.';
     else if(n<N) m='Sistem büyük ölçüde kurulmuş. Bu noktada soru "ne eksik" değil, "kim yokken de yürüyor mu" olur.';
-    else m='On iki maddenin tamamı çalışıyorsa firmanızda finans fonksiyonu kurulmuş demektir.';
+    else m='On üç maddenin tamamı çalışıyorsa firmanızda finans fonksiyonu kurulmuş demektir.';
     yorum.textContent=m;
     const yuzde=Math.round(n/N*100);
     const bar=document.getElementById('olc_bar'), yz=document.getElementById('olc_yuzde');
