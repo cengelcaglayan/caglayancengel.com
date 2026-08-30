@@ -45,7 +45,7 @@ h2{font-size:clamp(25px,2.7vw,32px);margin-bottom:12px}
 .rule{width:40px;height:2px;background:var(--gold);margin:0 0 24px}
 
 /* ust cubuk */
-.top{border-bottom:1px solid var(--rule);background:var(--white)}
+.top{border-bottom:1px solid var(--rule);background:var(--white);position:sticky;top:0;z-index:50}
 .top .wrap{display:flex;align-items:center;gap:14px;padding-top:16px;padding-bottom:16px}
 .top img{width:48px;height:48px;object-fit:contain}
 .top .nm{font-family:'Playfair Display',serif;font-weight:700;color:var(--navy);font-size:17px;letter-spacing:1.4px}
@@ -197,6 +197,55 @@ footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 2
 }
 body.kilit{overflow:hidden}
 @media(max-width:1023px){.hmb{display:flex}}
+</style>
+<style>
+/* ================= HAREKET KATMANI v1 · 30.08.2026 ================= */
+/* JS calismazsa hicbiri uygulanmaz — icerik her hâlükârda gorunur. */
+
+/* okuma cubugu */
+#okuma{position:fixed;top:0;left:0;height:2px;width:0;z-index:200;pointer-events:none;
+  background:linear-gradient(90deg,#C8A951,#E6C97A);transition:width .12s linear}
+
+/* --- acilis: hero ogeleri kademeli belirir --- */
+.js-anim .hero .kicker,.js-anim .hero .h1,.js-anim .hero .sub,
+.js-anim .hero .pull,.js-anim .hero .ayrim,.js-anim .hero .cta,.js-anim .hero .proof,
+.js-anim .hero .rapor-ust,.js-anim .hero .r-kunye{
+  opacity:0;transform:translateY(15px);animation:acilis .75s cubic-bezier(.22,.61,.36,1) forwards}
+.js-anim .hero .kicker{animation-delay:.05s}
+.js-anim .hero .h1{animation-delay:.13s}
+.js-anim .hero .sub{animation-delay:.23s}
+.js-anim .hero .pull{animation-delay:.33s}
+.js-anim .hero .ayrim{animation-delay:.43s}
+.js-anim .hero .cta{animation-delay:.51s}
+.js-anim .hero .proof{animation-delay:.59s}
+@keyframes acilis{to{opacity:1;transform:none}}
+
+/* --- kaydirinca beliren bloklar --- */
+.js-anim .rv{opacity:0;transform:translateY(22px);will-change:opacity,transform;
+  transition:opacity .7s cubic-bezier(.22,.61,.36,1),transform .7s cubic-bezier(.22,.61,.36,1)}
+.js-anim .rv.gor{opacity:1;transform:none;will-change:auto}
+
+/* --- ust cubuk kaydirinca golgelenir --- */
+.js-anim .top{transition:box-shadow .3s ease,background-color .3s ease}
+.js-anim .top.kaydi{box-shadow:0 1px 18px rgba(15,28,46,.10)}
+
+/* --- kart yukselmesi --- */
+.js-anim .step,.js-anim .kart,.js-anim .cikti-kart,.js-anim .arac-kart{
+  transition:transform .28s cubic-bezier(.22,.61,.36,1),box-shadow .28s ease}
+@media (hover:hover){
+  .js-anim .step:hover,.js-anim .kart:hover,.js-anim .cikti-kart:hover,.js-anim .arac-kart:hover{
+    transform:translateY(-3px)}
+}
+
+/* --- hareket istemeyen kullanici: her sey durur --- */
+@media (prefers-reduced-motion:reduce){
+  .js-anim .hero .kicker,.js-anim .hero .h1,.js-anim .hero .sub,.js-anim .hero .pull,
+  .js-anim .hero .ayrim,.js-anim .hero .cta,.js-anim .hero .proof,
+  .js-anim .hero .rapor-ust,.js-anim .hero .r-kunye{animation:none;opacity:1;transform:none}
+  .js-anim .rv,.js-anim .rv.gor{transition:none;opacity:1;transform:none}
+  .js-anim .step,.js-anim .kart,.js-anim .cikti-kart,.js-anim .arac-kart{transition:none}
+  #okuma{display:none}
+}
 </style>
 </head>
 <body>
@@ -467,6 +516,7 @@ body.kilit{overflow:hidden}
     <a href="tel:+905337619443">0533 761 94 43</a> &nbsp;·&nbsp;
     <a href="mailto:info&#64;caglayancengel&#46;com"><span>info</span><span style="display:none">nospam</span><span>&#64;caglayancengel&#46;com</span></a> &nbsp;·&nbsp;
     <a href="https://www.linkedin.com/in/caglayancengel/" rel="noopener me" target="_blank">LinkedIn</a> &nbsp;·&nbsp;
+    <a href="https://www.instagram.com/finans_caglayancengel/" rel="noopener me" target="_blank">Instagram</a> &nbsp;·&nbsp;
     <a href="gizlilik.html">Gizlilik ve KVKK</a>
   </div>
   <div class="wrap f-lg">
@@ -499,6 +549,110 @@ body.kilit{overflow:hidden}
   p.querySelectorAll('a').forEach(x=>x.addEventListener('click',()=>{
     p.classList.remove('acik'); d.classList.remove('acik'); document.body.classList.remove('kilit');
   }));
+})();
+</script>
+<script>
+/* ============ HAREKET KATMANI v1 · 30.08.2026 · dis bagimlilik yok ============ */
+(function(){
+  var kok=document.documentElement;
+  var azHareket=window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches;
+  if(!('IntersectionObserver' in window)) return;   /* eski tarayici: icerik acik kalir */
+
+  /* Sekme arka planda acildiysa animasyon donar ve icerik gizli kalir.
+     Onun icin kurulum, sayfa gercekten gorunur olana kadar ertelenir. */
+  if(document.visibilityState!=='visible'){
+    document.addEventListener('visibilitychange',function f(){
+      if(document.visibilityState==='visible'){ document.removeEventListener('visibilitychange',f); kur(); }
+    });
+    return;
+  }
+  kur();
+
+  function kur(){
+  kok.classList.add('js-anim');
+  if(azHareket) return;                             /* CSS zaten hepsini durduruyor */
+
+  /* --- 1 · okuma cubugu --- */
+  var bar=document.createElement('div'); bar.id='okuma'; document.body.appendChild(bar);
+  var nav=document.querySelector('.top');
+  function ustOlc(){ if(nav) kok.style.setProperty('--ust', Math.round(nav.getBoundingClientRect().height)+'px'); }
+  ustOlc(); addEventListener('resize',ustOlc,{passive:true});
+  var bekle=false;
+  function cizgi(){
+    var h=document.documentElement.scrollHeight-window.innerHeight;
+    var y=window.pageYOffset||document.documentElement.scrollTop;
+    bar.style.width=(h>0?Math.min(100,y/h*100):0)+'%';
+    if(nav){ nav.classList.toggle('kaydi', y>10); }
+    bekle=false;
+  }
+  addEventListener('scroll',function(){ if(!bekle){ bekle=true; requestAnimationFrame(cizgi); } },{passive:true});
+  cizgi();
+
+  /* --- 2 · kaydirinca beliren bloklar --- */
+  var kaplar=document.querySelectorAll('section > .wrap, section > .narrow, main > .wrap, main > .narrow');
+  var hedefler=[];
+  kaplar.forEach(function(kap){
+    var s=0;
+    Array.prototype.forEach.call(kap.children,function(el){
+      var p=getComputedStyle(el).position;
+      if(p==='sticky'||p==='fixed'||p==='-webkit-sticky') return;   /* sticky bozulmasin */
+      el.classList.add('rv');
+      el.style.transitionDelay=(Math.min(s,5)*55)+'ms';
+      s++;
+      hedefler.push(el);
+    });
+  });
+  var io=new IntersectionObserver(function(giris){
+    giris.forEach(function(g){
+      if(g.isIntersecting){ g.target.classList.add('gor'); io.unobserve(g.target); }
+    });
+  },{rootMargin:'0px 0px -6% 0px',threshold:0.04});
+  hedefler.forEach(function(el){ io.observe(el); });
+
+  /* ekranin ustunde kalanlar hemen acilsin (kaydirmadan gorunenler) */
+  requestAnimationFrame(function(){
+    hedefler.forEach(function(el){
+      var r=el.getBoundingClientRect();
+      if(r.top<window.innerHeight*0.94) el.classList.add('gor');
+    });
+  });
+
+  /* --- 3 · kanit seridi sayaci --- */
+  var sayilar=document.querySelectorAll('.proof-in b');
+  if(sayilar.length){
+    var basladi=false;
+    var sio=new IntersectionObserver(function(g){
+      if(!g[0].isIntersecting||basladi) return;
+      basladi=true; sio.disconnect();
+      sayilar.forEach(function(b){
+        var ham=b.textContent, m=ham.match(/\d+/); if(!m) return;
+        var son=parseInt(m[0],10), kalan=ham.replace(m[0],''), t0=null, sure=900;
+        function adim(t){
+          if(t0===null) t0=t;
+          var o=Math.min(1,(t-t0)/sure);
+          var e=1-Math.pow(1-o,3);
+          b.textContent=Math.round(son*e)+kalan;
+          if(o<1) requestAnimationFrame(adim); else b.textContent=ham;
+        }
+        b.textContent='0'+kalan;
+        requestAnimationFrame(adim);
+      });
+    },{threshold:0.5});
+    sio.observe(sayilar[0].closest('.proof-in')||sayilar[0]);
+  }
+
+  /* --- son guvenlik agi: 2,5 sn sonra hâlâ gizli kalan ekrandaki bloklar acilir --- */
+  setTimeout(function(){
+    document.querySelectorAll('.rv:not(.gor)').forEach(function(el){
+      var r=el.getBoundingClientRect();
+      if(r.top<window.innerHeight&&r.bottom>0) el.classList.add('gor');
+    });
+    /* hero: animasyon herhangi bir sebeple ilerlemediyse zorla acilir */
+    document.querySelectorAll('.hero .kicker,.hero .h1,.hero .sub,.hero .pull,.hero .ayrim,.hero .cta,.hero .proof').forEach(function(el){
+      if(getComputedStyle(el).opacity==='0'){ el.style.animation='none'; el.style.opacity='1'; el.style.transform='none'; }
+    });
+  },2500);
+  }
 })();
 </script>
 </body>
