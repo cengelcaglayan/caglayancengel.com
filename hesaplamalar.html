@@ -996,12 +996,12 @@ document.querySelectorAll('input').forEach(i => i.addEventListener('input', () =
   cizgi();
 
   /* --- 2 · kaydirinca beliren bloklar --- */
-  var kaplar=document.querySelectorAll('section > .wrap, section > .narrow, main > .wrap, main > .narrow');
+  var kaplar=document.querySelectorAll('section > .wrap, section > .narrow, main > .wrap, main > .narrow, footer > .wrap, footer > .narrow');
   var hedefler=[];
 
   function isaretle(el,sinif,sira){
     el.classList.add(sinif);
-    el.style.transitionDelay=(Math.min(sira,8)*70)+'ms';
+    el.style.transitionDelay=(Math.min(sira,10)*85)+'ms';
     hedefler.push(el);
   }
 
@@ -1023,12 +1023,13 @@ document.querySelectorAll('input').forEach(i => i.addEventListener('input', () =
     Array.prototype.forEach.call(el.children,function(c){
       if(c.nodeType===1 && getComputedStyle(c).display!=='none') cocuk.push(c);
     });
-    var uzun = el.getBoundingClientRect().height > window.innerHeight*0.42;
+    var uzun = el.getBoundingClientRect().height > window.innerHeight*0.30;
     var tekrarli = cocuk.length>=2 && cocuk.length<=14 &&
                    cocuk.every(function(c){return c.tagName===cocuk[0].tagName});
+    var ustDuzey = derinlik===0 && cocuk.length>=2;   /* bolum ici ilk seviye daima acilir */
 
     /* tablo veya grafik iceren blok bolunmez — ic yerlesimi transformdan bozulur */
-    if(derinlik<4 && cocuk.length>=2 && (uzun||tekrarli)){
+    if(derinlik<4 && cocuk.length>=2 && (ustDuzey||uzun||tekrarli)){
       el.classList.add('rv-kap');
       cocuk.forEach(function(c,j){ bol(c,derinlik+1,j); });
       return;
