@@ -202,8 +202,15 @@ h2{font-size:clamp(26px,2.9vw,34px);margin-bottom:14px}
 @media(max-width:560px){.k-sat{flex-direction:column;gap:2px}.k-sat b{min-width:0}}
 .portre{
   width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;display:block;
-  border:1px solid var(--rule);background:var(--white)
+  border:1px solid var(--rule);background:var(--white);
+  /* Portre koruma: iOS/Android uzun basma menusu, secim ve suruklemeyi kapatir.
+     Ekran goruntusunu engellemez — oyle bir web yetenegi yok. */
+  -webkit-touch-callout:none;-webkit-user-select:none;user-select:none;
+  -webkit-user-drag:none;pointer-events:none
 }
+.portre-kap{position:relative;display:block;line-height:0}
+/* Seffaf katman: sag tik ve uzun basma dogrudan resme degil buna gelir */
+.portre-kap::after{content:"";position:absolute;inset:0;background:transparent}
 .pr{
   display:grid;grid-template-columns:repeat(3,1fr);gap:30px;
   margin-top:44px;padding-top:34px;border-top:1px solid var(--rule)
@@ -793,10 +800,13 @@ body.kilit{overflow:hidden}
             <div class="k-not"><a href="https://www.linkedin.com/in/caglayancengel/" rel="noopener me" target="_blank">LinkedIn profili →</a></div>
           </div>
       </div>
-      <picture>
-        <source srcset="portre.webp" type="image/webp">
-        <img class="portre" src="portre.jpg" alt="Çağlayan Çengel — Finansal Yönetim Danışmanı" width="440" height="550" decoding="async">
-      </picture>
+      <span class="portre-kap" oncontextmenu="return false">
+        <picture>
+          <source srcset="portre.webp" type="image/webp">
+          <img class="portre" src="portre.jpg" alt="Çağlayan Çengel — Finansal Yönetim Danışmanı"
+               width="440" height="550" decoding="async" draggable="false">
+        </picture>
+      </span>
     </div>
 
     <div class="pr">
