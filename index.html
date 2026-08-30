@@ -363,6 +363,18 @@ footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 2
 .olc-sonuc b{transition:transform .2s}
 .olc-sonuc.parla b{transform:scale(1.12)}
 .olc-sonuc span{font-size:16px;line-height:1.55;flex:1;min-width:240px}
+.olc-bar-sar{flex:0 0 auto;width:190px;display:flex;align-items:center;gap:11px}
+.olc-bar-sar::before{
+  content:"";position:absolute;left:0;top:0;width:0;height:0
+}
+.olc-bar-yol{}
+.olc-bar-sar{position:relative}
+.olc-bar{
+  height:8px;border-radius:4px;background:var(--gold);width:0%;transition:width .35s ease,background .35s ease
+}
+.olc-bar-sar{background:none}
+.olc-bar-kutu{flex:1;height:8px;border-radius:4px;background:#2A3B55;overflow:hidden}
+.olc-yuzde{font-size:15px;font-weight:600;color:#fff;min-width:42px;text-align:right;font-variant-numeric:tabular-nums}
 @media(max-width:560px){.olc{grid-template-columns:1fr;gap:0}}
 </style>
 <script type="application/ld+json">
@@ -605,6 +617,10 @@ footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 2
 
 <div class="olc-sonuc" id="olc_sonuc">
       <b id="olc_skor">0<small>/12</small></b>
+      <div class="olc-bar-sar">
+        <div class="olc-bar-kutu"><div class="olc-bar" id="olc_bar"></div></div>
+        <span class="olc-yuzde" id="olc_yuzde">%0</span>
+      </div>
       <span id="olc_yorum">Kutuları işaretleyin.</span>
     </div>
 
@@ -840,6 +856,10 @@ footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 2
     else if(n<12) m='Güçlü bir düzen. İşaretlenmeyen maddeler tamamlandığında finans fonksiyonu bütünlenir.';
     else m='On iki maddenin tamamı çalışıyorsa firmanızda finans fonksiyonu kurulmuş demektir.';
     yorum.textContent=m;
+    const yuzde=Math.round(n/12*100);
+    const bar=document.getElementById('olc_bar'), yz=document.getElementById('olc_yuzde');
+    bar.style.width=yuzde+'%'; yz.textContent='%'+yuzde;
+    bar.style.background = n<=3 ? '#C0522F' : (n<=6 ? '#C8A951' : (n<=9 ? '#7FA88A' : '#4E9E68'));
     const kutu=document.getElementById('olc_sonuc');
     kutu.classList.remove('parla'); void kutu.offsetWidth; kutu.classList.add('parla');
   }
