@@ -77,7 +77,7 @@ if "/hesaplamalar.html" in govde:
     arac = len(re.findall(r'<section[^>]*id="a([1-9]|10)"', g))
     cta  = g.count("arac-cta")
     print("\n  hesaplama araci        %d (beklenen 10)" % arac)
-    print("  gorusme cagrisi        %d (beklenen 10)" % cta)
+    print("  gorusme cagrisi        %d (en az 10 olmali)" % cta)
     if arac != 10: hata.append("Arac sayisi %d, 10 olmali" % arac)
     if cta  <  10: hata.append("Gorusme cagrisi %d, 10 olmali" % cta)
 

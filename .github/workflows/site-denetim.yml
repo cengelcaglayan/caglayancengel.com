@@ -25,5 +25,11 @@ jobs:
           node-version: '20'
       - name: Hesap kontrolunun kendisi calisiyor mu (yakma testi)
         run: node hesap_testi.js --yerel hesaplamalar.html --yakma
+      # Push tetikli kosuda Pages deploy'u henuz bitmemis olabiliyor. 01.09.2026'da
+      # denetim push'tan 13 sn sonra kosup ESKI sayfayi olctu ve yanlis alarm verdi.
+      # Once canliya yeni surum yayilsin, sonra olculsun.
+      - name: Yayinin tamamlanmasini bekle
+        if: github.event_name == 'push'
+        run: python3 yayin_bekle.py
       - name: Siteyi denetle
         run: python3 denetim.py
