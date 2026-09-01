@@ -282,7 +282,7 @@ details p{font-size:16.5px;margin-top:14px;color:var(--body)}
 .mail:hover{color:#fff}
 
 /* ---- footer ---- */
-footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 24px;text-align:left}
+footer{background:var(--navy);border-top:2px solid var(--gold);padding:30px 0 24px;text-align:left;color:rgba(255,255,255,.78)}
 .fbar{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
 .fbar img{width:40px;height:40px;object-fit:contain}
 .fmid{display:flex;flex-direction:column;line-height:1.35}
@@ -563,6 +563,16 @@ body.kilit{overflow:hidden}
 .k-bel{margin-top:14px;padding-top:13px;border-top:1px solid var(--rule);font-size:15px;
   color:var(--body);line-height:1.6}
 .k-bel b{color:var(--goldink);font-weight:600}
+/* Marka bloğu lacivert zeminde (02.09.2026 · Çağlayan): altın yazı beyaz
+   üzerinde zayıf kalıyordu. Açık altın #E6C97A koyu zemin için, --goldink
+   ise açık zemin içindir — ikisi yer değiştirmez. */
+footer .f-nm,footer .f-sl2{color:#E6C97A}
+footer .f-rl{color:rgba(255,255,255,.58)}
+footer .f-ml a{color:#EDF1F6;border-bottom-color:var(--gold)}
+footer .f-ml{color:rgba(255,255,255,.55)}
+footer .f-lg{color:rgba(255,255,255,.52)}
+footer .f-yz a,footer a[href*="gizlilik"]{color:#E6C97A;border-bottom-color:var(--gold)}
+footer img{filter:none}
 </style>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":["ProfessionalService","FinancialService"],

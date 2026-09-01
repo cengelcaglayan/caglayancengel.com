@@ -56,7 +56,7 @@ ul{margin:0 0 16px 20px} li{margin-bottom:7px}
 .ozet strong{color:var(--yesil)}
 .kutu{background:var(--band);border-left:2px solid var(--gold);padding:16px 20px;margin:18px 0;font-size:16px;max-width:70ch}
 
-footer{background:var(--white);border-top:1px solid var(--rule);padding:30px 0 24px}
+footer{background:var(--navy);border-top:2px solid var(--gold);padding:30px 0 24px;color:rgba(255,255,255,.78)}
 .fbar{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
 .fbar img{width:40px;height:40px;object-fit:contain}
 .fmid{display:flex;flex-direction:column;line-height:1.35}
@@ -150,6 +150,16 @@ body.kilit{overflow:hidden}
 @media(max-width:340px){
   .top .nm{display:none}
 }
+/* Marka bloğu lacivert zeminde (02.09.2026 · Çağlayan): altın yazı beyaz
+   üzerinde zayıf kalıyordu. Açık altın #E6C97A koyu zemin için, --goldink
+   ise açık zemin içindir — ikisi yer değiştirmez. */
+footer .f-nm,footer .f-sl2{color:#E6C97A}
+footer .f-rl{color:rgba(255,255,255,.58)}
+footer .f-ml a{color:#EDF1F6;border-bottom-color:var(--gold)}
+footer .f-ml{color:rgba(255,255,255,.55)}
+footer .f-lg{color:rgba(255,255,255,.52)}
+footer .f-yz a,footer a[href*="gizlilik"]{color:#E6C97A;border-bottom-color:var(--gold)}
+footer img{filter:none}
 </style>
 <style>
 /* ================= HAREKET KATMANI v1 · 30.08.2026 ================= */
