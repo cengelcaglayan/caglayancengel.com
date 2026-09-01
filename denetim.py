@@ -3,7 +3,7 @@
 """Gunluk site denetimi — GitHub Actions uzerinde calisir, yerel makine gerekmez.
 Yalnizca OKUR; hicbir sey degistirmez. Bir kontrol kirmizi cikarsa is basarisiz
 biter ve GitHub hesaba e-posta gonderir."""
-import sys, ssl, socket, urllib.request, datetime, re
+import sys, ssl, socket, urllib.request, datetime, re, os, shutil, subprocess
 try:
     import certifi
     SSL_CTX = ssl.create_default_context(cafile=certifi.where())
@@ -106,6 +106,33 @@ try:
     if not r.url.startswith("https"): hata.append("http https'e yonlendirmiyor")
 except Exception as e:
     uyari.append("http kontrolu yapilamadi: " + str(e)[:50])
+
+# 8 · hesap kontrolu — araclar CALISIYOR MU
+# Yukaridaki kontroller sayfanin VARLIGINI olcer. 01.09.2026'da Arac 04 hic hesap
+# yapmazken bu denetim her kosuda "TEMIZ" dedi: varlik olculuyordu, islev degil.
+# Asagidaki adim sayfadaki hesap kodunu Node'da kosturup referans sonuclarla
+# karsilastirir. Girdiler Turkce yazimla (virgullu) verilir — arizanin ciktigi bicim.
+KOK = os.path.dirname(os.path.abspath(__file__))
+TEST = os.path.join(KOK, "hesap_testi.js")
+print()
+if not os.path.exists(TEST):
+    hata.append("hesap_testi.js bulunamadi — hesap kontrolu YAPILMADI")
+    print("  hesap kontrolu         🔴 hesap_testi.js yok")
+elif not shutil.which("node"):
+    hata.append("node kurulu degil — hesap kontrolu YAPILMADI (denetim eksik kosuyor)")
+    print("  hesap kontrolu         🔴 node yok")
+else:
+    try:
+        p = subprocess.run(["node", TEST], capture_output=True, text=True, timeout=180)
+        for satir in (p.stdout or "").rstrip().splitlines():
+            print("  " + satir)
+        if p.returncode != 0:
+            hata.append("Hesap kontrolu KIRMIZI — araclar referans degerleri tutturamiyor")
+            for satir in (p.stderr or "").rstrip().splitlines()[:5]:
+                print("  " + satir)
+    except Exception as e:
+        hata.append("Hesap kontrolu kosturulamadi: " + str(e)[:70])
+        print("  hesap kontrolu         🔴 kosturulamadi")
 
 print("\n" + "=" * 66)
 for u in uyari: print("  UYARI  ·", u)

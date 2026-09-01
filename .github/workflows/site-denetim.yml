@@ -18,5 +18,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      # Hesap kontrolu Node ile kosuyor: sayfadaki hesap kodu cekilip referans
+      # sonuclarla karsilastiriliyor. Node yoksa denetim eksik koser ve kirmizi yanar.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Hesap kontrolunun kendisi calisiyor mu (yakma testi)
+        run: node hesap_testi.js --yerel hesaplamalar.html --yakma
       - name: Siteyi denetle
         run: python3 denetim.py
