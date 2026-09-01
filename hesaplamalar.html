@@ -376,16 +376,16 @@ body.kilit{overflow:hidden}
       <div class="arac-ic">
         <div class="girdiler">
           <div class="gg">
-            <div><label>Dönen varlıklar</label><input id="t_dv" type="number" placeholder="47445874"></div>
-            <div><label>Stoklar</label><input id="t_stok" type="number" placeholder="18530891"></div>
-            <div><label>Kısa vadeli yükümlülük</label><input id="t_kvyk" type="number" placeholder="45361643"></div>
-            <div><label>Toplam aktif</label><input id="t_aktif" type="number" placeholder="69477761"></div>
-            <div><label>Özkaynak</label><input id="t_ozk" type="number" placeholder="10842928"></div>
-            <div><label>Toplam banka borcu</label><input id="t_borc" type="number" placeholder="32097701"></div>
-            <div><label>Net satışlar (yıllık)</label><input id="t_ns" type="number" placeholder="88662838"></div>
-            <div><label>FAVÖK / EBITDA</label><input id="t_favok" type="number" placeholder="2781162"></div>
-            <div><label>Yıllık borç servisi<br><span style="font-size:12px">(anapara + faiz)</span></label><input id="t_bs" type="number" placeholder="3500000"></div>
-            <div><label>Net kâr</label><input id="t_nk" type="number" placeholder="47219"></div>
+            <div><label>Dönen varlıklar</label><input id="t_dv" type="text" inputmode="decimal" placeholder="47445874"></div>
+            <div><label>Stoklar</label><input id="t_stok" type="text" inputmode="decimal" placeholder="18530891"></div>
+            <div><label>Kısa vadeli yükümlülük</label><input id="t_kvyk" type="text" inputmode="decimal" placeholder="45361643"></div>
+            <div><label>Toplam aktif</label><input id="t_aktif" type="text" inputmode="decimal" placeholder="69477761"></div>
+            <div><label>Özkaynak</label><input id="t_ozk" type="text" inputmode="decimal" placeholder="10842928"></div>
+            <div><label>Toplam banka borcu</label><input id="t_borc" type="text" inputmode="decimal" placeholder="32097701"></div>
+            <div><label>Net satışlar (yıllık)</label><input id="t_ns" type="text" inputmode="decimal" placeholder="88662838"></div>
+            <div><label>FAVÖK / EBITDA</label><input id="t_favok" type="text" inputmode="decimal" placeholder="2781162"></div>
+            <div><label>Yıllık borç servisi<br><span style="font-size:12px">(anapara + faiz)</span></label><input id="t_bs" type="text" inputmode="decimal" placeholder="3500000"></div>
+            <div><label>Net kâr</label><input id="t_nk" type="text" inputmode="decimal" placeholder="47219"></div>
           </div>
         </div>
         <div class="cikti">
@@ -433,10 +433,10 @@ body.kilit{overflow:hidden}
       <div class="arac-ic">
         <div class="girdiler">
           <div class="gg">
-            <div><label>Yıllık FAVÖK</label><input id="d_favok" type="number" placeholder="14743137"></div>
-            <div><label>Yıllık borç servisi</label><input id="d_bs" type="number" placeholder="10500000"></div>
-            <div><label>Toplam finansal borç</label><input id="d_borc" type="number" placeholder="57466294"></div>
-            <div><label>Nakit ve benzerleri</label><input id="d_nakit" type="number" placeholder="660023"></div>
+            <div><label>Yıllık FAVÖK</label><input id="d_favok" type="text" inputmode="decimal" placeholder="14743137"></div>
+            <div><label>Yıllık borç servisi</label><input id="d_bs" type="text" inputmode="decimal" placeholder="10500000"></div>
+            <div><label>Toplam finansal borç</label><input id="d_borc" type="text" inputmode="decimal" placeholder="57466294"></div>
+            <div><label>Nakit ve benzerleri</label><input id="d_nakit" type="text" inputmode="decimal" placeholder="660023"></div>
           </div>
         </div>
         <div class="cikti">
@@ -477,10 +477,10 @@ body.kilit{overflow:hidden}
       <div class="arac-ic">
         <div class="girdiler">
           <div class="gg">
-            <div><label>Alacak tahsil süresi (gün)</label><input id="n_dso" type="number" placeholder="120"></div>
-            <div><label>Stok bekleme süresi (gün)</label><input id="n_dio" type="number" placeholder="98"></div>
-            <div><label>Tedarikçiye ödeme (gün)</label><input id="n_dpo" type="number" placeholder="30"></div>
-            <div><label>Yıllık net satış</label><input id="n_ns" type="number" placeholder="88662838"></div>
+            <div><label>Alacak tahsil süresi (gün)</label><input id="n_dso" type="text" inputmode="decimal" placeholder="120"></div>
+            <div><label>Stok bekleme süresi (gün)</label><input id="n_dio" type="text" inputmode="decimal" placeholder="98"></div>
+            <div><label>Tedarikçiye ödeme (gün)</label><input id="n_dpo" type="text" inputmode="decimal" placeholder="30"></div>
+            <div><label>Yıllık net satış</label><input id="n_ns" type="text" inputmode="decimal" placeholder="88662838"></div>
           </div>
         </div>
         <div class="cikti">
@@ -523,14 +523,14 @@ body.kilit{overflow:hidden}
       <div class="arac-ic">
         <div class="girdiler">
           <div class="gg">
-            <div><label>Anapara (TL)</label><input id="k_ana" type="number" placeholder="2175234"></div>
-            <div><label>Aylık faiz oranı (%)</label><input id="k_faiz" type="number" step="0.01" placeholder="3,61"></div>
-            <div><label>Vade (ay)</label><input id="k_vade" type="number" placeholder="24"></div>
-            <div><label>Kullandırım ücreti (%)</label><input id="k_kul" type="number" step="0.01" placeholder="3,7"></div>
-            <div><label>BSMV (%)</label><input id="k_bsmv" type="number" step="0.01" value="5" placeholder="5"></div>
-            <div><label>İlave komisyon (TL)</label><input id="k_kom" type="number" placeholder="0"></div>
-            <div><label>Sigorta (TL)</label><input id="k_sig" type="number" placeholder="0"></div>
-          <div><label>Kapanışta alınan masraf (TL)</label><input id="k_kapama" type="number" placeholder="0"></div>
+            <div><label>Anapara (TL)</label><input id="k_ana" type="text" inputmode="decimal" placeholder="2175234"></div>
+            <div><label>Aylık faiz oranı (%)</label><input id="k_faiz" type="text" inputmode="decimal" placeholder="3,61"></div>
+            <div><label>Vade (ay)</label><input id="k_vade" type="text" inputmode="decimal" placeholder="24"></div>
+            <div><label>Kullandırım ücreti (%)</label><input id="k_kul" type="text" inputmode="decimal" placeholder="3,7"></div>
+            <div><label>BSMV (%)</label><input id="k_bsmv" type="text" inputmode="decimal" value="5" placeholder="5"></div>
+            <div><label>İlave komisyon (TL)</label><input id="k_kom" type="text" inputmode="decimal" placeholder="0"></div>
+            <div><label>Sigorta (TL)</label><input id="k_sig" type="text" inputmode="decimal" placeholder="0"></div>
+          <div><label>Kapanışta alınan masraf (TL)</label><input id="k_kapama" type="text" inputmode="decimal" placeholder="0"></div>
           </div>
         </div>
         <div class="cikti">
@@ -573,15 +573,15 @@ body.kilit{overflow:hidden}
         <h3>Rotatif kredi maliyeti</h3></div>
       <div class="arac-ic">
         <div class="girdiler"><div class="gg">
-          <div><label>Anapara (TL)</label><input id="r_ana" type="number" placeholder="1000000"></div>
-          <div><label>Yıllık faiz (%)</label><input id="r_faiz" type="number" step="0.01" placeholder="55"></div>
-          <div><label>Kullanım süresi (gün)</label><input id="r_gun" type="number" placeholder="92"></div>
-          <div><label>Dönem sonu komisyon (%)</label><input id="r_kom" type="number" step="0.01" placeholder="1"></div>
-            <div><label>Komisyon kaç ayda bir</label><input id="r_komay" type="number" step="1" value="3" placeholder="3"></div>
-          <div><label>Kullandırım masrafı (%)</label><input id="r_kul" type="number" step="0.001" placeholder="0"></div>
-          <div><label>Limit tahsis komisyonu (TL/yıl)</label><input id="r_tahsis" type="number" placeholder="0"></div>
-          <div><label>Kapanışta alınan masraf (TL)</label><input id="r_kapama" type="number" placeholder="0"></div>
-          <div><label>BSMV (%)</label><input id="r_bsmv" type="number" step="0.01" value="5" placeholder="5"></div>
+          <div><label>Anapara (TL)</label><input id="r_ana" type="text" inputmode="decimal" placeholder="1000000"></div>
+          <div><label>Yıllık faiz (%)</label><input id="r_faiz" type="text" inputmode="decimal" placeholder="55"></div>
+          <div><label>Kullanım süresi (gün)</label><input id="r_gun" type="text" inputmode="decimal" placeholder="92"></div>
+          <div><label>Dönem sonu komisyon (%)</label><input id="r_kom" type="text" inputmode="decimal" placeholder="1"></div>
+            <div><label>Komisyon kaç ayda bir</label><input id="r_komay" type="text" inputmode="decimal" value="3" placeholder="3"></div>
+          <div><label>Kullandırım masrafı (%)</label><input id="r_kul" type="text" inputmode="decimal" placeholder="0"></div>
+          <div><label>Limit tahsis komisyonu (TL/yıl)</label><input id="r_tahsis" type="text" inputmode="decimal" placeholder="0"></div>
+          <div><label>Kapanışta alınan masraf (TL)</label><input id="r_kapama" type="text" inputmode="decimal" placeholder="0"></div>
+          <div><label>BSMV (%)</label><input id="r_bsmv" type="text" inputmode="decimal" value="5" placeholder="5"></div>
         </div></div>
         <div class="cikti">
           <div class="cb">Yıllık toplam maliyet</div>
@@ -618,12 +618,12 @@ body.kilit{overflow:hidden}
         <h3>Spot kredi maliyeti</h3></div>
       <div class="arac-ic">
         <div class="girdiler"><div class="gg">
-          <div><label>Anapara (TL)</label><input id="s_ana" type="number" placeholder="5000000"></div>
-          <div><label>Yıllık faiz (%)</label><input id="s_faiz" type="number" step="0.01" placeholder="55"></div>
-          <div><label>Vade (gün)</label><input id="s_gun" type="number" placeholder="365"></div>
-          <div><label>Kullandırım ücreti (%)</label><input id="s_kul" type="number" step="0.001" placeholder="1,1"></div>
-          <div><label>Kapanışta alınan masraf (TL)</label><input id="s_kapama" type="number" placeholder="0"></div>
-          <div><label>BSMV (%)</label><input id="s_bsmv" type="number" step="0.01" value="5" placeholder="5"></div>
+          <div><label>Anapara (TL)</label><input id="s_ana" type="text" inputmode="decimal" placeholder="5000000"></div>
+          <div><label>Yıllık faiz (%)</label><input id="s_faiz" type="text" inputmode="decimal" placeholder="55"></div>
+          <div><label>Vade (gün)</label><input id="s_gun" type="text" inputmode="decimal" placeholder="365"></div>
+          <div><label>Kullandırım ücreti (%)</label><input id="s_kul" type="text" inputmode="decimal" placeholder="1,1"></div>
+          <div><label>Kapanışta alınan masraf (TL)</label><input id="s_kapama" type="text" inputmode="decimal" placeholder="0"></div>
+          <div><label>BSMV (%)</label><input id="s_bsmv" type="text" inputmode="decimal" value="5" placeholder="5"></div>
         </div></div>
         <div class="cikti">
           <div class="cb">Yıllık toplam maliyet</div>
@@ -661,12 +661,12 @@ body.kilit{overflow:hidden}
         <h3>Çek/senet iskonto maliyeti</h3></div>
       <div class="arac-ic">
         <div class="girdiler"><div class="gg">
-          <div><label>Nominal tutar (TL)</label><input id="i_nom" type="number" placeholder="1000000"></div>
-          <div><label>Yıllık iskonto faizi (%)</label><input id="i_faiz" type="number" step="0.01" placeholder="45"></div>
-          <div><label>Ortalama vade (gün)</label><input id="i_gun" type="number" placeholder="90"></div>
-          <div><label>Kullandırım ücreti (%)</label><input id="i_kul" type="number" step="0.001" placeholder="1,1"></div>
-          <div><label>BSMV (%)</label><input id="i_bsmv" type="number" step="0.01" value="5" placeholder="5"></div>
-          <div><label>Gün esası</label><input id="i_esas" type="number" placeholder="360"></div>
+          <div><label>Nominal tutar (TL)</label><input id="i_nom" type="text" inputmode="decimal" placeholder="1000000"></div>
+          <div><label>Yıllık iskonto faizi (%)</label><input id="i_faiz" type="text" inputmode="decimal" placeholder="45"></div>
+          <div><label>Ortalama vade (gün)</label><input id="i_gun" type="text" inputmode="decimal" placeholder="90"></div>
+          <div><label>Kullandırım ücreti (%)</label><input id="i_kul" type="text" inputmode="decimal" placeholder="1,1"></div>
+          <div><label>BSMV (%)</label><input id="i_bsmv" type="text" inputmode="decimal" value="5" placeholder="5"></div>
+          <div><label>Gün esası</label><input id="i_esas" type="text" inputmode="decimal" placeholder="360"></div>
         </div></div>
         <div class="cikti">
           <div class="cb">Yıllık efektif maliyet</div>
@@ -708,12 +708,12 @@ body.kilit{overflow:hidden}
       <div class="arac-ic">
         <div class="girdiler">
           <div class="gg">
-            <div><label>Aylık POS cirosu (TL)</label><input id="p_ciro" type="number" placeholder="950000"></div>
-            <div><label>Ertesi gün komisyon (%)</label><input id="p_k1" type="number" step="0.01" placeholder="2,82"></div>
-            <div><label>Blokeli komisyon (%)</label><input id="p_k2" type="number" step="0.01" placeholder="1,51"></div>
-            <div><label>Blokaj süresi (gün)</label><input id="p_gun" type="number" placeholder="30"></div>
-          <div><label>Komisyon üzerinden BSMV (%)</label><input id="p_bsmv" type="number" step="0.01" value="5" placeholder="5"></div>
-            <div><label>Aylık kredi faiziniz (%)<br><span style="font-size:12px">paranın size maliyeti</span></label><input id="p_maliyet" type="number" step="0.01" placeholder="3,5"></div>
+            <div><label>Aylık POS cirosu (TL)</label><input id="p_ciro" type="text" inputmode="decimal" placeholder="950000"></div>
+            <div><label>Ertesi gün komisyon (%)</label><input id="p_k1" type="text" inputmode="decimal" placeholder="2,82"></div>
+            <div><label>Blokeli komisyon (%)</label><input id="p_k2" type="text" inputmode="decimal" placeholder="1,51"></div>
+            <div><label>Blokaj süresi (gün)</label><input id="p_gun" type="text" inputmode="decimal" placeholder="30"></div>
+          <div><label>Komisyon üzerinden BSMV (%)</label><input id="p_bsmv" type="text" inputmode="decimal" value="5" placeholder="5"></div>
+            <div><label>Aylık kredi faiziniz (%)<br><span style="font-size:12px">paranın size maliyeti</span></label><input id="p_maliyet" type="text" inputmode="decimal" placeholder="3,5"></div>
           </div>
         </div>
         <div class="cikti">
@@ -771,18 +771,18 @@ body.kilit{overflow:hidden}
         <h3>Faktoring maliyeti ve avans etkisi</h3></div>
       <div class="arac-ic">
         <div class="girdiler"><div class="gg">
-          <div><label>Fatura tutarı (TL)</label><input id="fk_tut" type="number" placeholder="1000000"></div>
-          <div><label>Vade (gün)</label><input id="fk_gun" type="number" placeholder="90"></div>
-          <div><label>Yıllık faktoring faizi (%)</label><input id="fk_faiz" type="number" step="0.01" placeholder="45"></div>
-          <div><label>Avans oranı (%)</label><input id="fk_avans" type="number" step="0.1" value="80" placeholder="80"></div>
-          <div><label>Komisyon (%)</label><input id="fk_kom" type="number" step="0.01" placeholder="1"></div>
+          <div><label>Fatura tutarı (TL)</label><input id="fk_tut" type="text" inputmode="decimal" placeholder="1000000"></div>
+          <div><label>Vade (gün)</label><input id="fk_gun" type="text" inputmode="decimal" placeholder="90"></div>
+          <div><label>Yıllık faktoring faizi (%)</label><input id="fk_faiz" type="text" inputmode="decimal" placeholder="45"></div>
+          <div><label>Avans oranı (%)</label><input id="fk_avans" type="text" inputmode="decimal" value="80" placeholder="80"></div>
+          <div><label>Komisyon (%)</label><input id="fk_kom" type="text" inputmode="decimal" placeholder="1"></div>
           <div><label>Komisyon neyin üzerinden</label><select id="fk_matrah">
             <option value="fatura">Fatura tutarı</option>
             <option value="avans">Avans tutarı</option>
           </select></div>
-          <div><label>Kullandırım/dosya masrafı (%)</label><input id="fk_kul" type="number" step="0.001" placeholder="0"></div>
-          <div><label>BSMV (%)</label><input id="fk_bsmv" type="number" step="0.01" value="5" placeholder="5"></div>
-          <div><label>Karşılaştırma: yıllık kredi faizi (%)</label><input id="fk_kredi" type="number" step="0.01" placeholder="isteğe bağlı"></div>
+          <div><label>Kullandırım/dosya masrafı (%)</label><input id="fk_kul" type="text" inputmode="decimal" placeholder="0"></div>
+          <div><label>BSMV (%)</label><input id="fk_bsmv" type="text" inputmode="decimal" value="5" placeholder="5"></div>
+          <div><label>Karşılaştırma: yıllık kredi faizi (%)</label><input id="fk_kredi" type="text" inputmode="decimal" placeholder="isteğe bağlı"></div>
         </div></div>
         <div class="cikti">
           <div class="cb">Yıllık efektif maliyet</div>
@@ -820,11 +820,11 @@ body.kilit{overflow:hidden}
         <h3>Net tutardan gerçek maliyet</h3></div>
       <div class="arac-ic">
         <div class="girdiler"><div class="gg">
-          <div><label>Nominal tutar — çek/fatura (TL)</label><input id="gt_nom" type="number" placeholder="100000"></div>
-          <div><label>Vade (gün)</label><input id="gt_gun" type="number" placeholder="92"></div>
-          <div><label>Hesabınıza geçecek tutar (TL)</label><input id="gt_net" type="number" placeholder="87000"></div>
-          <div><label>Bankadaki kredi faiziniz (%)</label><input id="gt_kredi" type="number" step="0.01" placeholder="isteğe bağlı"></div>
-          <div><label>Kredide BSMV (%)</label><input id="gt_bsmv" type="number" step="0.01" value="5" placeholder="5"></div>
+          <div><label>Nominal tutar — çek/fatura (TL)</label><input id="gt_nom" type="text" inputmode="decimal" placeholder="100000"></div>
+          <div><label>Vade (gün)</label><input id="gt_gun" type="text" inputmode="decimal" placeholder="92"></div>
+          <div><label>Hesabınıza geçecek tutar (TL)</label><input id="gt_net" type="text" inputmode="decimal" placeholder="87000"></div>
+          <div><label>Bankadaki kredi faiziniz (%)</label><input id="gt_kredi" type="text" inputmode="decimal" placeholder="isteğe bağlı"></div>
+          <div><label>Kredide BSMV (%)</label><input id="gt_bsmv" type="text" inputmode="decimal" value="5" placeholder="5"></div>
         </div></div>
         <div class="cikti">
           <div class="cb">Bu işlem şu faizli krediye denk</div>
@@ -885,7 +885,30 @@ body.kilit{overflow:hidden}
 
 
 <script>
-const N = v => { const x = parseFloat(String(v).replace(/[^\d.-]/g,'')); return isFinite(x) ? x : null; };
+/* Turkce yazim cozumleyicisi.
+   Sorun (olculdu 01.09.2026): alanlar type="number" idi ve Turkce ondalik
+   ayraci VIRGUL yazilinca tarayici value'yu BOS donduruyordu — ekranda "3,61"
+   goruluyor, JS bos okuyor, hesap hic calismiyordu. Sessiz kirilma: kullanici
+   butun alanlari doldurdugu halde sonuc "—" kaliyordu.
+   Cozum: alanlar text+inputmode=decimal, ayristirma burada yapiliyor.
+   17 vakalik test: nokta/virgul ondalik, binlik ayraci, karisik, bos, metin. */
+const N = v => {
+  let t = String(v == null ? '' : v).trim();
+  if (!t) return null;
+  const virgul = (t.match(/,/g) || []).length;
+  if (virgul > 1) {                       /* "2,175,234" — hepsi binlik */
+    t = t.replace(/,/g, '');
+  } else if (virgul === 1) {              /* virgul ondalik, noktalar binlik */
+    t = t.replace(/\./g, '').replace(',', '.');
+  } else {
+    const p = t.split('.');
+    /* "2.175.234" ya da "175.234" — son grup tam 3 hane ise binlik ayraci */
+    if (p.length > 2 || (p.length === 2 && p[1].length === 3 && /^\d+$/.test(p[1]))) t = p.join('');
+  }
+  t = t.replace(/[^\d.-]/g, '');
+  const x = parseFloat(t);
+  return isFinite(x) ? x : null;
+};
 const TL = n => n===null||!isFinite(n) ? '—' : n.toLocaleString('tr-TR',{maximumFractionDigits:0}) + ' ₺';
 const OR = n => n===null||!isFinite(n) ? '—' : n.toLocaleString('tr-TR',{minimumFractionDigits:2,maximumFractionDigits:2});
 const YZ = n => n===null||!isFinite(n) ? '—' : '%' + (n*100).toLocaleString('tr-TR',{maximumFractionDigits:1});
@@ -1596,7 +1619,8 @@ document.querySelectorAll('input,select').forEach(i => i.addEventListener(i.tagN
   /* --- hesaplama araclari: hangi arac kullanildi (rakamlar gonderilmez) --- */
   document.addEventListener('input', function(e){
     var g=e.target;
-    if(!g || g.type!=='number') return;
+    /* Alanlar type=number'dan text+inputmode'a gecti (Turkce virgul sorunu). */
+    if(!g || g.tagName!=='INPUT' || !g.closest('.girdiler')) return;
     var bolum=g.closest('section[id]');
     var id = bolum ? bolum.id : 'bilinmeyen';
     var ad = bolum ? (bolum.querySelector('h3,h2')||{}).textContent : '';
