@@ -265,6 +265,100 @@ const metin = e => (e.textContent && e.textContent.trim()) || (e.innerHTML || ''
     }
   }
 
+  /* ---------- ÖRNEK METİNLER (FAZ 1) ----------
+     Araçların altındaki çözülmüş örnekler statik metindir — dil modelleri
+     JavaScript çalıştırmadığı için sitenin okunabilir tek yüzü orası.
+     Statik metnin tehlikesi bayatlamaktır: hesap değişir, metin eski rakamı
+     anlatmaya devam eder ve site kendini yanlış tanıtır. Bu kontrol her aracın
+     örnek bloğunda, hesabın bugün ürettiği rakamın geçtiğini ölçer.          */
+  {
+    const ORNEK_IZ = [
+      { arac:'a1',  id:'t_tablo',   ara:'1,11',  not:'cari oran' },
+      { arac:'a2',  id:'d_dscr',    ara:'1,28',  not:'DSCR' },
+      { arac:'a3',  id:'n_ccc',     ara:'132',   not:'gün sayısı' },
+      { arac:'a4',  id:'k_efektif', ara:'%4,18', not:'efektif oran' },
+      { arac:'a5',  id:'r_yil',     ara:'%62',   not:'yıllık maliyet' },
+      { arac:'a6',  id:'s_yil',     ara:'%58,9', not:'yıllık maliyet' },
+      { arac:'a7',  id:'i_yil',     ara:'%74,3', not:'yıllık maliyet' },
+      { arac:'a8',  id:'p_fark',    ara:'20.183',not:'aylık fark' },
+      { arac:'a9',  id:'fk_yil',    ara:'%75,6', not:'yıllık maliyet' },
+      { arac:'a10', id:'gt_denk',   ara:'%55,7', not:'denk kredi faizi' },
+    ];
+    const bolum = id => {
+      const i = govde.search(new RegExp('<section[^>]*id="' + id + '"'));
+      if (i < 0) return '';
+      const j = govde.slice(i + 10).search(/<section |<footer/);
+      return j < 0 ? govde.slice(i) : govde.slice(i, i + 10 + j);
+    };
+    const eksikBlok = [], sapan = [];
+    for (const o of ORNEK_IZ) {
+      const b = bolum(o.arac);
+      if (!/class="ornek"/.test(b)) { eksikBlok.push(o.arac); continue; }
+      const ornekMetin = (b.match(/<div class="ornek">[\s\S]*?<\/div>/) || [''])[0];
+      if (!ornekMetin.includes(o.ara)) sapan.push(`${o.arac} · ${o.not}: örnekte "${o.ara}" yok`);
+    }
+    if (eksikBlok.length) {
+      sorun.push('örnek metin eksik: ' + eksikBlok.join(', ') + ' — bu araçlar dil modelleri için görünmez');
+      console.log('  🔴 ÖRNEK METİN eksik: %s', eksikBlok.join(', '));
+    }
+    if (sapan.length) {
+      sorun.push(...sapan.map(x => 'örnek metin bayat — ' + x));
+      for (const x of sapan) console.log('  🔴 ÖRNEK METİN %s', x);
+    }
+    if (!eksikBlok.length && !sapan.length)
+      console.log('  tamam  örnek metinler          10 araçta var, rakamlar hesapla tutuyor');
+  }
+
+  /* ---------- ANA SAYFA MİNİ HESABI (FAZ 2) ----------
+     Hero'daki hızlı hesap, Araç 04'ün küçük halidir — iki ayrı yerde duran iki
+     ayrı kod. Ayrışırlarsa site kendi kendisiyle çelişir: ana sayfada bir rakam,
+     araç sayfasında başka bir rakam. Bu kontrol ikisini aynı girdiyle koşturup
+     karşılaştırır ve statik metnin de aynı rakamı taşıdığını ölçer.          */
+  {
+    const ANA = (YEREL ? YEREL.replace(/[^/]*$/, 'index.html') : 'https://caglayancengel.com/');
+    let ana = '';
+    try { ana = YEREL ? fs.readFileSync(ANA, 'utf8')
+                      : await fetch(ANA, { redirect:'follow' }).then(r => r.text()); }
+    catch (e) { sorun.push('mini hesap: ana sayfa alinamadi — ' + e.message); }
+
+    if (ana) {
+      const mb = [...ana.matchAll(/<script(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script>/gi)]
+                   .map(m => m[1]).find(b => /m_sonuc/.test(b));
+      if (!mb) {
+        sorun.push('mini hesap: ana sayfada hero hesabı yok');
+        console.log('  🔴 MİNİ HESAP  ana sayfada bulunamadı');
+      } else {
+        const kyt = new Map();
+        const el2 = id => { if (!kyt.has(id)) kyt.set(id, { id, value:'', textContent:'', innerHTML:'', addEventListener(){} }); return kyt.get(id); };
+        const ctx3 = vm.createContext({ document:{ getElementById: el2, addEventListener(){} },
+          console:{ log(){}, warn(){}, error(){} }, Math, Number, String, Array, Object, Intl,
+          RegExp, isFinite, parseFloat, parseInt, JSON, Date });
+        for (const m of ana.matchAll(/<input id="(m_[a-z]+)"[^>]*\bvalue="([^"]*)"/g)) el2(m[1]).value = m[2];
+        try { vm.runInContext(mb, ctx3, { timeout: 8000 }); } catch (e) { sorun.push('mini hesap kosmadi: ' + e.message); }
+        const s2 = el2('m_sonuc'), a2 = el2('m_alt');
+        const cikan = ((s2.innerHTML || s2.textContent) + '').replace(/<[^>]*>/g, '');
+        const altMetin = a2.textContent || '';
+        const beklenen = { oran:'%4,18', taksit:'139.623', pesin:'84.508' };
+        const hata2 = [];
+        if (!cikan.includes(beklenen.oran))      hata2.push(`oran "${beklenen.oran}" değil, "${cikan}"`);
+        if (!altMetin.includes(beklenen.taksit)) hata2.push(`taksit ${beklenen.taksit} yok`);
+        if (!altMetin.includes(beklenen.pesin))  hata2.push(`peşin masraf ${beklenen.pesin} yok`);
+        /* statik metin de aynı rakamı taşımalı — modelin okuduğu yer orası */
+        const notMetin = (ana.match(/<p class="mini-not">[\s\S]*?<\/p>/) || [''])[0];
+        if (!notMetin) hata2.push('statik açıklama (mini-not) yok — model için görünmez');
+        else for (const [ad, deg] of Object.entries(beklenen))
+          if (!notMetin.includes(deg)) hata2.push(`statik metinde ${ad} (${deg}) yok`);
+
+        if (hata2.length) {
+          sorun.push(...hata2.map(x => 'mini hesap — ' + x));
+          for (const x of hata2) console.log('  🔴 MİNİ HESAP  %s', x);
+        } else {
+          console.log("  tamam  ana sayfa mini hesabı   Araç 04'le aynı: %4,18/ay · 139.623 ₺ · 84.508 ₺");
+        }
+      }
+    }
+  }
+
   for (const y of YASAK_ALAN) {
     if (new RegExp('id="' + y.id + '"').test(govde) || new RegExp("id='" + y.id + "'").test(govde)) {
       sorun.push(`${y.ad}: sokulmus girdi (${y.id}) sayfaya geri gelmis`);

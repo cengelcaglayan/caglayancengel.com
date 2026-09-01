@@ -126,6 +126,39 @@ try:
 except Exception:
     print("  /manifest.webmanifest  yok (beklenen)")
 
+# 7c · AI okunabilirligi (FAZ 1-3 · 02.09.2026)
+# Dil modelleri JavaScript kosturmaz: araclarin urettigi rakamlar onlar icin
+# gorunmez. Sitenin okunabilir yuzu su uc seydir — sessizce kaybolurlarsa site
+# yine "calisiyor" gorunur ama hicbir modelin okuyamadigi bir sayfa olur.
+print()
+if "/hesaplamalar.html" in govde:
+    g = govde["/hesaplamalar.html"]
+    duz = re.sub(r"<script[\s\S]*?</script>|<style[\s\S]*?</style>", "", g)
+    duz = re.sub(r"<[^>]+>", " ", duz)
+    ornek = g.count('class="ornek"')
+    soru  = g.count('class="soru"')
+    eylem = g.count('class="eylem"')
+    print("  ornek metin            %d (10 olmali)" % ornek)
+    print("  soru basligi           %d (10 olmali)" % soru)
+    print("  eylem satiri           %d (10 olmali)" % eylem)
+    if ornek < 10: hata.append("Ornek metin %d — araclar dil modelleri icin gorunmez" % ornek)
+    if soru  < 10: uyari.append("Soru basligi %d, 10 olmali" % soru)
+    if eylem < 10: uyari.append("Eylem satiri %d, 10 olmali" % eylem)
+    # kilit rakamlar JS'siz metinde okunuyor mu
+    kilit = ["%4,18", "84.508", "%62", "%74,3", "20.183", "%75,6", "%55,7"]
+    yok = [k for k in kilit if k not in duz]
+    print("  duz metinde rakamlar   %d/%d" % (len(kilit) - len(yok), len(kilit)))
+    if yok: hata.append("Bu rakamlar JS'siz metinde okunmuyor: " + ", ".join(yok))
+    if '"FAQPage"' in g: print("  FAQPage semasi         tamam")
+    else: hata.append("FAQPage semasi kayboldu — soru-cevap bicimi modeller icin en okunur bicimdir")
+try:
+    k, g2, _ = al("/llms.txt")
+    print("  /llms.txt              %s · %d bayt" % (k, len(g2)))
+    if k != 200 or "Hesaplama araçları" not in g2:
+        hata.append("llms.txt eksik ya da bozuk")
+except Exception:
+    hata.append("llms.txt alinamadi")
+
 # 8 · hesap kontrolu — araclar CALISIYOR MU
 # Yukaridaki kontroller sayfanin VARLIGINI olcer. 01.09.2026'da Arac 04 hic hesap
 # yapmazken bu denetim her kosuda "TEMIZ" dedi: varlik olculuyordu, islev degil.

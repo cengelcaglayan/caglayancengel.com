@@ -474,8 +474,8 @@ body.kilit{overflow:hidden}
 .qr-yazi a{font-size:13.5px;color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(200,169,81,.45);align-self:flex-start;padding-bottom:1px}
 @media(max-width:560px){.qr-kutu{flex-direction:column;align-items:flex-start;gap:13px}}
 /* ---- hero: sag sutunda karekod ---- */
-.hero .wrap.hero-iki{display:grid;grid-template-columns:minmax(0,1fr) 196px;gap:54px;align-items:start}
-.hero-qr{position:sticky;top:calc(var(--ust,80px) + 26px);display:flex;flex-direction:column;gap:9px;
+.hero .wrap.hero-iki{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:46px;align-items:start}
+.hero-qr{display:flex;flex-direction:column;gap:9px;
   padding:18px;border:1px solid var(--rule);border-radius:3px;background:var(--white)}
 .hqr-kod{width:100%;aspect-ratio:1;padding:8px;background:#fff}
 .hqr-kod svg{width:100%;height:100%;display:block}
@@ -496,7 +496,7 @@ body.kilit{overflow:hidden}
    okutabilir. Kutu yatay duzene gecer. */
 @media(max-width:900px){
   .hero .wrap.hero-iki{grid-template-columns:1fr;gap:0}
-  .hero-qr{position:static;margin-top:26px;display:grid;
+  .hero-qr{margin-top:0;display:grid;
     grid-template-columns:96px minmax(0,1fr);grid-template-rows:auto auto auto;
     gap:5px 16px;align-items:start;padding:15px}
   .hqr-kod{grid-row:1/4;width:96px;height:96px;align-self:center}
@@ -573,6 +573,37 @@ footer .f-ml{color:rgba(255,255,255,.55)}
 footer .f-lg{color:rgba(255,255,255,.52)}
 footer .f-yz a,footer a[href*="gizlilik"]{color:#E6C97A;border-bottom-color:var(--gold)}
 footer img{filter:none}
+/* ---- hero: sag sutunda calisan hesap (FAZ 2 · 02.09.2026) ----
+   Ilk ekranin en degerli kosesinde kanit durur, kartvizit degil. Ziyaretci
+   rakami ilk saniyede gorur; kartvizit hemen altta ve iletisim bolumunde. */
+.hero-yan{display:flex;flex-direction:column;gap:16px;
+  position:sticky;top:calc(var(--ust,80px) + 26px)}
+.mini{border:1px solid var(--rule);border-top:3px solid var(--gold);border-radius:3px;
+  background:var(--white);padding:16px 16px 14px;box-shadow:0 1px 3px rgba(15,28,46,.05)}
+.mini-et{display:block;font-size:10.5px;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--goldink);font-weight:600;margin-bottom:5px}
+.mini>b{display:block;font-size:13.5px;line-height:1.35;color:var(--navy);margin-bottom:11px}
+.mini-g{display:grid;grid-template-columns:1fr 1fr;gap:8px 10px}
+.mini-g label{display:flex;flex-direction:column;font-size:11px;color:var(--soft);gap:3px}
+.mini-g input{font:inherit;font-size:13.5px;color:var(--navy);padding:6px 8px;
+  border:1px solid var(--rule);border-radius:2px;background:var(--paper);width:100%;
+  box-sizing:border-box;min-width:0}
+.mini-g input:focus{outline:none;border-color:var(--gold);background:var(--white)}
+.mini-son{margin-top:12px;padding-top:11px;border-top:1px solid var(--rule)}
+.mini-lb{display:block;font-size:10.5px;letter-spacing:1.4px;text-transform:uppercase;color:var(--soft)}
+.mini-son strong{display:block;font-family:'Playfair Display',serif;font-size:30px;
+  color:var(--navy);line-height:1.1;margin:2px 0 4px}
+.mini-son strong small{font-size:15px;font-weight:400}
+.mini-alt{display:block;font-size:11.5px;color:var(--soft);line-height:1.45}
+.mini-not{margin:10px 0 0;font-size:11.5px;line-height:1.5;color:var(--soft)}
+.mini-not b{color:var(--body)}
+.mini-lnk{display:inline-block;margin-top:9px;font-size:12.5px;color:var(--goldink);
+  text-decoration:none;border-bottom:1px solid rgba(160,132,54,.4);padding-bottom:1px}
+@media(max-width:900px){
+  .hero-yan{position:static;margin-top:26px}
+  .mini{padding:15px}
+  .mini-son strong{font-size:27px}
+}
 </style>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":["ProfessionalService","FinancialService"],
@@ -699,13 +730,33 @@ footer img{filter:none}
 
    </div>
 
-   <aside class="hero-qr">
+   <div class="hero-yan">
+    <div class="mini">
+      <span class="mini-et">Hızlı hesap · taksitli ticari kredi</span>
+      <b>Teklifteki oran, ödediğiniz oran değildir</b>
+      <div class="mini-g">
+        <label>Anapara (TL)<input id="m_ana" type="text" inputmode="decimal" value="2.175.234"></label>
+        <label>Aylık faiz (%)<input id="m_faiz" type="text" inputmode="decimal" value="3,61"></label>
+        <label>Vade (ay)<input id="m_vade" type="text" inputmode="decimal" value="24"></label>
+        <label>Kullandırım (%)<input id="m_kul" type="text" inputmode="decimal" value="3,7"></label>
+      </div>
+      <div class="mini-son">
+        <span class="mini-lb">Gerçek maliyet</span>
+        <strong id="m_sonuc">%4,18<small>/ay</small></strong>
+        <span class="mini-alt" id="m_alt">Aylık taksit 139.623 ₺ · peşin kesilen 84.508 ₺</span>
+      </div>
+      <p class="mini-not">2.175.234 ₺ anapara, aylık %3,61 faiz, 24 ay vade, %3,7 kullandırım ücreti
+      ve %5 BSMV ile gerçek maliyet <b>aylık %4,18</b> çıkar; peşin kesilen masraf 84.508 ₺,
+      aylık taksit 139.623 ₺.</p>
+      <a class="mini-lnk" href="hesaplamalar.html">On hesaplama aracının tamamı &rarr;</a>
+    </div>
+    <aside class="hero-qr">
      <div class="hqr-kod"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29 29" shape-rendering="crispEdges" role="img" aria-label="Karekod: dijital kartvizit"><rect width="29" height="29" fill="#fff"/><path d="M0 0h7v1h-7zM10 0h1v1h-1zM12 0h3v1h-3zM16 0h5v1h-5zM22 0h7v1h-7zM0 1h1v1h-1zM6 1h1v1h-1zM8 1h3v1h-3zM12 1h1v1h-1zM14 1h2v1h-2zM18 1h2v1h-2zM22 1h1v1h-1zM28 1h1v1h-1zM0 2h1v1h-1zM2 2h3v1h-3zM6 2h1v1h-1zM10 2h1v1h-1zM13 2h2v1h-2zM18 2h1v1h-1zM22 2h1v1h-1zM24 2h3v1h-3zM28 2h1v1h-1zM0 3h1v1h-1zM2 3h3v1h-3zM6 3h1v1h-1zM9 3h1v1h-1zM11 3h4v1h-4zM18 3h1v1h-1zM22 3h1v1h-1zM24 3h3v1h-3zM28 3h1v1h-1zM0 4h1v1h-1zM2 4h3v1h-3zM6 4h1v1h-1zM8 4h3v1h-3zM12 4h1v1h-1zM14 4h2v1h-2zM18 4h2v1h-2zM22 4h1v1h-1zM24 4h3v1h-3zM28 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM13 5h1v1h-1zM15 5h2v1h-2zM19 5h2v1h-2zM22 5h1v1h-1zM28 5h1v1h-1zM0 6h7v1h-7zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM22 6h7v1h-7zM9 7h1v1h-1zM11 7h10v1h-10zM0 8h1v1h-1zM2 8h1v1h-1zM4 8h1v1h-1zM6 8h1v1h-1zM11 8h1v1h-1zM14 8h4v1h-4zM20 8h1v1h-1zM24 8h1v1h-1zM27 8h1v1h-1zM0 9h5v1h-5zM7 9h1v1h-1zM9 9h3v1h-3zM14 9h1v1h-1zM16 9h1v1h-1zM20 9h3v1h-3zM25 9h1v1h-1zM28 9h1v1h-1zM0 10h3v1h-3zM6 10h2v1h-2zM12 10h2v1h-2zM16 10h2v1h-2zM22 10h1v1h-1zM24 10h1v1h-1zM26 10h3v1h-3zM0 11h1v1h-1zM2 11h1v1h-1zM5 11h1v1h-1zM8 11h1v1h-1zM12 11h1v1h-1zM15 11h4v1h-4zM20 11h1v1h-1zM24 11h1v1h-1zM27 11h1v1h-1zM0 12h1v1h-1zM2 12h2v1h-2zM6 12h2v1h-2zM9 12h2v1h-2zM17 12h1v1h-1zM20 12h3v1h-3zM25 12h1v1h-1zM27 12h2v1h-2zM0 13h1v1h-1zM2 13h2v1h-2zM5 13h1v1h-1zM8 13h1v1h-1zM13 13h1v1h-1zM16 13h1v1h-1zM20 13h1v1h-1zM22 13h1v1h-1zM25 13h1v1h-1zM28 13h1v1h-1zM1 14h2v1h-2zM5 14h2v1h-2zM8 14h5v1h-5zM14 14h1v1h-1zM16 14h1v1h-1zM20 14h1v1h-1zM23 14h1v1h-1zM25 14h1v1h-1zM27 14h2v1h-2zM3 15h1v1h-1zM5 15h1v1h-1zM7 15h1v1h-1zM10 15h6v1h-6zM17 15h2v1h-2zM20 15h1v1h-1zM25 15h1v1h-1zM27 15h1v1h-1zM1 16h3v1h-3zM5 16h6v1h-6zM12 16h1v1h-1zM14 16h9v1h-9zM25 16h1v1h-1zM27 16h2v1h-2zM1 17h1v1h-1zM4 17h1v1h-1zM11 17h1v1h-1zM14 17h1v1h-1zM16 17h1v1h-1zM20 17h3v1h-3zM25 17h2v1h-2zM28 17h1v1h-1zM0 18h1v1h-1zM2 18h3v1h-3zM6 18h3v1h-3zM11 18h1v1h-1zM13 18h1v1h-1zM16 18h2v1h-2zM22 18h3v1h-3zM27 18h2v1h-2zM1 19h3v1h-3zM7 19h3v1h-3zM16 19h5v1h-5zM23 19h1v1h-1zM25 19h1v1h-1zM27 19h1v1h-1zM0 20h1v1h-1zM5 20h2v1h-2zM8 20h1v1h-1zM12 20h1v1h-1zM15 20h3v1h-3zM20 20h5v1h-5zM8 21h1v1h-1zM12 21h2v1h-2zM19 21h2v1h-2zM24 21h1v1h-1zM26 21h3v1h-3zM0 22h7v1h-7zM9 22h1v1h-1zM11 22h2v1h-2zM14 22h1v1h-1zM16 22h5v1h-5zM22 22h1v1h-1zM24 22h2v1h-2zM27 22h2v1h-2zM0 23h1v1h-1zM6 23h1v1h-1zM10 23h1v1h-1zM13 23h6v1h-6zM20 23h1v1h-1zM24 23h2v1h-2zM27 23h1v1h-1zM0 24h1v1h-1zM2 24h3v1h-3zM6 24h1v1h-1zM8 24h1v1h-1zM10 24h2v1h-2zM14 24h1v1h-1zM17 24h1v1h-1zM20 24h5v1h-5zM27 24h2v1h-2zM0 25h1v1h-1zM2 25h3v1h-3zM6 25h1v1h-1zM9 25h1v1h-1zM11 25h2v1h-2zM14 25h1v1h-1zM16 25h2v1h-2zM20 25h1v1h-1zM23 25h2v1h-2zM26 25h3v1h-3zM0 26h1v1h-1zM2 26h3v1h-3zM6 26h1v1h-1zM8 26h1v1h-1zM10 26h2v1h-2zM16 26h1v1h-1zM18 26h1v1h-1zM20 26h1v1h-1zM23 26h3v1h-3zM28 26h1v1h-1zM0 27h1v1h-1zM6 27h1v1h-1zM11 27h4v1h-4zM17 27h4v1h-4zM22 27h1v1h-1zM24 27h1v1h-1zM27 27h1v1h-1zM0 28h7v1h-7zM8 28h1v1h-1zM10 28h2v1h-2zM13 28h2v1h-2zM17 28h1v1h-1zM19 28h2v1h-2zM24 28h1v1h-1zM27 28h2v1h-2z" fill="#0F1C2E"/></svg></div>
      <b>Danışman bilgilerini rehberinize kaydedin</b>
      <span>Ad, unvan, telefon, e-posta ve sosyal hesaplar tek dokunuşla telefonunuza eklenir. Uygulama gerekmez, kişi kartı olarak açılır.</span>
      <a class="hqr-vcf" href="caglayan-cengel.vcf" type="text/vcard"><svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true" style="vertical-align:-2px;margin-right:6px"><path d="M12 3a1 1 0 0 1 1 1v8.59l2.3-2.3a1 1 0 1 1 1.4 1.42l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 1 1 1.4-1.42l2.3 2.3V4a1 1 0 0 1 1-1M4 18a1 1 0 0 1 1 1h14a1 1 0 1 1 2 0 3 3 0 0 1-3 3H6a3 3 0 0 1-3-3 1 1 0 0 1 1-1"/></svg> Rehbere kaydet</a>
      <a href="kart.html">Dijital kartvizit &rarr;</a>
-   </aside>
+   </aside></div>
 
    <div class="proof">
      <div class="proof-in">
@@ -1499,6 +1550,46 @@ if ('serviceWorker' in navigator) {
     .catch(() => {});
   if (window.caches) caches.keys().then(a => a.forEach(x => caches.delete(x))).catch(() => {});
 }
+</script>
+<script>
+/* Hero mini hesap — hesaplamalar.html'deki Araç 04 ile ayni mantik: net
+   kullandirilan uzerinden ikiye bolmeyle efektif aylik oran. Turkce yazim
+   (virgul ondalik, nokta binlik) burada da cozulur; 01.09.2026'da bu ayristirma
+   olmadigi icin araclar sessizce hic hesap yapmiyordu. */
+(function(){
+  var A=document.getElementById('m_ana'); if(!A) return;
+  var F=document.getElementById('m_faiz'), V=document.getElementById('m_vade'),
+      K=document.getElementById('m_kul'), S=document.getElementById('m_sonuc'),
+      L=document.getElementById('m_alt');
+  function N(v){
+    var t=String(v==null?'':v).trim(); if(!t) return null;
+    var vg=(t.match(/,/g)||[]).length;
+    if(vg>1) t=t.replace(/,/g,'');
+    else if(vg===1) t=t.replace(/\./g,'').replace(',','.');
+    else { var p=t.split('.');
+      if(p.length>2||(p.length===2&&p[1].length===3&&/^\d+$/.test(p[1]))) t=p.join(''); }
+    t=t.replace(/[^\d.-]/g,''); var x=parseFloat(t);
+    return isFinite(x)?x:null;
+  }
+  var TL=function(n){ return n===null||!isFinite(n) ? '—'
+    : n.toLocaleString('tr-TR',{maximumFractionDigits:0})+' \u20BA'; };
+  function hesapla(){
+    var a=N(A.value), f=N(F.value), n=N(V.value), k=(N(K.value)||0)/100, b=0.05;
+    if(a===null||f===null||n===null||n<=0){ S.innerHTML='&mdash;<small>/ay</small>';
+      L.textContent='Anapara, faiz ve vadeyi girin.'; return; }
+    var kul=a*k, pesin=kul+kul*b, net=a-pesin, r=(f/100)*(1+b);
+    var tk = r===0 ? a/n : a*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1);
+    var bd=function(o){ return o<=0 ? tk*n : tk*(1-Math.pow(1+o,-n))/o; };
+    var i=0;
+    if(bd(1e-9)>=net){ var alt=1e-9, ust=5;
+      for(var c=0;c<300;c++){ var o=(alt+ust)/2; if(bd(o)>net) alt=o; else ust=o; }
+      i=(alt+ust)/2; }
+    S.innerHTML='%'+(i*100).toLocaleString('tr-TR',{minimumFractionDigits:2,maximumFractionDigits:2})+'<small>/ay</small>';
+    L.textContent='Aylık taksit '+TL(tk)+' · peşin kesilen '+TL(pesin);
+  }
+  [A,F,V,K].forEach(function(e){ e.addEventListener('input',hesapla); });
+  hesapla();
+})();
 </script>
 </body>
 </html>

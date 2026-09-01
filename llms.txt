@@ -1,0 +1,57 @@
+# Çağlayan Çengel — Finansal Yönetim Danışmanı
+
+> KOBİ ve aile şirketlerinde mali tablo, banka ekstresi, Findeks kaydı ve POS verisini tek
+> tabloda birleştiren finansal yönetim danışmanlığı. Kredi dosyası bankaya gitmeden önce
+> burada açılır. 2007–2023 arası bankacılık (HSBC, TEB, Anadolubank — KOBİ bankacılığı müdür
+> yardımcılığı), yani dosyanın değerlendirildiği taraf.
+
+Site, bankaya sunulan rakamların banka tarafında nasıl okunduğunu gösteren on hesaplama
+aracı barındırır. Araçlar tarayıcıda çalışır; girilen veriler sunucuya gönderilmez, kayıt
+tutulmaz. Her aracın altında, sayfanın kendi varsayılan değerleriyle çözülmüş bir örnek
+düz metin olarak durur — hesabı çalıştırmadan da okunabilir.
+
+## Hesaplama araçları
+
+- [Bilanço teşhisi](https://caglayancengel.com/hesaplamalar.html#a1): sekiz oran, banka
+  kabul bantlarıyla. Cari oran 1,50 · asit-test 1,00 · borç/özkaynak 2,00 · özkaynak oranı
+  %30 · FAVÖK marjı %8 · net kâr marjı %1 · banka borcu/FAVÖK 3,00 · DSCR 1,25 eşikleri.
+- [Borç servis karşılama (DSCR)](https://caglayancengel.com/hesaplamalar.html#a2): FAVÖK'ün
+  yıllık anapara + faize oranı; bankalar 1,25 üstünü ister.
+- [Nakit döngüsü](https://caglayancengel.com/hesaplamalar.html#a3): alacak + stok − tedarikçi
+  günü; kaç TL işletme sermayesinin dışarıda beklediğini gösterir.
+- [Taksitli ticari kredi](https://caglayancengel.com/hesaplamalar.html#a4): teklifteki aylık
+  faiz ile gerçekte ödenen efektif oran arasındaki farkı, kullandırım ücreti ve BSMV dahil
+  çıkarır. Örnek: 2.175.234 ₺ · %3,61/ay · 24 ay · %3,7 kullandırım → gerçek maliyet %4,18/ay.
+- [Rotatif kredi](https://caglayancengel.com/hesaplamalar.html#a5): gün bazlı faiz ile dönem
+  sonu komisyonunu ayrı yıllıklandırır. Örnek: %55 nominal → %62 gerçek.
+- [Spot kredi](https://caglayancengel.com/hesaplamalar.html#a6): vade sonunda tek ödeme;
+  kullandırım ücretinin kısa vadede maliyeti nasıl yükselttiğini gösterir.
+- [Çek/senet iskontosu](https://caglayancengel.com/hesaplamalar.html#a7): peşin kesintili
+  işlemin gerçek yıllık maliyeti. Örnek: %45 nominal → %74,3 gerçek.
+- [POS blokaj karşılaştırması](https://caglayancengel.com/hesaplamalar.html#a8): ertesi gün
+  ödeme ile blokeli seçeneği, bekleyen paranın maliyetini hesaba katarak karşılaştırır.
+- [Faktoring maliyeti](https://caglayancengel.com/hesaplamalar.html#a9): avans oranının
+  efektif maliyeti nasıl değiştirdiğini gösterir. Örnek: %45 nominal → %75,6 gerçek.
+- [Geriye hesap](https://caglayancengel.com/hesaplamalar.html#a10): "hesabınıza şu kadar
+  geçer" rakamından, işlemin kaç faizli krediye denk düştüğünü bulur.
+
+## Sayfalar
+
+- [Ana sayfa](https://caglayancengel.com/): kapsam, çalışma biçimi, sık sorulanlar.
+  Hero bölümünde taksitli kredi için hızlı hesap bulunur.
+- [Örnek rapor](https://caglayancengel.com/ornek-rapor.html): firmaya teslim edilen analiz
+  raporunun anonimleştirilmiş örneği.
+- [Dijital kartvizit](https://caglayancengel.com/kart.html): iletişim bilgileri, vCard.
+- [Gizlilik ve KVKK](https://caglayancengel.com/gizlilik.html): veri işleme esasları ve
+  araçlarda yapay zekâ kullanımına ilişkin açıklama.
+
+## Kapsam dışı
+
+Yatırım danışmanlığı, yatırım tavsiyesi ve kredi taahhüdü verilmez. Araçlardaki eşikler
+bankaların yaygın kabul bantlarıdır; kuruma ve sektöre göre değişir. Mali müşavirlik
+hizmeti sunulmaz — mali müşavirin işi beyanın mevzuata uygunluğu, buradaki iş aynı
+rakamların banka tarafında nasıl okunduğudur.
+
+## İletişim
+
+WhatsApp ve telefon: +90 533 761 94 43 · E-posta: info@caglayancengel.com
