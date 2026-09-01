@@ -475,9 +475,18 @@ body.kilit{overflow:hidden}
 @media(max-width:560px){.qr-kutu{flex-direction:column;align-items:flex-start;gap:13px}}
 /* ---- hero: sag sutunda karekod ---- */
 .hero .wrap.hero-iki{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:46px;align-items:start}
-.hero-qr{display:flex;flex-direction:column;gap:9px;
-  padding:18px;border:1px solid var(--rule);border-radius:3px;background:var(--white)}
-.hqr-kod{width:100%;aspect-ratio:1;padding:8px;background:#fff}
+.hero-qr{display:grid;grid-template-columns:96px minmax(0,1fr);gap:4px 13px;
+  align-items:start;padding:14px;border:1px solid var(--rule);border-radius:3px;
+  background:var(--white)}
+.hero-qr .hqr-kod{grid-row:1/4;align-self:center}
+.hero-qr b{grid-column:2;align-self:end;font-size:12.5px}
+.hero-qr span{grid-column:2;font-size:11.5px}
+.hero-qr .hqr-vcf{grid-column:2;justify-self:start;margin-top:5px;font-size:12.5px;padding:8px 11px}
+.hero-qr a:not(.hqr-vcf){grid-column:2;justify-self:start;font-size:11.5px}
+/* Sag sutun 320 px'e cikinca QR de 282 px'e buyudu (olculdu 02.09.2026) —
+   kartvizit, hesabin uc kati yer kapliyordu. Kod sabit 96 px, kutu yatay. */
+.hqr-kod{width:96px;height:96px;flex:0 0 96px;padding:6px;background:#fff;
+  border:1px solid var(--rule);border-radius:2px}
 .hqr-kod svg{width:100%;height:100%;display:block}
 .hero-qr b{font-size:13.5px;color:var(--navy);font-weight:600;line-height:1.35}
 .hero-qr span{font-size:12.5px;color:#6B7683;line-height:1.5}
@@ -597,8 +606,10 @@ footer img{filter:none}
 .mini-alt{display:block;font-size:11.5px;color:var(--soft);line-height:1.45}
 .mini-not{margin:10px 0 0;font-size:11.5px;line-height:1.5;color:var(--soft)}
 .mini-not b{color:var(--body)}
-.mini-lnk{display:inline-block;margin-top:9px;font-size:12.5px;color:var(--goldink);
-  text-decoration:none;border-bottom:1px solid rgba(160,132,54,.4);padding-bottom:1px}
+.mini-lnk{display:block;margin-top:11px;padding:9px 12px;font-size:13px;font-weight:600;
+  color:var(--navy);text-align:center;text-decoration:none;background:var(--band);
+  border:1px solid var(--rule);border-radius:3px}
+.mini-lnk:hover{border-color:var(--gold)}
 @media(max-width:900px){
   .hero-yan{position:static;margin-top:26px}
   .mini{padding:15px}
@@ -733,22 +744,23 @@ footer img{filter:none}
    <div class="hero-yan">
     <div class="mini">
       <span class="mini-et">Hızlı hesap · taksitli ticari kredi</span>
-      <b>Teklifteki oran, ödediğiniz oran değildir</b>
+      <b>Bankanın yazdığı faiz mi, cebinizden çıkan mı?</b>
       <div class="mini-g">
         <label>Anapara (TL)<input id="m_ana" type="text" inputmode="decimal" value="2.175.234"></label>
         <label>Aylık faiz (%)<input id="m_faiz" type="text" inputmode="decimal" value="3,61"></label>
         <label>Vade (ay)<input id="m_vade" type="text" inputmode="decimal" value="24"></label>
-        <label>Kullandırım (%)<input id="m_kul" type="text" inputmode="decimal" value="3,7"></label>
+        <label>Dosya masrafı (%)<input id="m_kul" type="text" inputmode="decimal" value="3,7"></label>
       </div>
       <div class="mini-son">
-        <span class="mini-lb">Gerçek maliyet</span>
+        <span class="mini-lb">Gerçekte ödediğiniz</span>
         <strong id="m_sonuc">%4,18<small>/ay</small></strong>
         <span class="mini-alt" id="m_alt">Aylık taksit 139.623 ₺ · peşin kesilen 84.508 ₺</span>
       </div>
-      <p class="mini-not">2.175.234 ₺ anapara, aylık %3,61 faiz, 24 ay vade, %3,7 kullandırım ücreti
-      ve %5 BSMV ile gerçek maliyet <b>aylık %4,18</b> çıkar; peşin kesilen masraf 84.508 ₺,
-      aylık taksit 139.623 ₺.</p>
-      <a class="mini-lnk" href="hesaplamalar.html">On hesaplama aracının tamamı &rarr;</a>
+      <p class="mini-not">2.175.234 ₺ anapara, aylık %3,61 faiz, 24 ay vade, %3,7 dosya masrafı
+      ve %5 BSMV ile gerçekte ödenen <b>aylık %4,18</b> olur. Banka 84.508 ₺'yi baştan keser,
+      hesabınıza 2.090.726 ₺ girer; ama faiz 2.175.234 ₺ üzerinden işler ve aylık taksit
+      139.623 ₺ olur. Fark buradan doğar.</p>
+      <a class="mini-lnk" href="hesaplamalar.html">Diğer 9 hesaplama aracı &rarr;</a>
     </div>
     <aside class="hero-qr">
      <div class="hqr-kod"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29 29" shape-rendering="crispEdges" role="img" aria-label="Karekod: dijital kartvizit"><rect width="29" height="29" fill="#fff"/><path d="M0 0h7v1h-7zM10 0h1v1h-1zM12 0h3v1h-3zM16 0h5v1h-5zM22 0h7v1h-7zM0 1h1v1h-1zM6 1h1v1h-1zM8 1h3v1h-3zM12 1h1v1h-1zM14 1h2v1h-2zM18 1h2v1h-2zM22 1h1v1h-1zM28 1h1v1h-1zM0 2h1v1h-1zM2 2h3v1h-3zM6 2h1v1h-1zM10 2h1v1h-1zM13 2h2v1h-2zM18 2h1v1h-1zM22 2h1v1h-1zM24 2h3v1h-3zM28 2h1v1h-1zM0 3h1v1h-1zM2 3h3v1h-3zM6 3h1v1h-1zM9 3h1v1h-1zM11 3h4v1h-4zM18 3h1v1h-1zM22 3h1v1h-1zM24 3h3v1h-3zM28 3h1v1h-1zM0 4h1v1h-1zM2 4h3v1h-3zM6 4h1v1h-1zM8 4h3v1h-3zM12 4h1v1h-1zM14 4h2v1h-2zM18 4h2v1h-2zM22 4h1v1h-1zM24 4h3v1h-3zM28 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM13 5h1v1h-1zM15 5h2v1h-2zM19 5h2v1h-2zM22 5h1v1h-1zM28 5h1v1h-1zM0 6h7v1h-7zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM22 6h7v1h-7zM9 7h1v1h-1zM11 7h10v1h-10zM0 8h1v1h-1zM2 8h1v1h-1zM4 8h1v1h-1zM6 8h1v1h-1zM11 8h1v1h-1zM14 8h4v1h-4zM20 8h1v1h-1zM24 8h1v1h-1zM27 8h1v1h-1zM0 9h5v1h-5zM7 9h1v1h-1zM9 9h3v1h-3zM14 9h1v1h-1zM16 9h1v1h-1zM20 9h3v1h-3zM25 9h1v1h-1zM28 9h1v1h-1zM0 10h3v1h-3zM6 10h2v1h-2zM12 10h2v1h-2zM16 10h2v1h-2zM22 10h1v1h-1zM24 10h1v1h-1zM26 10h3v1h-3zM0 11h1v1h-1zM2 11h1v1h-1zM5 11h1v1h-1zM8 11h1v1h-1zM12 11h1v1h-1zM15 11h4v1h-4zM20 11h1v1h-1zM24 11h1v1h-1zM27 11h1v1h-1zM0 12h1v1h-1zM2 12h2v1h-2zM6 12h2v1h-2zM9 12h2v1h-2zM17 12h1v1h-1zM20 12h3v1h-3zM25 12h1v1h-1zM27 12h2v1h-2zM0 13h1v1h-1zM2 13h2v1h-2zM5 13h1v1h-1zM8 13h1v1h-1zM13 13h1v1h-1zM16 13h1v1h-1zM20 13h1v1h-1zM22 13h1v1h-1zM25 13h1v1h-1zM28 13h1v1h-1zM1 14h2v1h-2zM5 14h2v1h-2zM8 14h5v1h-5zM14 14h1v1h-1zM16 14h1v1h-1zM20 14h1v1h-1zM23 14h1v1h-1zM25 14h1v1h-1zM27 14h2v1h-2zM3 15h1v1h-1zM5 15h1v1h-1zM7 15h1v1h-1zM10 15h6v1h-6zM17 15h2v1h-2zM20 15h1v1h-1zM25 15h1v1h-1zM27 15h1v1h-1zM1 16h3v1h-3zM5 16h6v1h-6zM12 16h1v1h-1zM14 16h9v1h-9zM25 16h1v1h-1zM27 16h2v1h-2zM1 17h1v1h-1zM4 17h1v1h-1zM11 17h1v1h-1zM14 17h1v1h-1zM16 17h1v1h-1zM20 17h3v1h-3zM25 17h2v1h-2zM28 17h1v1h-1zM0 18h1v1h-1zM2 18h3v1h-3zM6 18h3v1h-3zM11 18h1v1h-1zM13 18h1v1h-1zM16 18h2v1h-2zM22 18h3v1h-3zM27 18h2v1h-2zM1 19h3v1h-3zM7 19h3v1h-3zM16 19h5v1h-5zM23 19h1v1h-1zM25 19h1v1h-1zM27 19h1v1h-1zM0 20h1v1h-1zM5 20h2v1h-2zM8 20h1v1h-1zM12 20h1v1h-1zM15 20h3v1h-3zM20 20h5v1h-5zM8 21h1v1h-1zM12 21h2v1h-2zM19 21h2v1h-2zM24 21h1v1h-1zM26 21h3v1h-3zM0 22h7v1h-7zM9 22h1v1h-1zM11 22h2v1h-2zM14 22h1v1h-1zM16 22h5v1h-5zM22 22h1v1h-1zM24 22h2v1h-2zM27 22h2v1h-2zM0 23h1v1h-1zM6 23h1v1h-1zM10 23h1v1h-1zM13 23h6v1h-6zM20 23h1v1h-1zM24 23h2v1h-2zM27 23h1v1h-1zM0 24h1v1h-1zM2 24h3v1h-3zM6 24h1v1h-1zM8 24h1v1h-1zM10 24h2v1h-2zM14 24h1v1h-1zM17 24h1v1h-1zM20 24h5v1h-5zM27 24h2v1h-2zM0 25h1v1h-1zM2 25h3v1h-3zM6 25h1v1h-1zM9 25h1v1h-1zM11 25h2v1h-2zM14 25h1v1h-1zM16 25h2v1h-2zM20 25h1v1h-1zM23 25h2v1h-2zM26 25h3v1h-3zM0 26h1v1h-1zM2 26h3v1h-3zM6 26h1v1h-1zM8 26h1v1h-1zM10 26h2v1h-2zM16 26h1v1h-1zM18 26h1v1h-1zM20 26h1v1h-1zM23 26h3v1h-3zM28 26h1v1h-1zM0 27h1v1h-1zM6 27h1v1h-1zM11 27h4v1h-4zM17 27h4v1h-4zM22 27h1v1h-1zM24 27h1v1h-1zM27 27h1v1h-1zM0 28h7v1h-7zM8 28h1v1h-1zM10 28h2v1h-2zM13 28h2v1h-2zM17 28h1v1h-1zM19 28h2v1h-2zM24 28h1v1h-1zM27 28h2v1h-2z" fill="#0F1C2E"/></svg></div>
