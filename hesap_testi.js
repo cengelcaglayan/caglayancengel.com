@@ -228,6 +228,43 @@ const metin = e => (e.textContent && e.textContent.trim()) || (e.innerHTML || ''
 
   const sorun = [];
 
+  /* ---------- KARSILAMA EKRANI ----------
+     Bugune kadar hep alanlara deger YAZIP olctum — yani sayfayi hic acmamis gibi.
+     Caglayan a04'u actiginda butun kutular dolu gorundu, sonuc "—" kaldi: gri
+     rakamlar placeholder'di, value bostu. Denetim bunu goremedi.
+     Bu kontrol hicbir sey yazmadan, sadece HTML'deki varsayilan degerlerle
+     hesabi kosturur: ziyaretcinin ilk saniyede gordugu ekrani olcer.            */
+  {
+    const SONUC = ['t_skor','d_dscr','n_ccc','k_efektif','r_yil','s_yil','i_yil','p_fark','fk_yil','gt_denk'];
+    const ISTEGE_BAGLI = new Set(['fk_kredi','gt_kredi']);
+    const dom2 = domKur();
+    const ctx2 = baglamKur(dom2);
+    let kosdu = true;
+    try { vm.runInContext(hesapBlok, ctx2, { timeout: 15000 }); }
+    catch (e) { kosdu = false; sorun.push('karsilama: hesap kodu kosmadi — ' + e.message); }
+
+    if (kosdu) {
+      for (const m of govde.matchAll(/<input id="([^"]+)"[^>]*\bvalue="([^"]*)"/g)) dom2.el(m[1]).value = m[2];
+      for (const f of ['teshis','dscr','ccc','taksit','rotatif','spot','iskonto','pos','faktoring','geriye']) {
+        try { if (typeof ctx2[f] === 'function') ctx2[f](); } catch (e) { sorun.push(`karsilama: ${f}() hata — ${e.message}`); }
+      }
+      const bos = SONUC.filter(id => { const m = metin(dom2.el(id)); return !m || m === '—' || m === '—/ay'; });
+      /* Hesap alaninda placeholder = "dolu gorunen bos kutu" tuzagi geri gelmis demektir */
+      const ph = [...govde.matchAll(/<input id="([^"]+)"[^>]*\bplaceholder="/g)]
+                   .map(m => m[1]).filter(id => !ISTEGE_BAGLI.has(id));
+      if (bos.length) {
+        sorun.push('karsilama ekrani: sayfa ilk acildiginda ' + bos.length + ' arac sonuc uretmiyor (' + bos.join(', ') + ')');
+        console.log('  🔴 KARSILAMA   ilk acilista bos kalan: %s', bos.join(', '));
+      } else {
+        console.log('  tamam  karsilama ekrani        10 aracin 10\'u ilk acilista sonuc gosteriyor');
+      }
+      if (ph.length) {
+        sorun.push('karsilama ekrani: hesap alaninda placeholder geri gelmis (' + ph.join(', ') + ') — dolu gorunen bos kutu');
+        console.log('  🔴 KARSILAMA   placeholder geri gelmis: %s', ph.join(', '));
+      }
+    }
+  }
+
   for (const y of YASAK_ALAN) {
     if (new RegExp('id="' + y.id + '"').test(govde) || new RegExp("id='" + y.id + "'").test(govde)) {
       sorun.push(`${y.ad}: sokulmus girdi (${y.id}) sayfaya geri gelmis`);

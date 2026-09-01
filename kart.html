@@ -69,6 +69,11 @@ body{margin:0;background:var(--navy);color:var(--white);
 .g4{animation-delay:.28s}.g5{animation-delay:.36s}.g6{animation-delay:.44s}
 @media(prefers-reduced-motion:reduce){.an{animation:none;opacity:1;transform:none}}
 </style>
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="apple-touch-icon" href="/logo.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Çağlayan Çengel">
 </head>
 <body>
 
@@ -197,6 +202,14 @@ body{margin:0;background:var(--navy);color:var(--white);
     else if(h.indexOf('linkedin.com')>-1) olay('sosyal/linkedin','LinkedIn');
   }, true);
 })();
+</script>
+<script>
+/* Ana ekrana eklenince uygulama gibi acilsin, cevrimdisi calissin.
+   Magaza uygulamasi yerine bu yol secildi (01.09.2026) — sifir maliyet,
+   ayni sonuc. Desteklemeyen tarayicida sessizce atlanir. */
+if ('serviceWorker' in navigator) {
+  addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
+}
 </script>
 </body>
 </html>
