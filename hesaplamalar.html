@@ -527,10 +527,10 @@ body.kilit{overflow:hidden}
             <div><label>Aylık faiz oranı (%)</label><input id="k_faiz" type="number" step="0.01" placeholder="3,61"></div>
             <div><label>Vade (ay)</label><input id="k_vade" type="number" placeholder="24"></div>
             <div><label>Kullandırım ücreti (%)</label><input id="k_kul" type="number" step="0.01" placeholder="3,7"></div>
-            <div><label>KKDF (%)</label><input id="k_kkdf" type="number" step="0.01" placeholder="0"></div>
             <div><label>BSMV (%)</label><input id="k_bsmv" type="number" step="0.01" value="5" placeholder="5"></div>
             <div><label>İlave komisyon (TL)</label><input id="k_kom" type="number" placeholder="0"></div>
             <div><label>Sigorta (TL)</label><input id="k_sig" type="number" placeholder="0"></div>
+          <div><label>Kapanışta alınan masraf (TL)</label><input id="k_kapama" type="number" placeholder="0"></div>
           </div>
         </div>
         <div class="cikti">
@@ -578,8 +578,10 @@ body.kilit{overflow:hidden}
           <div><label>Kullanım süresi (gün)</label><input id="r_gun" type="number" placeholder="92"></div>
           <div><label>Dönem sonu komisyon (%)</label><input id="r_kom" type="number" step="0.01" placeholder="1"></div>
             <div><label>Komisyon kaç ayda bir</label><input id="r_komay" type="number" step="1" value="3" placeholder="3"></div>
+          <div><label>Kullandırım masrafı (%)</label><input id="r_kul" type="number" step="0.001" placeholder="0"></div>
+          <div><label>Limit tahsis komisyonu (TL/yıl)</label><input id="r_tahsis" type="number" placeholder="0"></div>
+          <div><label>Kapanışta alınan masraf (TL)</label><input id="r_kapama" type="number" placeholder="0"></div>
           <div><label>BSMV (%)</label><input id="r_bsmv" type="number" step="0.01" value="5" placeholder="5"></div>
-          <div><label>KKDF (%)</label><input id="r_kkdf" type="number" step="0.01" placeholder="0"></div>
         </div></div>
         <div class="cikti">
           <div class="cb">Yıllık toplam maliyet</div>
@@ -620,8 +622,8 @@ body.kilit{overflow:hidden}
           <div><label>Yıllık faiz (%)</label><input id="s_faiz" type="number" step="0.01" placeholder="55"></div>
           <div><label>Vade (gün)</label><input id="s_gun" type="number" placeholder="365"></div>
           <div><label>Kullandırım ücreti (%)</label><input id="s_kul" type="number" step="0.001" placeholder="1,1"></div>
+          <div><label>Kapanışta alınan masraf (TL)</label><input id="s_kapama" type="number" placeholder="0"></div>
           <div><label>BSMV (%)</label><input id="s_bsmv" type="number" step="0.01" value="5" placeholder="5"></div>
-          <div><label>KKDF (%)</label><input id="s_kkdf" type="number" step="0.01" placeholder="0"></div>
         </div></div>
         <div class="cikti">
           <div class="cb">Yıllık toplam maliyet</div>
@@ -778,6 +780,7 @@ body.kilit{overflow:hidden}
             <option value="fatura">Fatura tutarı</option>
             <option value="avans">Avans tutarı</option>
           </select></div>
+          <div><label>Kullandırım/dosya masrafı (%)</label><input id="fk_kul" type="number" step="0.001" placeholder="0"></div>
           <div><label>BSMV (%)</label><input id="fk_bsmv" type="number" step="0.01" value="5" placeholder="5"></div>
           <div><label>Karşılaştırma: yıllık kredi faizi (%)</label><input id="fk_kredi" type="number" step="0.01" placeholder="isteğe bağlı"></div>
         </div></div>
@@ -993,25 +996,33 @@ function ccc(){
 function taksit(){
   const A=N(k_ana.value), f=N(k_faiz.value), n=N(k_vade.value);
   if(A===null||f===null||n===null||n<=0) return;
-  const fa=f/100, kkdf=(N(k_kkdf.value)||0)/100, bsmv=(N(k_bsmv.value)||0)/100;
+  /* KKDF kaldirildi 01.09.2026 (Caglayan): ticari kredide KKDF %0'dir,
+     girdi olarak durmasi bireysel urun izlenimi veriyordu. */
+  const fa=f/100, bsmv=(N(k_bsmv.value)||0)/100;
   const kulO=(N(k_kul.value)||0)/100, kom=N(k_kom.value)||0, sig=N(k_sig.value)||0;
+  const kapama=N(k_kapama.value)||0;
   const kulUc=A*kulO, kulBsmv=kulUc*bsmv, komBsmv=kom*bsmv;
   const pesin=kulUc+kulBsmv+kom+komBsmv+sig;
   const net=A-pesin;
-  const r=fa*(1+kkdf+bsmv);
+  const r=fa*(1+bsmv);
   const tk = r===0 ? A/n : A*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1);
   const toplam=tk*n;
-  /* net kullandirilan uzerinden gercek aylik oran — Newton */
-  let i=r>0?r:0.01;
-  for(let k=0;k<80;k++){
-    const p=Math.pow(1+i,n);
-    const fv = net*i*p/(p-1) - tk;
-    const d  = net*(p*(p-1)-i*n*p)/Math.pow(p-1,2);
-    if(Math.abs(d)<1e-12) break;
-    const yeni=i-fv/d;
-    if(!isFinite(yeni)||yeni<=0) break;
-    if(Math.abs(yeni-i)<1e-10){ i=yeni; break; }
-    i=yeni;
+  /* Net kullandirilan uzerinden gercek aylik oran.
+     Newton yerine ikiye bolme: kapanis masrafi son aya EK ODEME olarak girince
+     Newton'un turevi bu akista kirilabiliyordu. Dogrulandi 01.09.2026 — kapama
+     sifirken dort vakada eski Newton ile birebir ayni sonuc (%4,4968 · %3,9113
+     · %5,2500 · %4,3391). */
+  const bugunkuDeger = oran => oran<=0
+    ? tk*n + kapama
+    : tk*(1-Math.pow(1+oran,-n))/oran + kapama*Math.pow(1+oran,-n);
+  let i=0;
+  if(bugunkuDeger(1e-9) >= net){
+    let alt=1e-9, ust=5;
+    for(let k=0;k<300;k++){
+      const orta=(alt+ust)/2;
+      if(bugunkuDeger(orta)>net) alt=orta; else ust=orta;
+    }
+    i=(alt+ust)/2;
   }
   document.getElementById('k_efektif').innerHTML = '%' + (i*100).toLocaleString('tr-TR',{minimumFractionDigits:2,maximumFractionDigits:2}) + '<small>/ay</small>';
   document.getElementById('k_alt').textContent = 'Teklifteki oran: %' + f.toLocaleString('tr-TR',{maximumFractionDigits:2}) + ' · aylık taksit ' + TL(tk);
@@ -1087,27 +1098,43 @@ function pos(){
 function rotatif(){
   const A=N(r_ana.value), fy=N(r_faiz.value), g=N(r_gun.value);
   if(A===null||fy===null||g===null||g<=0) return;
-  const f=fy/100, bsmv=(N(r_bsmv.value)||0)/100, kkdf=(N(r_kkdf.value)||0)/100, komO=(N(r_kom.value)||0)/100;
-  const faiz=A*f*g/360, fBsmv=faiz*bsmv, fKkdf=faiz*kkdf;
+  /* KKDF kaldirildi (ticari urunde yok). Eklenenler 01.09.2026: kullandirim
+     masrafi, limit tahsis komisyonu ve kapanis masrafi — rotatifte maliyetin
+     buyuk kismi bu kalemlerden gelebiliyor, ucu de eksikti. */
+  const f=fy/100, bsmv=(N(r_bsmv.value)||0)/100, komO=(N(r_kom.value)||0)/100;
+  const kulO=(N(r_kul.value)||0)/100, tahsis=N(r_tahsis.value)||0, kapama=N(r_kapama.value)||0;
+  const faiz=A*f*g/360, fBsmv=faiz*bsmv, fKkdf=0;
   const kom=A*komO, kBsmv=kom*bsmv;
-  const toplam=faiz+fBsmv+fKkdf+kom+kBsmv;
+  const kul=A*kulO, kulBsmv=kul*bsmv;
+  const tahsisBsmv=tahsis*bsmv, kapamaBsmv=kapama*bsmv;
+  const toplam=faiz+fBsmv+kom+kBsmv+kul+kulBsmv;
   /* Komisyon donem SONUNDA bir kez alinir; faizle ayni carpanla yilliga cevrilirse
      g=30 girildiginde 12 kez sayiliyordu. Faiz gun bazli (360/g), komisyon ise
      kendi periyoduna gore (12/ay) yilliklandirilir. Bankalar bu komisyonu
      tipik olarak uc ayda bir alir — varsayilan 3. */
   const komAy=Math.max(1, N(r_komay.value)||3);
-  const yillikFaiz=(faiz+fBsmv+fKkdf)*360/g;
+  const yillikFaiz=(faiz+fBsmv)*360/g;
   const yillikKom=(kom+kBsmv)*(12/komAy);
-  const yillik=yillikFaiz+yillikKom, oran=A?yillik/A:0;
+  /* Kullandirim masrafi her kullanimda alinir — faizle ayni periyotta
+     yilliklandirilir. Tahsis komisyonu limit uzerinden yilda bir kez;
+     kapanis masrafi tek seferlik, yilliga cevrilmez, ayri gosterilir. */
+  const yillikKul=(kul+kulBsmv)*360/g;
+  const yillikTahsis=tahsis+tahsisBsmv;
+  const yillik=yillikFaiz+yillikKom+yillikKul+yillikTahsis, oran=A?yillik/A:0;
   document.getElementById('r_yil').innerHTML='%'+(oran*100).toLocaleString('tr-TR',{maximumFractionDigits:1});
   document.getElementById('r_alt').textContent=g+' günlük dönem maliyeti: '+TL(toplam)+' · nominal faiz %'+fy;
   document.getElementById('r_tablo').innerHTML=
     `<tr><td>Faiz (${g} gün)</td><td>${TL(faiz)}</td></tr>`
    +`<tr><td>Faiz üzerinden BSMV${fKkdf?' + KKDF':''}</td><td>${TL(fBsmv+fKkdf)}</td></tr>`
    +`<tr><td>Dönem sonu komisyon + BSMV (${komAy} ayda bir)</td><td class="d-risk">${TL(kom+kBsmv)}</td></tr>`
+   +(kul?`<tr><td>Kullandırım masrafı + BSMV</td><td class="d-risk">${TL(kul+kulBsmv)}</td></tr>`:'')
    +`<tr><td><strong>Dönem toplam ödeme</strong></td><td><strong>${TL(toplam)}</strong></td></tr>`
+   +(tahsis?`<tr><td>Limit tahsis komisyonu + BSMV (yılda bir)</td><td class="d-risk">${TL(tahsis+tahsisBsmv)}</td></tr>`:'')
+   +(kapama?`<tr><td>Kapanışta alınan masraf + BSMV (tek sefer)</td><td class="d-risk">${TL(kapama+kapamaBsmv)}</td></tr>`:'')
    +`<tr><td>Yıllık faiz yükü</td><td>${TL(yillikFaiz)}</td></tr>`
    +`<tr><td>Yıllık komisyon yükü</td><td>${TL(yillikKom)}</td></tr>`
+   +(yillikKul?`<tr><td>Yıllık kullandırım yükü</td><td>${TL(yillikKul)}</td></tr>`:'')
+   +(yillikTahsis?`<tr><td>Yıllık tahsis komisyonu</td><td>${TL(yillikTahsis)}</td></tr>`:'')
    +`<tr><td>Yıllığa çevrilmiş <strong>toplam</strong></td><td class="d-risk"><strong>${TL(yillik)}</strong></td></tr>`;
   const fark=oran*100-fy;
   let rz,y;
@@ -1120,10 +1147,12 @@ function rotatif(){
 function spot(){
   const A=N(s_ana.value), fy=N(s_faiz.value), g=N(s_gun.value);
   if(A===null||fy===null||g===null||g<=0) return;
-  const f=fy/100,bsmv=(N(s_bsmv.value)||0)/100,kkdf=(N(s_kkdf.value)||0)/100,kulO=(N(s_kul.value)||0)/100;
-  const faiz=A*f*g/360, fBsmv=faiz*bsmv, fKkdf=faiz*kkdf;
+  /* KKDF kaldirildi (ticari urunde yok); kapanis masrafi eklendi. */
+  const f=fy/100,bsmv=(N(s_bsmv.value)||0)/100,kulO=(N(s_kul.value)||0)/100;
+  const kapama=N(s_kapama.value)||0, kapamaBsmv=kapama*bsmv;
+  const faiz=A*f*g/360, fBsmv=faiz*bsmv, fKkdf=0;
   const kul=A*kulO, kBsmv=kul*bsmv;
-  const toplam=faiz+fBsmv+fKkdf+kul+kBsmv;
+  const toplam=faiz+fBsmv+kul+kBsmv+kapama+kapamaBsmv;
   /* g>=360'ta bolme atlaniyordu: 540 gunluk maliyet yillik gibi gosteriliyor,
      maliyet sisik cikiyordu. Her durumda yilliga cevrilir. */
   const yillik = toplam*360/g;
@@ -1134,6 +1163,7 @@ function spot(){
     `<tr><td>Faiz (${g} gün)</td><td>${TL(faiz)}</td></tr>`
    +`<tr><td>Faiz üzerinden BSMV${fKkdf?' + KKDF':''}</td><td>${TL(fBsmv+fKkdf)}</td></tr>`
    +`<tr><td>Kullandırım ücreti + BSMV</td><td class="d-risk">${TL(kul+kBsmv)}</td></tr>`
+   +(kapama?`<tr><td>Kapanışta alınan masraf + BSMV</td><td class="d-risk">${TL(kapama+kapamaBsmv)}</td></tr>`:'')
    +`<tr><td><strong>Toplam bankaya ödeme</strong></td><td><strong>${TL(toplam)}</strong></td></tr>`;
   const fark=oran*100-fy;
   let rz,y;
@@ -1183,7 +1213,9 @@ function faktoring(){
   const faiz=avans*f*g/esas, fBs=faiz*bs;
   const matrah=(fk_matrah.value==='avans')?avans:F;
   const kom=matrah*kO, kBs=kom*bs;
-  const kesinti=faiz+fBs+kom+kBs;
+  /* Kullandirim/dosya masrafi kullandirilan para (avans) uzerinden alinir. */
+  const kulO=(N(fk_kul.value)||0)/100, kul=avans*kulO, kulBs=kul*bs;
+  const kesinti=faiz+fBs+kom+kBs+kul+kulBs;
   const net=avans-kesinti;
   if(net<=0){
     document.getElementById('fk_yil').innerHTML='—';
@@ -1219,6 +1251,7 @@ function faktoring(){
    +`<tr><td>Faiz — ${g} gün, avans üzerinden</td><td>${TL(faiz)}</td></tr>`
    +`<tr><td>Faiz üzerinden BSMV</td><td>${TL(fBs)}</td></tr>`
    +`<tr><td>Komisyon (${fk_matrah.value==='avans'?'avans':'fatura'} üzerinden) + BSMV</td><td class="d-risk">${TL(kom+kBs)}</td></tr>`
+   +(kul?`<tr><td>Kullandırım/dosya masrafı + BSMV</td><td class="d-risk">${TL(kul+kulBs)}</td></tr>`:'')
    +`<tr><td><strong>Toplam kesinti</strong></td><td class="d-risk"><strong>${TL(kesinti)}</strong></td></tr>`
    +`<tr><td><strong>Peşin elinize geçen</strong></td><td class="d-iyi"><strong>${TL(net)}</strong></td></tr>`
    +`<tr><td>Vade sonunda gelecek bakiye</td><td>${TL(bakiye)}</td></tr>`
