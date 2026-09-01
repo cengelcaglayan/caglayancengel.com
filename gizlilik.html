@@ -214,11 +214,7 @@ body.kilit{overflow:hidden}
   #okuma{display:none}
 }
 </style>
-  <link rel="manifest" href="/manifest.webmanifest">
   <link rel="apple-touch-icon" href="/logo.png">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Çağlayan Çengel">
 </head>
 <body>
 
@@ -733,11 +729,14 @@ body.kilit{overflow:hidden}
 
 </script>
 <script>
-/* Ana ekrana eklenince uygulama gibi acilsin, cevrimdisi calissin.
-   Magaza uygulamasi yerine bu yol secildi (01.09.2026) — sifir maliyet,
-   ayni sonuc. Desteklemeyen tarayicida sessizce atlanir. */
+/* Site artik cihaza kurulmuyor (Caglayan karari 02.09.2026): hicbir kopya
+   inmez. Once kurulmus olan service worker'i ve onbellegini temizler.
+   Yayildiktan sonra bu blok ve /sw.js kaldirilabilir. */
 if ('serviceWorker' in navigator) {
-  addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
+  navigator.serviceWorker.getRegistrations()
+    .then(k => k.forEach(r => r.unregister()))
+    .catch(() => {});
+  if (window.caches) caches.keys().then(a => a.forEach(x => caches.delete(x))).catch(() => {});
 }
 </script>
 </body>

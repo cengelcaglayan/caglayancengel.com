@@ -1,47 +1,26 @@
-/* Service worker — siteyi telefonda "ana ekrana ekle" ile uygulama gibi
-   calistirir ve cevrimdisi aciyor.
-   Neden var (01.09.2026, Caglayan karari "ara yolu da yap"): magaza uygulamasi
-   yapilmadi — maliyeti var, karsiligi yok. Bu dosya ayni isi sifir maliyetle
-   goruyor: ana ekran ikonu, tam ekran acilis, cevrimdisi hesaplama.
+/* KENDINI KALDIRAN SERVICE WORKER — Caglayan karari 02.09.2026: "siteyi indirme
+   islemini de iptal et."
 
-   Strateji: AG ONCE. Site GitHub Pages'te durur ve sik guncellenir; onbellek
-   once denenirse kullanici eski sayfayi gorur — bugun tam da bunun bir benzeri
-   yasandi. Ag calisiyorsa daima taze icerik gelir, onbellek yalniz cevrimdisi
-   yedegidir.                                                                  */
-const SURUM = 'cc-2026-09-01';
-const KABUK = [
-  '/', '/hesaplamalar.html', '/ornek-rapor.html', '/kart.html', '/gizlilik.html',
-  '/fonts.css', '/logo.png', '/icon-192.png', '/manifest.webmanifest',
-];
+   01.09.2026'da site "ana ekrana eklenebilir" yapilmisti (manifest + bu dosya).
+   Karar degisti: sitenin hicbir kopyasi cihaza inmez. Ziyaretci siteye girer,
+   kullanir, gider — arkasinda dosya kalmaz.
 
-self.addEventListener('install', e => {
-  e.waitUntil(
-    caches.open(SURUM)
-      .then(c => Promise.allSettled(KABUK.map(y => c.add(y))))  /* biri dusse digerleri kurulur */
-      .then(() => self.skipWaiting())
-  );
-});
+   Dosya SILINMEDI cunku canliya cikmisti: kuran tarayicilar onu calistirmaya
+   devam eder ve sayfayi kendi onbelleginden sunar. Silinirse bazi tarayicilar
+   eski surumu aylarca tasiyabilir. Bu surum kendini kayittan siler, butun
+   onbellegi bosaltir ve acik sekmeleri tazeler.
+
+   Kaldirilma yayildiktan sonra (bir kac hafta) bu dosya da silinebilir.       */
+self.addEventListener('install', () => self.skipWaiting());
 
 self.addEventListener('activate', e => {
-  e.waitUntil(
-    caches.keys()
-      .then(a => Promise.all(a.filter(x => x !== SURUM).map(x => caches.delete(x))))
-      .then(() => self.clients.claim())
-  );
+  e.waitUntil((async () => {
+    const adlar = await caches.keys();
+    await Promise.all(adlar.map(a => caches.delete(a)));
+    await self.registration.unregister();
+    const sekmeler = await self.clients.matchAll({ type: 'window' });
+    for (const s of sekmeler) { try { s.navigate(s.url); } catch (_) {} }
+  })());
 });
 
-self.addEventListener('fetch', e => {
-  const istek = e.request;
-  if (istek.method !== 'GET') return;
-  const u = new URL(istek.url);
-  if (u.origin !== self.location.origin) return;   /* sayac vb. disari — dokunma */
-
-  e.respondWith(
-    fetch(istek)
-      .then(c => {
-        if (c && c.ok) { const k = c.clone(); caches.open(SURUM).then(x => x.put(istek, k)); }
-        return c;
-      })
-      .catch(() => caches.match(istek).then(c => c || caches.match('/hesaplamalar.html')))
-  );
-});
+/* Hicbir istegi yakalama — her sey dogrudan aga gitsin. */

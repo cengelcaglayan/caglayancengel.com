@@ -107,28 +107,24 @@ try:
 except Exception as e:
     uyari.append("http kontrolu yapilamadi: " + str(e)[:50])
 
-# 7b · ana ekrana eklenebilirlik (magaza uygulamasi yerine secilen yol, 01.09.2026)
-# Sessizce bozulabilecek bir sey: manifest ya da sw.js 404 verirse telefonda
-# "ana ekrana ekle" uygulama gibi degil, sade yer imi olarak kurulur ve kimse
-# fark etmez. Uc dosya + her sayfada manifest baglantisi olculur.
+# 7b · site cihaza KURULMUYOR — Caglayan karari 02.09.2026
+# "Siteyi indirme islemini de iptal et." Ziyaretci siteye girer, kullanir, gider;
+# arkasinda dosya kalmaz. 01.09'da eklenen manifest + service worker geri alindi.
+# Karar burada olculur: geri gelirse kirmizi yanar, hatirlanmasina birakilmaz.
 print()
-for y, iz in [("/manifest.webmanifest", '"start_url"'), ("/sw.js", "addEventListener"),
-              ("/icon-192.png", None), ("/icon-512.png", None)]:
-    try:
-        k, g, h = al(y)
-        print("  %-22s %s · %6d bayt" % (y, k, len(g)))
-        if k != 200:
-            hata.append("%s HTTP %s — ana ekrana ekleme calismaz" % (y, k))
-        elif iz and iz not in g:
-            hata.append("%s icerigi beklenen izi tasimiyor (%s)" % (y, iz))
-    except Exception as e:
-        hata.append("%s alinamadi: %s" % (y, str(e)[:50]))
-        print("  %-22s HATA" % y)
-
-eksik_mf = [y for y in SAYFA if y in govde and 'rel="manifest"' not in govde[y]]
-print("  manifest baglantisi    %s" % ("tamam" if not eksik_mf else "EKSIK: " + ", ".join(eksik_mf)))
-if eksik_mf:
-    hata.append("manifest baglantisi eksik: " + ", ".join(eksik_mf))
+mf = [y for y in SAYFA if y in govde and 'rel="manifest"' in govde[y]]
+kayit = [y for y in SAYFA if y in govde and "serviceWorker.register" in govde[y]]
+print("  manifest baglantisi    %s" % ("yok (beklenen)" if not mf else "GERI GELMIS: " + ", ".join(mf)))
+print("  sw kaydi               %s" % ("yok (beklenen)" if not kayit else "GERI GELMIS: " + ", ".join(kayit)))
+if mf:    hata.append("Site kurulabilir hale gelmis — manifest baglantisi: " + ", ".join(mf))
+if kayit: hata.append("Service worker kaydi geri gelmis: " + ", ".join(kayit))
+try:
+    k, _, _ = al("/manifest.webmanifest")
+    if k == 200:
+        hata.append("manifest.webmanifest yayinda duruyor — silinmeliydi")
+        print("  /manifest.webmanifest  200 · SILINMELIYDI")
+except Exception:
+    print("  /manifest.webmanifest  yok (beklenen)")
 
 # 8 · hesap kontrolu — araclar CALISIYOR MU
 # Yukaridaki kontroller sayfanin VARLIGINI olcer. 01.09.2026'da Arac 04 hic hesap
