@@ -31,29 +31,25 @@ const YEREL = yerelIdx >= 0 ? arg[yerelIdx + 1] : null;
 const TESTLER = [
   { ad: 'a04 taksitli kredi', fn: 'taksit',
     gir: { k_ana:'2.175.234', k_faiz:'3,61', k_vade:'24', k_kul:'3,7', k_bsmv:'5',
-           k_kom:'', k_sig:'', k_kapama:'' },
+           k_kom:'', k_sig:'' },
     olc: [ { id:'k_efektif', bek:4.18, tol:0.01, not:'efektif aylik oran' },
            { id:'k_alt',     ara:'139.623', not:'aylik taksit' },
            { id:'k_tablo',   ara:'84.508',  not:'pesin kesilen masraf' } ] },
 
   { ad: 'a05 rotatif · sade', fn: 'rotatif',
     gir: { r_ana:'1.000.000', r_faiz:'45', r_gun:'90', r_kom:'0,5', r_komay:'3',
-           r_bsmv:'5', r_kul:'', r_tahsis:'', r_kapama:'' },
+           r_bsmv:'5', r_kul:'', r_tahsis:'' },
     olc: [ { id:'r_yil', bek:49.4, tol:0.1, not:'yillik maliyet' } ] },
 
   { ad: 'a05 rotatif · masrafli', fn: 'rotatif',
     gir: { r_ana:'1.000.000', r_faiz:'45', r_gun:'90', r_kom:'0,5', r_komay:'3',
-           r_bsmv:'5', r_kul:'0,5', r_tahsis:'25.000', r_kapama:'10.000' },
+           r_bsmv:'5', r_kul:'0,5', r_tahsis:'25.000' },
     olc: [ { id:'r_yil', bek:54.1, tol:0.1, not:'yillik maliyet' } ] },
 
   { ad: 'a06 spot · sade', fn: 'spot',
-    gir: { s_ana:'1.000.000', s_faiz:'45', s_gun:'90', s_kul:'1', s_bsmv:'5', s_kapama:'' },
+    gir: { s_ana:'1.000.000', s_faiz:'45', s_gun:'90', s_kul:'1', s_bsmv:'5' },
     olc: [ { id:'s_yil', bek:51.4, tol:0.1, not:'yillik maliyet' },
            { id:'s_alt', ara:'1.128.625', not:'vade sonu odeme' } ] },
-
-  { ad: 'a06 spot · kapamali', fn: 'spot',
-    gir: { s_ana:'1.000.000', s_faiz:'45', s_gun:'90', s_kul:'1', s_bsmv:'5', s_kapama:'15.000' },
-    olc: [ { id:'s_yil', bek:57.8, tol:0.1, not:'yillik maliyet' } ] },
 
   { ad: 'a07 cek/senet iskontosu', fn: 'iskonto',
     gir: { i_nom:'1.000.000', i_faiz:'45', i_gun:'90', i_kul:'1,1', i_bsmv:'5', i_esas:'360' },
@@ -98,6 +94,17 @@ const TESTLER = [
     gir: { n_dso:'75,5', n_dio:'60', n_dpo:'45', n_ns:'9.000.000' },
     olc: [ { id:'n_ccc', bek:91, tol:0.5, not:'gun sayisi' },
            { id:'n_alt', ara:'2.231.507', not:'baglanan isletme sermayesi' } ] },
+];
+
+/* ---------- yapisal kontrol ----------
+   Bu alanlar 01.09.2026'da Caglayan karariyla SOKULDU: kredi hesaplama
+   araclarinda kapanan krediden alinan masraf yer almaz. Kaynak: mevzuat
+   takibi konusulurken site araclarina girdi olarak eklenmislerdi (6e61d89),
+   kapsam hatasiydi. Geri gelirlerse bu kontrol kirmizi yakar.               */
+const YASAK_ALAN = [
+  { id:'k_kapama', ad:'a04 kapanis masrafi' },
+  { id:'r_kapama', ad:'a05 kapanis masrafi' },
+  { id:'s_kapama', ad:'a06 kapanis masrafi' },
 ];
 
 /* ---------- kaynak ---------- */
@@ -220,6 +227,14 @@ const metin = e => (e.textContent && e.textContent.trim()) || (e.innerHTML || ''
   catch (e) { console.log('  🔴 Hesap kodu kosmadi:', e.message); process.exit(1); }
 
   const sorun = [];
+
+  for (const y of YASAK_ALAN) {
+    if (new RegExp('id="' + y.id + '"').test(govde) || new RegExp("id='" + y.id + "'").test(govde)) {
+      sorun.push(`${y.ad}: sokulmus girdi (${y.id}) sayfaya geri gelmis`);
+      console.log('  🔴 GERI GELMIS  %s (%s)', y.ad.padEnd(24), y.id);
+    }
+  }
+
   for (const t of TESTLER) {
     for (const [k, v] of Object.entries(t.gir)) dom.el(k).value = v;
     const fn = ctx[t.fn];
