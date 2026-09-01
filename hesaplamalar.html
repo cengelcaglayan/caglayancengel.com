@@ -710,6 +710,7 @@ body.kilit{overflow:hidden}
             <div><label>Ertesi gün komisyon (%)</label><input id="p_k1" type="number" step="0.01" placeholder="2,82"></div>
             <div><label>Blokeli komisyon (%)</label><input id="p_k2" type="number" step="0.01" placeholder="1,51"></div>
             <div><label>Blokaj süresi (gün)</label><input id="p_gun" type="number" placeholder="30"></div>
+          <div><label>Komisyon üzerinden BSMV (%)</label><input id="p_bsmv" type="number" step="0.01" value="5" placeholder="5"></div>
             <div><label>Aylık kredi faiziniz (%)<br><span style="font-size:12px">paranın size maliyeti</span></label><input id="p_maliyet" type="number" step="0.01" placeholder="3,5"></div>
           </div>
         </div>
@@ -820,6 +821,7 @@ body.kilit{overflow:hidden}
           <div><label>Vade (gün)</label><input id="gt_gun" type="number" placeholder="92"></div>
           <div><label>Hesabınıza geçecek tutar (TL)</label><input id="gt_net" type="number" placeholder="87000"></div>
           <div><label>Bankadaki kredi faiziniz (%)</label><input id="gt_kredi" type="number" step="0.01" placeholder="isteğe bağlı"></div>
+          <div><label>Kredide BSMV (%)</label><input id="gt_bsmv" type="number" step="0.01" value="5" placeholder="5"></div>
         </div></div>
         <div class="cikti">
           <div class="cb">Bu işlem şu faizli krediye denk</div>
@@ -1047,7 +1049,13 @@ function pos(){
     return;
   }
   const ay=ayHam/100;
-  const kom1=c*k1/100, kom2=c*k2/100;
+  /* POS komisyonu BSMV'ye tabidir; ekstreye komisyon+BSMV olarak duser. Ilk
+     yazimda atlanmisti — ekrandaki komisyon tutari firmanin ekstresiyle
+     tutmuyordu ve iki secenek arasindaki fark %5 eksik cikiyordu.
+     Bankasi BSMV dahil oran ilan ediyorsa kullanici 0 girer. */
+  const pbs=(N(p_bsmv.value)||0)/100;
+  const komHam1=c*k1/100, komHam2=c*k2/100;
+  const kom1=komHam1*(1+pbs), kom2=komHam2*(1+pbs);
   const komFark=kom1-kom2;                    /* blokelinin komisyon avantaji */
   const paraMaliyeti=c*ay*(gun/30);           /* blokede bekleyen paranin maliyeti */
   const net=komFark-paraMaliyeti;             /* + ise blokeli avantajli */
@@ -1063,7 +1071,9 @@ function pos(){
     y='Ertesi gün ödeyen POS ayda ' + TL(-net) + ' daha ucuza geliyor. Yüksek komisyona rağmen paranın erken gelmesi kazandırıyor.'; }
   document.getElementById('p_tablo').innerHTML=
      `<tr><td>Komisyon oranı</td><td>%${k1.toLocaleString('tr-TR',{maximumFractionDigits:2})}</td><td>%${k2.toLocaleString('tr-TR',{maximumFractionDigits:2})}</td></tr>`
-   + `<tr><td>Kesilen komisyon</td><td class="d-risk">${TL(kom1)}</td><td class="d-iyi">${TL(kom2)}</td></tr>`
+   + `<tr><td>Komisyon</td><td>${TL(komHam1)}</td><td>${TL(komHam2)}</td></tr>`
+   + `<tr><td>Komisyon BSMV'si</td><td>${TL(kom1-komHam1)}</td><td>${TL(kom2-komHam2)}</td></tr>`
+   + `<tr><td><strong>Kesilen toplam</strong></td><td class="d-risk"><strong>${TL(kom1)}</strong></td><td class="d-iyi"><strong>${TL(kom2)}</strong></td></tr>`
    + `<tr><td>Hesaba geçen</td><td>${TL(c-kom1)}</td><td>${TL(c-kom2)}</td></tr>`
    + `<tr><td>Para ne zaman elinizde</td><td class="d-iyi">ertesi gün</td><td class="d-risk">${gun} gün sonra</td></tr>`
    + `<tr><td>Bekleyen paranın maliyeti</td><td>—</td><td class="d-risk">${TL(paraMaliyeti)}</td></tr>`
@@ -1237,7 +1247,10 @@ function geriye(){
     document.getElementById('gt_yorum').textContent='Elinize geçecek tutar nominalden küçük olmalı. Kesinti yoksa hesaplanacak maliyet de yoktur.';
     return;
   }
-  const esas=360, bsmv=0.05;
+  const esas=360;
+  /* BSMV sabit %5 gomuluydu. Ihracat ve yatirim tesvik belgeli kredilerde
+     istisna var; o durumda "denk kredi faizi" oldugundan dusuk cikiyordu. */
+  const bsmv=(N(gt_bsmv.value)||0)/100;
   const kes=nom-net, donem=kes/net;
   const ayBasit=donem*30/g, ayBilesik=Math.pow(1+donem,30/g)-1;
   const yilBasit=donem*esas/g, yilBilesik=Math.pow(1+donem,esas/g)-1;
