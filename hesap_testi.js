@@ -30,11 +30,11 @@ const YEREL = yerelIdx >= 0 ? arg[yerelIdx + 1] : null;
    'ara' = cikti metni bu diziyi icermeli                                */
 const TESTLER = [
   { ad: 'a04 taksitli kredi', fn: 'taksit',
-    gir: { k_ana:'2.175.234', k_faiz:'3,61', k_vade:'24', k_kul:'3,7', k_bsmv:'5',
+    gir: { k_ana:'2.175.234', k_faiz:'3,61', k_vade:'24', k_kul:'1,1', k_bsmv:'5',
            k_kom:'', k_sig:'' },
-    olc: [ { id:'k_efektif', bek:4.18, tol:0.01, not:'efektif aylik oran' },
+    olc: [ { id:'k_efektif', bek:3.90, tol:0.01, not:'efektif aylik oran' },
            { id:'k_alt',     ara:'139.623', not:'aylik taksit' },
-           { id:'k_tablo',   ara:'84.508',  not:'pesin kesilen masraf' } ] },
+           { id:'k_tablo',   ara:'25.124',  not:'pesin kesilen masraf' } ] },
 
   { ad: 'a05 rotatif · sade', fn: 'rotatif',
     gir: { r_ana:'1.000.000', r_faiz:'45', r_gun:'90', r_kom:'0,5', r_komay:'3',
@@ -276,7 +276,7 @@ const metin = e => (e.textContent && e.textContent.trim()) || (e.innerHTML || ''
       { arac:'a1',  id:'t_tablo',   ara:'1,11',  not:'cari oran' },
       { arac:'a2',  id:'d_dscr',    ara:'1,28',  not:'DSCR' },
       { arac:'a3',  id:'n_ccc',     ara:'132',   not:'gün sayısı' },
-      { arac:'a4',  id:'k_efektif', ara:'%4,18', not:'efektif oran' },
+      { arac:'a4',  id:'k_efektif', ara:'%3,90', not:'efektif oran' },
       { arac:'a5',  id:'r_yil',     ara:'%62',   not:'yıllık maliyet' },
       { arac:'a6',  id:'s_yil',     ara:'%58,9', not:'yıllık maliyet' },
       { arac:'a7',  id:'i_yil',     ara:'%74,3', not:'yıllık maliyet' },
@@ -338,7 +338,7 @@ const metin = e => (e.textContent && e.textContent.trim()) || (e.innerHTML || ''
         try { vm.runInContext(mb, ctx3, { timeout: 8000 }); } catch (e) { sorun.push('mini hesap kosmadi: ' + e.message); }
         const oku2 = id => { const e = el2(id); return ((e.innerHTML || e.textContent) + '').replace(/<[^>]*>/g, ''); };
         const cikan = oku2('m_sonuc');
-        const beklenen = { oran:'%4,18', taksit:'139.623', pesin:'84.508', net:'2.090.726', toplam:'1.260.229' };
+        const beklenen = { oran:'%3,90', taksit:'139.623', pesin:'25.124', net:'2.150.110', toplam:'1.200.845' };
         const hata2 = [];
         if (!cikan.includes(beklenen.oran))            hata2.push(`oran "${beklenen.oran}" değil, "${cikan}"`);
         if (!oku2('m_taksit').includes(beklenen.taksit)) hata2.push(`taksit ${beklenen.taksit} yok`);
@@ -355,7 +355,7 @@ const metin = e => (e.textContent && e.textContent.trim()) || (e.innerHTML || ''
           sorun.push(...hata2.map(x => 'mini hesap — ' + x));
           for (const x of hata2) console.log('  🔴 MİNİ HESAP  %s', x);
         } else {
-          console.log("  tamam  ana sayfa mini hesabı   Araç 04'le aynı: %4,18/ay · 139.623 ₺ · 84.508 ₺");
+          console.log("  tamam  ana sayfa mini hesabı   Araç 04'le aynı: %3,90/ay · 139.623 ₺ · 25.124 ₺");
         }
       }
     }

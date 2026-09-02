@@ -21,7 +21,7 @@ düz metin olarak durur — hesabı çalıştırmadan da okunabilir.
   günü; kaç TL işletme sermayesinin dışarıda beklediğini gösterir.
 - [Taksitli ticari kredi](https://caglayancengel.com/hesaplamalar.html#a4): teklifteki aylık
   faiz ile gerçekte ödenen efektif oran arasındaki farkı, kullandırım ücreti ve BSMV dahil
-  çıkarır. Örnek: 2.175.234 ₺ · %3,61/ay · 24 ay · %3,7 kullandırım → gerçek maliyet %4,18/ay.
+  çıkarır. Örnek: 2.175.234 ₺ · %3,61/ay · 24 ay · %1,1 kullandırım → gerçek maliyet %3,90/ay.
 - [Rotatif kredi](https://caglayancengel.com/hesaplamalar.html#a5): gün bazlı faiz ile dönem
   sonu komisyonunu ayrı yıllıklandırır. Örnek: %55 nominal → %62 gerçek.
 - [Spot kredi](https://caglayancengel.com/hesaplamalar.html#a6): vade sonunda tek ödeme;

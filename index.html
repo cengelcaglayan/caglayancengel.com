@@ -633,12 +633,14 @@ footer img{filter:none}
   font-size:14.5px;color:var(--navy)!important;text-decoration:none;
   border-bottom:0!important;transition:background .18s}
 .menu-kutu a[aria-current="page"]{
-  background:var(--navy)!important;color:#fff!important;font-weight:600}
+  background:rgba(200,169,81,.20)!important;color:var(--goldink)!important;font-weight:600}
 /* Her baslik kendi kutusunda (Caglayan 02.09.2026) — tek blok zemin degil. */
-.menu-kutu{display:flex;align-items:center;gap:6px;padding:0;background:none;white-space:nowrap}
+.menu-kutu{display:flex;align-items:center;gap:4px;padding:0;background:none;white-space:nowrap}
+/* Zemin cok kalindi ve yalniz bir baslikta gorunuyordu (Caglayan 02.09.2026):
+   normalde zemin yok, hover ve bulunulan sayfada hafif altin tonu. */
 .menu-kutu>a,.menu-kutu .mgrup>a{white-space:nowrap;
-  background:var(--band);padding:7px 12px;border-radius:4px}
-.menu-kutu>a:hover,.menu-kutu .mgrup>a:hover{background:#EDE8DC}
+  background:none;padding:6px 10px;border-radius:4px}
+.menu-kutu>a:hover,.menu-kutu .mgrup>a:hover{background:rgba(200,169,81,.13)}
 .marka .nm{white-space:nowrap}
 @media(max-width:1200px){.menu-kutu{gap:4px}
   .menu-kutu>a,.menu-kutu .mgrup>a{font-size:13.5px;padding:6px 9px}}
@@ -776,7 +778,7 @@ footer img{filter:none}
         <label>Anapara (TL)<input id="m_ana" type="text" inputmode="decimal" value="2.175.234"></label>
         <label>Aylık faiz (%)<input id="m_faiz" type="text" inputmode="decimal" value="3,61"></label>
         <label>Vade (ay)<input id="m_vade" type="text" inputmode="decimal" value="24"></label>
-        <label>Dosya masrafı (%)<input id="m_kul" type="text" inputmode="decimal" value="3,7"></label>
+        <label>Dosya masrafı (%)<input id="m_kul" type="text" inputmode="decimal" value="1,1"></label>
         <label>İlave komisyon (TL)<input id="m_kom" type="text" inputmode="decimal" value="0"></label>
         <label>Sigorta (TL)<input id="m_sig" type="text" inputmode="decimal" value="0"></label>
       </div>
@@ -784,18 +786,19 @@ footer img{filter:none}
         <input id="m_taksitin" type="text" inputmode="decimal" placeholder="örn. 139.623"></label>
       <div class="mini-son">
         <span class="mini-lb">Gerçekte ödediğiniz</span>
-        <strong id="m_sonuc">%4,18<small>/ay</small></strong>
+        <strong id="m_sonuc">%3,90<small>/ay</small></strong>
         <table class="mini-tab"><tbody>
-          <tr><td>Peşin kesilen masraf</td><td id="m_pesin">84.508 ₺</td></tr>
-          <tr><td>Hesabınıza giren</td><td id="m_net">2.090.726 ₺</td></tr>
+          <tr><td>Peşin kesilen masraf</td><td id="m_pesin">25.124 ₺</td></tr>
+          <tr><td>Hesabınıza giren</td><td id="m_net">2.150.110 ₺</td></tr>
+          <tr id="m_nomsat" hidden><td>Bankanın uyguladığı faiz <span class="mini-ip">taksitten geri hesaplandı</span></td><td id="m_nom">—</td></tr>
           <tr><td>Aylık taksit</td><td id="m_taksit">139.623 ₺</td></tr>
           <tr><td>Toplam geri ödeme <span id="m_adet">(24 taksit)</span></td><td id="m_geri">3.350.955 ₺</td></tr>
-          <tr><td><b>Toplam maliyet</b> <span class="mini-ip">geri ödeme − hesabınıza giren</span></td><td id="m_toplam"><b>1.260.229 ₺</b></td></tr>
+          <tr><td><b>Toplam maliyet</b> <span class="mini-ip">geri ödeme − hesabınıza giren</span></td><td id="m_toplam"><b>1.200.845 ₺</b></td></tr>
         </tbody></table>
       </div>
-      <p class="mini-not">2.175.234 ₺ anapara, aylık %3,61 faiz, 24 ay vade, %3,7 dosya masrafı
-      ve %5 BSMV ile gerçekte ödenen <b>aylık %4,18</b> olur. Banka 84.508 ₺'yi baştan keser,
-      hesabınıza 2.090.726 ₺ girer; ama faiz 2.175.234 ₺ üzerinden işler ve aylık taksit
+      <p class="mini-not">2.175.234 ₺ anapara, aylık %3,61 faiz, 24 ay vade, %1,1 dosya masrafı
+      ve %5 BSMV ile gerçekte ödenen <b>aylık %3,90</b> olur. Banka 25.124 ₺'yi baştan keser,
+      hesabınıza 2.150.110 ₺ girer; ama faiz 2.175.234 ₺ üzerinden işler ve aylık taksit
       139.623 ₺ olur. Fark buradan doğar.</p>
       <a class="mini-lnk" href="hesaplamalar.html">Diğer 9 hesaplama aracı &rarr;</a>
     </div>
@@ -1627,6 +1630,7 @@ if ('serviceWorker' in navigator) {
   var P=document.getElementById('m_pesin'), NE=document.getElementById('m_net'),
       TK=document.getElementById('m_taksit'), TP=document.getElementById('m_toplam'),
       GE=document.getElementById('m_geri'), AD=document.getElementById('m_adet'),
+      NOM=document.getElementById('m_nom'), NOMSAT=document.getElementById('m_nomsat'),
       NOT=document.querySelector('.mini-not');
   function hesapla(){
     var a=N(A.value), f=N(F.value), n=N(V.value), k=(N(K.value)||0)/100, b=0.05;
@@ -1651,6 +1655,19 @@ if ('serviceWorker' in navigator) {
     S.innerHTML='%'+(i*100).toLocaleString('tr-TR',{minimumFractionDigits:2,maximumFractionDigits:2})+'<small>/ay</small>';
     P.textContent=TL(pesin); NE.textContent=TL(net); TK.textContent=TL(tk);
     GE.textContent=TL(tk*n); AD.textContent='('+n.toLocaleString('tr-TR')+' taksit)';
+    /* Banka taksiti soyler, orani soylemez. Taksit girildiginde ANAPARA uzerinden
+       geri hesaplanan nominal aylik faiz gosterilir (BSMV ayrilmis halde) —
+       kullanicinin asil merak ettigi rakam budur (Caglayan, 02.09.2026). */
+    if(verilen!==null && verilen>0){
+      var bdA=function(o){ return o<=0 ? tk*n : tk*(1-Math.pow(1+o,-n))/o; };
+      var rr=0;
+      if(bdA(1e-9)>=a){ var al=1e-9, us=5;
+        for(var c2=0;c2<300;c2++){ var o2=(al+us)/2; if(bdA(o2)>a) al=o2; else us=o2; }
+        rr=(al+us)/2; }
+      var nominal=rr/(1+b);
+      NOM.textContent='%'+(nominal*100).toLocaleString('tr-TR',{minimumFractionDigits:2,maximumFractionDigits:2});
+      NOMSAT.hidden=false;
+    } else { NOMSAT.hidden=true; }
     TP.innerHTML='<b>'+TL(tk*n-net)+'</b>';
     /* Statik ornek metni yalniz varsayilan degerlerde durur: kullanici bir rakami
        degistirince eski ornegi anlatmaya devam etmesi kafa karistiriyordu
