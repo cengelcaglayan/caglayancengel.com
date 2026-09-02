@@ -55,8 +55,9 @@ KONTROL = [
     ("mail gizleme",       'style="display:none">nospam',        SAYFA),
     ("WhatsApp",           "wa.me/905337619443",                 SAYFA),
     ("kartvizit dosyasi",  "caglayan-cengel.vcf",                ["/", "/kart.html"]),
-    ("karekod",            "hero-qr",                            ["/"]),
+    ("karekod",            "ct-qr",                              ["/"]),
     ("olcut listesi",      'class="olc"',                        ["/"]),
+    ("gorusme formu",      'id="gform"',                         ["/"]),
 ]
 print()
 for ad, iz, nerede in KONTROL:
