@@ -340,6 +340,17 @@ footer img{filter:none}
 .plan-tablo tr.kaydi td:nth-child(2){color:var(--goldink);font-weight:600}
 .plan-tablo tfoot td{border-top:2px solid var(--rule);border-bottom:0;font-weight:700;padding-top:9px}
 .plan-not{margin:12px 0 0;font-size:11.5px;line-height:1.55;color:var(--soft)}
+.plan-kunye{display:flex;align-items:center;gap:14px;margin-top:18px;padding-top:11px;
+  border-top:2px solid var(--gold)}
+.pk-logo{width:26px;height:26px;flex:0 0 auto}
+.pk-yazi{flex:1;min-width:0}
+.pk-ad{display:block;font-family:'Playfair Display',serif;font-weight:700;font-size:13px;
+  letter-spacing:2px;color:var(--goldink)}
+.pk-unvan{display:block;font-size:10.5px;color:var(--soft);margin-top:1px}
+.pk-slogan{display:block;font-size:10.5px;font-style:italic;color:var(--soft);margin-top:1px}
+.pk-iletisim{text-align:right;font-size:10.5px;color:var(--soft);line-height:1.62}
+.pk-iletisim>span{display:block}
+@media(max-width:520px){.plan-kunye{flex-wrap:wrap;gap:10px}.pk-iletisim{text-align:left;width:100%}}
 @media print{
   /* Yazdirilan bolum .yazilan ile isaretlenir — belge her araca yayildi,
      #a4 sabitlemesi rotatif/spot/iskonto belgelerini bos kagida basiyordu. */
@@ -348,7 +359,11 @@ footer img{filter:none}
   .plan-ust,.plan-yaz{display:none!important}
   .plan-cikti{border:0;padding:0}
   .plan-tablo{font-size:10.5px}
-  @page{margin:14mm}
+  /* Kunye her SAYFANIN dibinde tekrarlar (position:fixed baskida her sayfaya
+     basilir). @page alt bosluk kunyeye yer ayirir; yoksa tablo ustune biner. */
+  .plan-kunye{position:fixed;bottom:0;left:0;right:0;margin:0;
+    padding-top:8px;background:#fff}
+  @page{margin:14mm 14mm 28mm}
 }
 </style>
 <style>
@@ -619,6 +634,19 @@ footer img{filter:none}
         <p class="plan-not">Bu plan bilgilendirme amaçlıdır; kredi taahhüdü değildir.
           Bankanın planıyla küçük farklar olabilir — gün bazı (360/365), ilk dönem faizi
           ve yuvarlama bankadan bankaya değişir. Girilen rakamlar tarayıcınızdan çıkmaz.</p>
+        <div class="plan-kunye">
+          <img src="logo.png" alt="" class="pk-logo">
+          <div class="pk-yazi">
+            <span class="pk-ad">ÇAĞLAYAN ÇENGEL</span>
+            <span class="pk-unvan">Finansal Yönetim Danışmanı</span>
+            <span class="pk-slogan">KOBİ'lere Güven Veren Finansal Rehberlik</span>
+          </div>
+          <div class="pk-iletisim">
+            <span>0533 761 94 43</span>
+            <span><span>info</span><span style="display:none">nospam</span><span>&#64;caglayancengel&#46;com</span></span>
+            <span>caglayancengel.com</span>
+          </div>
+        </div>
       </div>
     </div>
     <div class="ornek"><span class="et">Örnek hesap</span><b>2.175.234 ₺</b> anapara, aylık <b>%3,61</b> faiz, <b>24 ay</b> vade, <b>%1,1</b> kullandırım ücreti ve <b>%5</b> BSMV ile gerçek maliyet <b>aylık %3,90</b> çıkar. Peşin kesilen masraf <b>25.124 ₺</b>, hesaba giren para <b>2.150.110 ₺</b>, aylık taksit <b>139.623 ₺</b>, toplam geri ödeme <b>3.350.955 ₺</b>, toplam maliyet <b>1.200.845 ₺</b>. Teklifteki %3,61 ile gerçekte ödenen %3,90 arasındaki fark masraf kalemlerinden gelir; peşin kesilen tutar üzerinden de faiz ödenir.<span class="eylem"><b>Ne sorulur:</b> Bankaya sorun: “Efektif aylık maliyet %3,90 çıkıyor, teklifte %3,61 yazıyor — kullandırım ücretini düşürürseniz fark kapanır mı?” Masraf kalemleri faizden daha çok pazarlığa açıktır.</span></div>
@@ -689,6 +717,19 @@ footer img{filter:none}
           </table>
         </div>
         <p class="plan-not">Bu belge bilgilendirme amaçlıdır; kredi taahhüdü değildir. Bankanın hesabıyla küçük farklar olabilir — gün bazı (360/365), ilk dönem faizi ve yuvarlama bankadan bankaya değişir. Girilen rakamlar tarayıcınızdan çıkmaz.</p>
+        <div class="plan-kunye">
+          <img src="logo.png" alt="" class="pk-logo">
+          <div class="pk-yazi">
+            <span class="pk-ad">ÇAĞLAYAN ÇENGEL</span>
+            <span class="pk-unvan">Finansal Yönetim Danışmanı</span>
+            <span class="pk-slogan">KOBİ'lere Güven Veren Finansal Rehberlik</span>
+          </div>
+          <div class="pk-iletisim">
+            <span>0533 761 94 43</span>
+            <span><span>info</span><span style="display:none">nospam</span><span>&#64;caglayancengel&#46;com</span></span>
+            <span>caglayancengel.com</span>
+          </div>
+        </div>
       </div>
     </div>
     <div class="ornek"><span class="et">Örnek hesap</span><b>1.000.000 ₺</b> rotatif kredi, yıllık <b>%55</b> faiz, <b>92 gün</b> kullanım, üç ayda bir alınan <b>%1</b> dönem sonu komisyonu ve <b>%5</b> BSMV ile gerçek yıllık maliyet <b>%62</b> olur. 92 günlük dönemin maliyeti <b>158.083 ₺</b>. Nominal %55 ile gerçek %62 arasındaki yedi puan, dönem sonu komisyonunun yıllığa çevrilmiş halidir — kısa kullanımda komisyon faizden büyük olabilir.<span class="eylem"><b>Ne sorulur:</b> Bankaya sorun: “Komisyonu üç ayda bir yerine altı ayda bir alsanız yıllık maliyetim ne olur?” Komisyon periyodu, oranın kendisi kadar belirleyicidir.</span></div>
@@ -755,6 +796,19 @@ footer img{filter:none}
           </table>
         </div>
         <p class="plan-not">Bu belge bilgilendirme amaçlıdır; kredi taahhüdü değildir. Bankanın hesabıyla küçük farklar olabilir — gün bazı (360/365), ilk dönem faizi ve yuvarlama bankadan bankaya değişir. Girilen rakamlar tarayıcınızdan çıkmaz.</p>
+        <div class="plan-kunye">
+          <img src="logo.png" alt="" class="pk-logo">
+          <div class="pk-yazi">
+            <span class="pk-ad">ÇAĞLAYAN ÇENGEL</span>
+            <span class="pk-unvan">Finansal Yönetim Danışmanı</span>
+            <span class="pk-slogan">KOBİ'lere Güven Veren Finansal Rehberlik</span>
+          </div>
+          <div class="pk-iletisim">
+            <span>0533 761 94 43</span>
+            <span><span>info</span><span style="display:none">nospam</span><span>&#64;caglayancengel&#46;com</span></span>
+            <span>caglayancengel.com</span>
+          </div>
+        </div>
       </div>
     </div>
     <div class="ornek"><span class="et">Örnek hesap</span><b>5.000.000 ₺</b> spot kredi, yıllık <b>%55</b> faiz, <b>365 gün</b> vade, <b>%1,1</b> kullandırım ücreti ve <b>%5</b> BSMV ile gerçek yıllık maliyet <b>%58,9</b>. Vade sonunda ödenecek toplam <b>7.985.354 ₺</b> — anaparanın üstüne <b>2.985.354 ₺</b>. Spot kredide faiz vade sonunda tek seferde ödenir; kısa vadelerde kullandırım ücreti yıllığa çevrildiğinde maliyeti belirgin şekilde yükseltir.<span class="eylem"><b>Ne sorulur:</b> Bankaya sorun: “Kullandırım ücretini vadeye yayarsanız efektif maliyetim ne olur?” Kısa vadeli spotta peşin ücret, faizden daha pahalıya gelebilir.</span></div>
@@ -823,6 +877,19 @@ footer img{filter:none}
           </table>
         </div>
         <p class="plan-not">Bu belge bilgilendirme amaçlıdır; kredi taahhüdü değildir. Bankanın hesabıyla küçük farklar olabilir — gün bazı (360/365), ilk dönem faizi ve yuvarlama bankadan bankaya değişir. Girilen rakamlar tarayıcınızdan çıkmaz.</p>
+        <div class="plan-kunye">
+          <img src="logo.png" alt="" class="pk-logo">
+          <div class="pk-yazi">
+            <span class="pk-ad">ÇAĞLAYAN ÇENGEL</span>
+            <span class="pk-unvan">Finansal Yönetim Danışmanı</span>
+            <span class="pk-slogan">KOBİ'lere Güven Veren Finansal Rehberlik</span>
+          </div>
+          <div class="pk-iletisim">
+            <span>0533 761 94 43</span>
+            <span><span>info</span><span style="display:none">nospam</span><span>&#64;caglayancengel&#46;com</span></span>
+            <span>caglayancengel.com</span>
+          </div>
+        </div>
       </div>
     </div>
     <div class="ornek"><span class="et">Örnek hesap</span><b>1.000.000 ₺</b> nominal çek, yıllık <b>%45</b> iskonto faizi, <b>90 gün</b> ortalama vade, <b>%1,1</b> kullandırım ücreti, <b>%5</b> BSMV ve <b>360</b> gün esası ile gerçek yıllık maliyet <b>%74,3</b> çıkar. Elinize geçen <b>870.325 ₺</b>, basit yıllık <b>%59,6</b>. İlan edilen %45 ile gerçek %74,3 arasındaki fark, kesintinin peşin alınmasından doğar: parayı 870.325 ₺ olarak alıp 1.000.000 ₺ üzerinden hesaplanan faizi ödersiniz.<span class="eylem"><b>Ne sorulur:</b> Bankaya sorun: “Gün esasını 360 mı 365 mi alıyorsunuz?” Beş günlük fark, 90 günlük bir işlemde efektif maliyeti gözle görülür biçimde değiştirir.</span></div>
