@@ -91,7 +91,7 @@ h2{font-size:clamp(26px,2.9vw,34px);margin-bottom:14px}
 .top .marka{display:flex;align-items:center;gap:14px;text-decoration:none;transition:opacity .2s ease}
 .top @media(hover:hover) and (pointer:fine){.marka:hover{opacity:.72}}
 .top .sp{flex:1}
-.topnav{display:flex;gap:26px;align-items:center;margin-right:8px}
+.topnav{display:flex;gap:4px;align-items:center;margin-right:8px}
 .topnav a{
   color:var(--body);text-decoration:none;font-size:14.5px;font-weight:500;
   padding-bottom:2px;border-bottom:1px solid transparent
@@ -642,17 +642,17 @@ footer img{filter:none}
 .menu-kutu{display:flex;align-items:center;gap:4px;padding:0;background:none;white-space:nowrap}
 /* Zemin cok kalindi ve yalniz bir baslikta gorunuyordu (Caglayan 02.09.2026):
    normalde zemin yok, hover ve bulunulan sayfada hafif altin tonu. */
-.menu-kutu>a,.menu-kutu .mgrup>a{white-space:nowrap;
+.menu-kutu>a,.topnav>a,.menu-kutu .mgrup>a{white-space:nowrap;
   background:none;padding:6px 8px 4px;border-radius:0}
 /* Altin alt cizgi geri geldi (Caglayan 02.09.2026) — markada da gecerli.
    hover:hover sorgusuna kapatilmadi: dokunmatik cihazda dokununca da gorunur. */
-.menu-kutu>a,.menu-kutu .mgrup>a{border-bottom:2px solid transparent;transition:border-color .18s}
-.menu-kutu>a:hover,.menu-kutu .mgrup>a:hover,
-.menu-kutu>a:focus,.menu-kutu .mgrup>a:focus,
-.menu-kutu>a:active,.menu-kutu .mgrup>a:active{border-bottom-color:var(--gold);background:none}
+.menu-kutu>a,.topnav>a,.menu-kutu .mgrup>a{border-bottom:2px solid transparent;transition:border-color .18s}
+.menu-kutu>a,.topnav>a:hover,.menu-kutu .mgrup>a:hover,
+.menu-kutu>a,.topnav>a:focus,.menu-kutu .mgrup>a:focus,
+.menu-kutu>a,.topnav>a:active,.menu-kutu .mgrup>a:active{border-bottom-color:var(--gold);background:none}
 .marka .nm{white-space:nowrap}
 @media(max-width:1200px){.menu-kutu{gap:4px}
-  .menu-kutu>a,.menu-kutu .mgrup>a{font-size:13.5px;padding:6px 9px}}
+  .menu-kutu>a,.topnav>a,.menu-kutu .mgrup>a{font-size:13.5px;padding:6px 9px}}
 .marka:hover .nm{opacity:.72}
 /* Mobilde üst menü gizlenir, hamburger devreye girer. Linkler .menu-kutu
    içine alınınca eski '.topnav' kuralı eşleşmez olmuştu — menü ekrandan
