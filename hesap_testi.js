@@ -47,6 +47,28 @@ const TESTLER = [
            { id:'k_plantablo', ara:'2.175.234', not:'anapara toplami — bakiye tam kapaniyor' },
            { id:'k_planozet',  ara:'21.914',    not:'takvim etkisi · vade boyunca fark' } ] },
 
+  /* Belge uretimi — rotatif · spot · iskonto. Referanslar bagimsiz hesapla
+     turetildi (bkz. scratchpad/belge_testleri.py basligi). Belgenin degeri
+     takvim etkisini TUTAR olarak gostermesidir; o satir kaybolursa kirmizi. */
+  { ad: 'a05 rotatif belgesi', fn: 'rotatifPlani',
+    gir: { r_ana:'1.000.000', r_faiz:'45', r_gun:'90', r_kom:'0,5', r_komay:'3',
+           r_bsmv:'5', r_kul:'', r_tahsis:'', r_tarih:'2026-08-15', r_donem:'ceyrek' },
+    olc: [ { id:'r_plantablo', ara:'65.625',    not:'1. donem odemesi (46 gun)' },
+           { id:'r_plantablo', ara:'1.128.625', not:'toplam odeme' },
+           { id:'r_planozet',  ara:'46 gün',    not:'ilk odeme vadede degil ceyrek sonunda' } ] },
+
+  { ad: 'a06 spot belgesi', fn: 'spotPlani',
+    gir: { s_ana:'1.000.000', s_faiz:'45', s_gun:'90', s_kul:'1', s_bsmv:'5',
+           s_tarih:'2026-09-07', s_kaydir:'ileri' },
+    olc: [ { id:'s_plantablo', ara:'113.750', not:'vade Pazara denk geldi, 91 gun faiz' },
+           { id:'s_planozet',  ara:'91 gün',  not:'kayma gun sayisina yansidi' } ] },
+
+  { ad: 'a07 iskonto belgesi', fn: 'iskontoPlani',
+    gir: { i_nom:'1.000.000', i_faiz:'45', i_gun:'90', i_kul:'1,1', i_bsmv:'5',
+           i_esas:'360', i_tarih:'2026-09-02', i_vade:'2026-12-05' },
+    olc: [ { id:'i_plantablo', ara:'865.075', not:'elinize gecen (94 gun)' },
+           { id:'i_planozet',  ara:'5.250',   not:'elle girilen 90 gun ile farkin bedeli' } ] },
+
   { ad: 'a05 rotatif · sade', fn: 'rotatif',
     gir: { r_ana:'1.000.000', r_faiz:'45', r_gun:'90', r_kom:'0,5', r_komay:'3',
            r_bsmv:'5', r_kul:'', r_tahsis:'' },

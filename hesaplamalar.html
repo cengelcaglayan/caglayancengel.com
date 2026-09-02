@@ -341,8 +341,10 @@ footer img{filter:none}
 .plan-tablo tfoot td{border-top:2px solid var(--rule);border-bottom:0;font-weight:700;padding-top:9px}
 .plan-not{margin:12px 0 0;font-size:11.5px;line-height:1.55;color:var(--soft)}
 @media print{
-  body>*:not(#a4){display:none!important}
-  #a4>.wrap>*:not(.plan){display:none!important}
+  /* Yazdirilan bolum .yazilan ile isaretlenir — belge her araca yayildi,
+     #a4 sabitlemesi rotatif/spot/iskonto belgelerini bos kagida basiyordu. */
+  body>*:not(.yazilan){display:none!important}
+  .yazilan>.wrap>*:not(.plan){display:none!important}
   .plan-ust,.plan-yaz{display:none!important}
   .plan-cikti{border:0;padding:0}
   .plan-tablo{font-size:10.5px}
@@ -665,6 +667,30 @@ footer img{filter:none}
   </div>
 
 
+    
+    <div class="plan">
+      <div class="plan-ust">
+        <div class="plan-gir"><label>Kullandırım tarihi<input id="r_tarih" type="date"></label><label>Dönem sonu<select id="r_donem"><option value="ceyrek">Mart · Haziran · Eylül · Aralık sonu</option><option value="ay">Her ay sonu</option></select></label></div>
+        <button type="button" class="plan-btn" id="r_planbtn">Dönem planı oluştur</button>
+      </div>
+      <div class="plan-cikti" id="r_plan" hidden>
+        <div class="plan-bas">
+          <div>
+            <span class="plan-marka">ÇAĞLAYAN ÇENGEL</span>
+            <span class="plan-alt">Finansal Yönetim Danışmanı · caglayancengel.com</span>
+          </div>
+          <button type="button" class="plan-yaz" id="r_yazdir">Yazdır / PDF</button>
+        </div>
+        <p class="plan-ozet" id="r_planozet"></p>
+        <div class="plan-tablo-sar">
+          <table class="plan-tablo">
+            <thead><tr><th>#</th><th>Dönem sonu</th><th>Gün</th><th>Faiz</th><th>BSMV</th><th>Komisyon</th><th>Anapara</th><th>Ödeme</th></tr></thead>
+            <tbody id="r_plantablo"></tbody>
+          </table>
+        </div>
+        <p class="plan-not">Bu belge bilgilendirme amaçlıdır; kredi taahhüdü değildir. Bankanın hesabıyla küçük farklar olabilir — gün bazı (360/365), ilk dönem faizi ve yuvarlama bankadan bankaya değişir. Girilen rakamlar tarayıcınızdan çıkmaz.</p>
+      </div>
+    </div>
     <div class="ornek"><span class="et">Örnek hesap</span><b>1.000.000 ₺</b> rotatif kredi, yıllık <b>%55</b> faiz, <b>92 gün</b> kullanım, üç ayda bir alınan <b>%1</b> dönem sonu komisyonu ve <b>%5</b> BSMV ile gerçek yıllık maliyet <b>%62</b> olur. 92 günlük dönemin maliyeti <b>158.083 ₺</b>. Nominal %55 ile gerçek %62 arasındaki yedi puan, dönem sonu komisyonunun yıllığa çevrilmiş halidir — kısa kullanımda komisyon faizden büyük olabilir.<span class="eylem"><b>Ne sorulur:</b> Bankaya sorun: “Komisyonu üç ayda bir yerine altı ayda bir alsanız yıllık maliyetim ne olur?” Komisyon periyodu, oranın kendisi kadar belirleyicidir.</span></div>
   <div class="arac-cta">
       <span>Rotatif kredide maliyet, kullanılan gün sayısına göre değişir; tabloda görünen oran her zaman ödenen oran değildir.</span>
@@ -707,6 +733,30 @@ footer img{filter:none}
   </div>
 
 
+    
+    <div class="plan">
+      <div class="plan-ust">
+        <div class="plan-gir"><label>Kullandırım tarihi<input id="s_tarih" type="date"></label><label>Vade hafta sonuna denk gelirse<select id="s_kaydir"><option value="ileri">Sonraki iş gününe</option><option value="yok">Kaydırma yok</option></select></label></div>
+        <button type="button" class="plan-btn" id="s_planbtn">Belge oluştur</button>
+      </div>
+      <div class="plan-cikti" id="s_plan" hidden>
+        <div class="plan-bas">
+          <div>
+            <span class="plan-marka">ÇAĞLAYAN ÇENGEL</span>
+            <span class="plan-alt">Finansal Yönetim Danışmanı · caglayancengel.com</span>
+          </div>
+          <button type="button" class="plan-yaz" id="s_yazdir">Yazdır / PDF</button>
+        </div>
+        <p class="plan-ozet" id="s_planozet"></p>
+        <div class="plan-tablo-sar">
+          <table class="plan-tablo">
+            <thead><tr><th>Tarih</th><th>Gün</th><th>İşlem</th><th>Tutar</th></tr></thead>
+            <tbody id="s_plantablo"></tbody>
+          </table>
+        </div>
+        <p class="plan-not">Bu belge bilgilendirme amaçlıdır; kredi taahhüdü değildir. Bankanın hesabıyla küçük farklar olabilir — gün bazı (360/365), ilk dönem faizi ve yuvarlama bankadan bankaya değişir. Girilen rakamlar tarayıcınızdan çıkmaz.</p>
+      </div>
+    </div>
     <div class="ornek"><span class="et">Örnek hesap</span><b>5.000.000 ₺</b> spot kredi, yıllık <b>%55</b> faiz, <b>365 gün</b> vade, <b>%1,1</b> kullandırım ücreti ve <b>%5</b> BSMV ile gerçek yıllık maliyet <b>%58,9</b>. Vade sonunda ödenecek toplam <b>7.985.354 ₺</b> — anaparanın üstüne <b>2.985.354 ₺</b>. Spot kredide faiz vade sonunda tek seferde ödenir; kısa vadelerde kullandırım ücreti yıllığa çevrildiğinde maliyeti belirgin şekilde yükseltir.<span class="eylem"><b>Ne sorulur:</b> Bankaya sorun: “Kullandırım ücretini vadeye yayarsanız efektif maliyetim ne olur?” Kısa vadeli spotta peşin ücret, faizden daha pahalıya gelebilir.</span></div>
   <div class="arac-cta">
       <span>Spot kredide vade sonu tek ödeme, nakit akışını beklenmedik bir günde sıkıştırabilir.</span>
@@ -751,6 +801,30 @@ footer img{filter:none}
   </div>
 
 
+    
+    <div class="plan">
+      <div class="plan-ust">
+        <div class="plan-gir"><label>Kırdırma tarihi<input id="i_tarih" type="date"></label><label>Çek vade tarihi<input id="i_vade" type="date"></label></div>
+        <button type="button" class="plan-btn" id="i_planbtn">Belge oluştur</button>
+      </div>
+      <div class="plan-cikti" id="i_plan" hidden>
+        <div class="plan-bas">
+          <div>
+            <span class="plan-marka">ÇAĞLAYAN ÇENGEL</span>
+            <span class="plan-alt">Finansal Yönetim Danışmanı · caglayancengel.com</span>
+          </div>
+          <button type="button" class="plan-yaz" id="i_yazdir">Yazdır / PDF</button>
+        </div>
+        <p class="plan-ozet" id="i_planozet"></p>
+        <div class="plan-tablo-sar">
+          <table class="plan-tablo">
+            <thead><tr><th>Tarih</th><th>Gün</th><th>İşlem</th><th>Tutar</th></tr></thead>
+            <tbody id="i_plantablo"></tbody>
+          </table>
+        </div>
+        <p class="plan-not">Bu belge bilgilendirme amaçlıdır; kredi taahhüdü değildir. Bankanın hesabıyla küçük farklar olabilir — gün bazı (360/365), ilk dönem faizi ve yuvarlama bankadan bankaya değişir. Girilen rakamlar tarayıcınızdan çıkmaz.</p>
+      </div>
+    </div>
     <div class="ornek"><span class="et">Örnek hesap</span><b>1.000.000 ₺</b> nominal çek, yıllık <b>%45</b> iskonto faizi, <b>90 gün</b> ortalama vade, <b>%1,1</b> kullandırım ücreti, <b>%5</b> BSMV ve <b>360</b> gün esası ile gerçek yıllık maliyet <b>%74,3</b> çıkar. Elinize geçen <b>870.325 ₺</b>, basit yıllık <b>%59,6</b>. İlan edilen %45 ile gerçek %74,3 arasındaki fark, kesintinin peşin alınmasından doğar: parayı 870.325 ₺ olarak alıp 1.000.000 ₺ üzerinden hesaplanan faizi ödersiniz.<span class="eylem"><b>Ne sorulur:</b> Bankaya sorun: “Gün esasını 360 mı 365 mi alıyorsunuz?” Beş günlük fark, 90 günlük bir işlemde efektif maliyeti gözle görülür biçimde değiştirir.</span></div>
   <div class="arac-cta">
       <span>Çek kırdırmanın gerçek maliyeti ilan edilen orandan çok daha yüksek çıkabilir. Elinizde yalnız &ldquo;hesabınıza şu kadar geçer&rdquo; rakamı varsa <a href="#a10">Araç 10</a> onu orana çevirir.</span>
@@ -1779,6 +1853,162 @@ function odemePlani(){
   document.getElementById('k_plan').hidden = false;
 }
 
+/* ================= BELGE URETIMI — rotatif · spot · iskonto =================
+   Ortak omurga Arac 04'teki odeme planiyla ayni: marka baslikli, tarayicidan
+   cikmayan, "Yazdir / PDF" ile kagida donen belge. Urun bazinda tablo yapisi
+   farklidir cunku odeme yapisi farklidir. */
+
+/* Rotatif donem sonu: SKILLS/lib/kredi.py §6.4.1 ile ayni kural — Mart /
+   Haziran / Eylul / Aralik ayinin SON IS GUNU. Kayma GERIYE (taksitli kredinin
+   tersine). Bu kural olculdu, uydurulmadi. */
+function oncekiIsGunu(d){
+  var g = new Date(d.getTime());
+  while(g.getDay() === 0 || g.getDay() === 6) g.setDate(g.getDate() - 1);
+  return g;
+}
+function ayinSonGunu(yil, ay){ return new Date(yil, ay + 1, 0); }
+
+/* Kullandirim tarihinden sonraki donem sonlarini uretir. tip: 'ceyrek' | 'ay' */
+function donemSonlari(bas, vade, tip){
+  var liste = [], y = bas.getFullYear(), a = bas.getMonth();
+  for(var i = 0; i < 80; i++){
+    var ay = a + i, yil = y + Math.floor(ay / 12), m = ((ay % 12) + 12) % 12;
+    if(tip === 'ceyrek' && [2,5,8,11].indexOf(m) < 0) continue;
+    var son = oncekiIsGunu(ayinSonGunu(yil, m));
+    if(son <= bas) continue;
+    if(son >= vade) break;
+    liste.push(son);
+  }
+  liste.push(vade);
+  return liste;
+}
+
+function rotatifPlani(){
+  var A = N(r_ana.value), fy = N(r_faiz.value), g = N(r_gun.value);
+  if(A === null || fy === null || g === null || g <= 0) return;
+  var bsmv = (N(r_bsmv.value) || 0) / 100, komO = (N(r_kom.value) || 0) / 100;
+  var kulO = (N(r_kul.value) || 0) / 100, tahsis = N(r_tahsis.value) || 0;
+  var giris = document.getElementById('r_tarih').value;
+  var bas = giris ? new Date(giris + 'T00:00:00') : new Date();
+  var tip = document.getElementById('r_donem').value;
+  var vade = new Date(bas.getTime()); vade.setDate(vade.getDate() + g);
+
+  var sonlar = donemSonlari(bas, vade, tip);
+  var onceki = bas, satir = '', tF = 0, tB = 0, tK = 0, tO = 0;
+  for(var i = 0; i < sonlar.length; i++){
+    var t = sonlar[i], gun = gunFarki(onceki, t);
+    if(gun <= 0) continue;
+    var faiz = A * (fy / 100) * gun / 360, fbs = faiz * bsmv;
+    var kom = A * komO, kbs = kom * bsmv;                 /* donem sonu komisyonu */
+    var son = (i === sonlar.length - 1);
+    var ana = son ? A : 0;
+    var odeme = faiz + fbs + kom + kbs + ana;
+    tF += faiz; tB += fbs + kbs; tK += kom; tO += odeme;
+    satir += '<tr><td>' + (i + 1) + '</td><td>' + trTarih(t) + '</td><td>' + gun
+           + '</td><td>' + TL(faiz) + '</td><td>' + TL(fbs + kbs) + '</td><td>'
+           + TL(kom) + '</td><td>' + TL(ana) + '</td><td>' + TL(odeme) + '</td></tr>';
+    onceki = t;
+  }
+  document.getElementById('r_plantablo').innerHTML = satir
+    + '<tr class="tf"><td colspan="3"><b>Toplam</b></td><td><b>' + TL(tF)
+    + '</b></td><td><b>' + TL(tB) + '</b></td><td><b>' + TL(tK)
+    + '</b></td><td><b>' + TL(A) + '</b></td><td><b>' + TL(tO) + '</b></td></tr>';
+
+  var kul = A * kulO, pesin = kul + kul * bsmv + tahsis + tahsis * bsmv;
+  var ilkGun = gunFarki(bas, sonlar[0]);
+  document.getElementById('r_planozet').innerHTML =
+      '<b>' + TL(A) + '</b> rotatif · yıllık <b>%' + fy.toLocaleString('tr-TR')
+    + '</b> faiz · <b>' + g + ' gün</b> · kullandırım ' + trTarih(bas)
+    + ' · vade ' + trTarih(vade)
+    + (pesin ? ' · peşin kesilen masraf <b>' + TL(pesin) + '</b> · hesaba giren <b>'
+        + TL(A - pesin) + '</b>' : '')
+    /* Asil bulgu: ilk odeme vade sonunda degil, ilk donem sonunda gelir. */
+    + '<br><b>Dönem etkisi:</b> ilk ödeme vadede değil <b>' + trTarih(sonlar[0])
+    + '</b> tarihinde, kullandırımdan <b>' + ilkGun + ' gün</b> sonra doğar — '
+    + 'toplam <b>' + sonlar.length + ' dönem</b> ödemesi vardır.'
+    + '<br>Belge tarihi: ' + trTarih(new Date());
+  document.getElementById('r_plan').hidden = false;
+}
+
+function spotPlani(){
+  var A = N(s_ana.value), fy = N(s_faiz.value), g = N(s_gun.value);
+  if(A === null || fy === null || g === null || g <= 0) return;
+  var bsmv = (N(s_bsmv.value) || 0) / 100, kulO = (N(s_kul.value) || 0) / 100;
+  var giris = document.getElementById('s_tarih').value;
+  var bas = giris ? new Date(giris + 'T00:00:00') : new Date();
+  var kaydir = document.getElementById('s_kaydir').value === 'ileri';
+  var ham = new Date(bas.getTime()); ham.setDate(ham.getDate() + g);
+  var vade = kaydir ? isGunu(ham) : ham;
+  var gercekGun = gunFarki(bas, vade);
+
+  var kul = A * kulO, kbs = kul * bsmv;
+  var faiz = A * (fy / 100) * gercekGun / 360, fbs = faiz * bsmv;
+  var net = A - kul - kbs, odeme = A + faiz + fbs;
+
+  document.getElementById('s_plantablo').innerHTML =
+      '<tr><td>' + trTarih(bas) + '</td><td>0</td><td>Kullandırım — anapara</td><td>' + TL(A) + '</td></tr>'
+    + (kul ? '<tr><td>' + trTarih(bas) + '</td><td>0</td><td>Kullandırım ücreti + BSMV (peşin kesilir)</td><td>-' + TL(kul + kbs) + '</td></tr>' : '')
+    + '<tr class="tf"><td>' + trTarih(bas) + '</td><td>0</td><td><b>Hesabınıza geçen</b></td><td><b>' + TL(net) + '</b></td></tr>'
+    + '<tr><td>' + trTarih(vade) + '</td><td>' + gercekGun + '</td><td>Faiz</td><td>' + TL(faiz) + '</td></tr>'
+    + '<tr><td>' + trTarih(vade) + '</td><td>' + gercekGun + '</td><td>Faiz üzerinden BSMV</td><td>' + TL(fbs) + '</td></tr>'
+    + '<tr><td>' + trTarih(vade) + '</td><td>' + gercekGun + '</td><td>Anapara</td><td>' + TL(A) + '</td></tr>'
+    + '<tr class="tf"><td>' + trTarih(vade) + '</td><td>' + gercekGun + '</td><td><b>Vade sonu tek ödeme</b></td><td><b>' + TL(odeme) + '</b></td></tr>';
+
+  var kaymaGun = gunFarki(ham, vade);
+  var kaymaBedeli = A * (fy / 100) * kaymaGun / 360 * (1 + bsmv);
+  document.getElementById('s_planozet').innerHTML =
+      '<b>' + TL(A) + '</b> spot · yıllık <b>%' + fy.toLocaleString('tr-TR')
+    + '</b> faiz · kullandırım ' + trTarih(bas) + ' · vade <b>' + trTarih(vade)
+    + '</b> · <b>' + gercekGun + ' gün</b>'
+    /* Kaymanin bedeli tutar olarak: spotta vade bir gun kaysa faiz de kayar. */
+    + (kaymaGun ? '<br><b>Takvim etkisi:</b> vade hafta sonuna denk geldiği için <b>'
+        + kaymaGun + ' gün</b> ileri kaydı; bunun faiz bedeli <b>' + TL(kaymaBedeli)
+        + '</b>.' : '')
+    + '<br>Belge tarihi: ' + trTarih(new Date());
+  document.getElementById('s_plan').hidden = false;
+}
+
+function iskontoPlani(){
+  var nom = N(i_nom.value), fy = N(i_faiz.value);
+  if(nom === null || fy === null) return;
+  var esas = N(i_esas.value) || 360, bsmv = (N(i_bsmv.value) || 0) / 100;
+  var kulO = (N(i_kul.value) || 0) / 100;
+  var kg = document.getElementById('i_tarih').value;
+  var vg = document.getElementById('i_vade').value;
+  var bas = kg ? new Date(kg + 'T00:00:00') : new Date();
+  var elle = N(i_gun.value);
+  var vade = vg ? new Date(vg + 'T00:00:00')
+                : (function(){ var d = new Date(bas.getTime());
+                    d.setDate(d.getDate() + (elle || 90)); return d; })();
+  var gun = gunFarki(bas, vade);
+  if(gun <= 0) return;
+
+  var isk = nom * (fy / 100) * gun / esas, ibs = isk * bsmv;
+  var kul = nom * kulO, kbs = kul * bsmv;
+  var kesinti = isk + ibs + kul + kbs, net = nom - kesinti;
+
+  document.getElementById('i_plantablo').innerHTML =
+      '<tr><td>' + trTarih(bas) + '</td><td>0</td><td>Çek nominali</td><td>' + TL(nom) + '</td></tr>'
+    + '<tr><td>' + trTarih(bas) + '</td><td>' + gun + '</td><td>İskonto (faiz)</td><td>-' + TL(isk) + '</td></tr>'
+    + '<tr><td>' + trTarih(bas) + '</td><td>' + gun + '</td><td>Faiz üzerinden BSMV</td><td>-' + TL(ibs) + '</td></tr>'
+    + (kul ? '<tr><td>' + trTarih(bas) + '</td><td>0</td><td>Kullandırım ücreti + BSMV</td><td>-' + TL(kul + kbs) + '</td></tr>' : '')
+    + '<tr class="tf"><td>' + trTarih(bas) + '</td><td>—</td><td><b>Elinize geçen</b></td><td><b>' + TL(net) + '</b></td></tr>'
+    + '<tr><td>' + trTarih(vade) + '</td><td>' + gun + '</td><td>Çek tahsil tarihi</td><td>' + TL(nom) + '</td></tr>';
+
+  var fark = elle !== null ? gun - elle : 0;
+  var farkTutar = nom * (fy / 100) * Math.abs(fark) / esas * (1 + bsmv);
+  document.getElementById('i_planozet').innerHTML =
+      '<b>' + TL(nom) + '</b> nominal çek · iskonto <b>%' + fy.toLocaleString('tr-TR')
+    + '</b> · kırdırma ' + trTarih(bas) + ' · vade <b>' + trTarih(vade) + '</b> · <b>'
+    + gun + ' gün</b> · toplam kesinti <b>' + TL(kesinti) + '</b>'
+    /* Gun sayisi takvimden turer; elle girilen gunle farki dogrudan paradir. */
+    + (fark ? '<br><b>Takvim etkisi:</b> araçta <b>' + elle + ' gün</b> yazılıydı, '
+        + 'gerçek vade <b>' + gun + ' gün</b> — aradaki ' + Math.abs(fark)
+        + ' günün bedeli <b>' + TL(farkTutar) + '</b>.' : '')
+    + '<br>Belge tarihi: ' + trTarih(new Date());
+  document.getElementById('i_plan').hidden = false;
+}
+
 
 /* ---------- nav bar aktif bolum ---------- */
 (function(){
@@ -1861,6 +2091,34 @@ hepsiniHesapla();
   if(t && !t.value){ var d = new Date(); d.setMonth(d.getMonth()+1);
     t.value = d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2); }
 })();
+
+/* Belge butonlari — her araca ayni omurga. Yazdirmada yalniz o bolum kagida
+   gider: .yazilan sinifi basilacak section'a konur, print bitince kaldirilir. */
+(function(){
+  var esler = [['r', rotatifPlani, 'a5'], ['s', spotPlani, 'a6'], ['i', iskontoPlani, 'a7']];
+  esler.forEach(function(e){
+    var b = document.getElementById(e[0] + '_planbtn');
+    if(b) b.addEventListener('click', e[1]);
+    var y = document.getElementById(e[0] + '_yazdir');
+    if(y) y.addEventListener('click', function(){
+      var s = document.getElementById(e[2]);
+      if(s) s.classList.add('yazilan');
+      window.print();
+    });
+  });
+  var k = document.getElementById('k_yazdir');
+  if(k) k.addEventListener('click', function(){
+    var s = document.getElementById('a4'); if(s) s.classList.add('yazilan'); });
+  window.addEventListener('afterprint', function(){
+    var v = document.querySelector('.yazilan'); if(v) v.classList.remove('yazilan'); });
+  /* Tarih varsayilanlari: bugun · cek vadesi 90 gun sonra */
+  function bugun(off){ var d = new Date(); d.setDate(d.getDate() + (off || 0));
+    return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2); }
+  [['r_tarih',0], ['s_tarih',0], ['i_tarih',0], ['i_vade',90]].forEach(function(p){
+    var el = document.getElementById(p[0]); if(el && !el.value) el.value = bugun(p[1]);
+  });
+})();
+
 
 
 (function(){
