@@ -165,17 +165,24 @@ footer img{filter:none}
    Çizgi sürekli değil; yalnız hover'da ve bulunduğun sayfada belirir. */
 /* Menu linkleri artik .menu-kutu icinde — secici ona gore. */
 .menu-kutu a{
-  font-size:13.5px;color:var(--navy)!important;text-decoration:none;
-  border-bottom:0!important;transition:background .18s}
+  font-size:13.5px;color:var(--navy)!important;text-decoration:none}
 .menu-kutu a[aria-current="page"]{
-  background:rgba(200,169,81,.20)!important;color:var(--goldink)!important;font-weight:600}
+  border-bottom-color:var(--gold)!important;color:var(--goldink)!important;font-weight:600}
+/* Marka da ayni davranir — tiklanabilir oldugu gorunsun (ana sayfaya doner). */
+.marka .nm{border-bottom:2px solid transparent;padding-bottom:2px;transition:border-color .18s}
+.marka:hover .nm,.marka:focus .nm,.marka:active .nm{border-bottom-color:var(--gold)}
 /* Her baslik kendi kutusunda (Caglayan 02.09.2026) — tek blok zemin degil. */
 .menu-kutu{display:flex;align-items:center;gap:4px;padding:0;background:none;white-space:nowrap}
 /* Zemin cok kalindi ve yalniz bir baslikta gorunuyordu (Caglayan 02.09.2026):
    normalde zemin yok, hover ve bulunulan sayfada hafif altin tonu. */
 .menu-kutu>a,.menu-kutu .mgrup>a{white-space:nowrap;
-  background:none;padding:6px 10px;border-radius:4px}
-.menu-kutu>a:hover,.menu-kutu .mgrup>a:hover{background:rgba(200,169,81,.13)}
+  background:none;padding:6px 8px 4px;border-radius:0}
+/* Altin alt cizgi geri geldi (Caglayan 02.09.2026) — markada da gecerli.
+   hover:hover sorgusuna kapatilmadi: dokunmatik cihazda dokununca da gorunur. */
+.menu-kutu>a,.menu-kutu .mgrup>a{border-bottom:2px solid transparent;transition:border-color .18s}
+.menu-kutu>a:hover,.menu-kutu .mgrup>a:hover,
+.menu-kutu>a:focus,.menu-kutu .mgrup>a:focus,
+.menu-kutu>a:active,.menu-kutu .mgrup>a:active{border-bottom-color:var(--gold);background:none}
 .marka .nm{white-space:nowrap}
 @media(max-width:1200px){.menu-kutu{gap:4px}
   .menu-kutu>a,.menu-kutu .mgrup>a{font-size:13.5px;padding:6px 9px}}
