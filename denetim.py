@@ -187,6 +187,65 @@ else:
         hata.append("Hesap kontrolu kosturulamadi: " + str(e)[:70])
         print("  hesap kontrolu         🔴 kosturulamadi")
 
+
+# ---------------------------------------------------------------------------
+# 9 · MOBIL MENU — hamburger paneli ust menuyle ayni mi
+# ---------------------------------------------------------------------------
+# Caglayan 02.09.2026: "mobilde yeni hali gorunmuyor, hamburger menude eski."
+# "Finans nedir?" uc sayfanin mpanel'inde yoktu, sira da terstir. Denetim
+# mobil paneli hic olcmuyordu — varligi degil, ICERIGI olculur.
+print()
+print("9 · MOBIL MENU (hamburger paneli)")
+BEKLENEN = ["Ne yapıyorum?", "Finans nedir?", "Sizde var mı?", "Hakkımda", "Hesaplamalar"]
+for y in ["/", "/hesaplamalar.html", "/finans-nedir.html", "/ornek-rapor.html", "/gizlilik.html"]:
+    g = govde.get(y, "")
+    if not g:
+        continue
+    i = g.find('id="mpanel"')
+    if i < 0:
+        hata.append("%s · mpanel (hamburger paneli) yok" % y)
+        print("  %-22s 🔴 mpanel yok" % y)
+        continue
+    j = g.find("mp-bas", i)
+    if j < 0:
+        j = g.find("altm-bas", i)
+    blok = g[i:j if j > 0 else i + 1200]
+    eksik = [b for b in BEKLENEN if b not in blok]
+    sira = [b for b in BEKLENEN if b in blok]
+    konum = [blok.find(b) for b in sira]
+    if eksik:
+        hata.append("%s · hamburger menude eksik: %s" % (y, ", ".join(eksik)))
+        print("  %-22s 🔴 eksik: %s" % (y, ", ".join(eksik)))
+    elif konum != sorted(konum):
+        hata.append("%s · hamburger menu sirasi ust menuyle ayni degil" % y)
+        print("  %-22s 🔴 sira ust menuyle ayni degil" % y)
+    else:
+        print("  %-22s tamam (%d baslik, sira dogru)" % (y, len(sira)))
+
+# ---------------------------------------------------------------------------
+# 10 · SAYFA ICI BAGLANTI — hedef yapiskan barin altinda kalmamali
+# ---------------------------------------------------------------------------
+# WhatsApp'tan paylasilan link hedefe gitmiyordu. scrollIntoView bu sayfalarda
+# etkisiz kaliyor (olculdu: hesaplamalar.html#a4 -> scrollY 0, hedef 569 px
+# asagida). Konum elle hesaplanip ust menu + arac cubugu payi dusuluyor.
+print()
+print("10 · SAYFA ICI BAGLANTI (hash)")
+for y in ["/", "/hesaplamalar.html", "/finans-nedir.html", "/ornek-rapor.html", "/gizlilik.html"]:
+    g = govde.get(y, "")
+    if not g:
+        continue
+    if "hashchange" not in g:
+        hata.append("%s · hash onarimi yok — paylasilan link hedefe gitmez" % y)
+        print("  %-22s 🔴 onarim yok" % y)
+    elif "e.scrollIntoView({block:'start'})" in g:
+        hata.append("%s · hash onarimi scrollIntoView'e donmus (etkisiz)" % y)
+        print("  %-22s 🔴 scrollIntoView (etkisiz)" % y)
+    elif "getBoundingClientRect().height" not in g or "window.scrollTo" not in g:
+        hata.append("%s · hash onariminda yapiskan bar payi hesaplanmiyor" % y)
+        print("  %-22s 🔴 bar payi yok" % y)
+    else:
+        print("  %-22s tamam (bar payi dusuluyor)" % y)
+
 print("\n" + "=" * 66)
 for u in uyari: print("  UYARI  ·", u)
 if hata:

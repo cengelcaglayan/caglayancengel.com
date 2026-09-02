@@ -326,7 +326,7 @@ section[id],header[id],div[id]{scroll-margin-top:calc(var(--ust,80px) + 14px)}
   <button class="hmb" id="hmbBtn" aria-label="Menü" aria-expanded="false"><span></span></button></div>
 </div>
 
-<div class="mpanel" id="mpanel"><a href="/#ne-yaparim">Ne yapıyorum?</a><a href="finans-nedir.html" aria-current="page" style="color:var(--goldink)">Finans nedir?</a><a href="/#olcut">Sizde var mı?</a><a href="hesaplamalar.html">Hesaplamalar</a><a href="/#kimim">Hakkımda</a><a href="ornek-rapor.html">Örnek rapor</a><a href="/#iletisim">İletişim</a><div class="mp-bas">Hesaplama araçları</div><a class="mp-arac" href="hesaplamalar.html#a4">Taksitli ticari kredi</a><a class="mp-arac" href="hesaplamalar.html#a5">Rotatif (BCH)</a><a class="mp-arac" href="hesaplamalar.html#a6">Spot kredi</a><a class="mp-arac" href="hesaplamalar.html#a7">Çek/senet iskonto</a><a class="mp-arac" href="hesaplamalar.html#a11">Ticari KMH</a><a class="mp-arac" href="hesaplamalar.html#a9">Faktoring</a><a class="mp-arac" href="hesaplamalar.html#a10">Eline geçen ne kadar</a><a class="mp-arac" href="hesaplamalar.html#a8">POS komisyonu</a><a class="mp-arac" href="hesaplamalar.html#a1">Bilanço teşhisi</a><a class="mp-arac" href="hesaplamalar.html#a2">Borç servisi · DSCR</a><a class="mp-arac" href="hesaplamalar.html#a3">Nakit döngüsü</a><a class="mp-wa" href="https://wa.me/905337619443" target="_blank" rel="noopener">WhatsApp ile yazın</a></div>
+<div class="mpanel" id="mpanel"><a href="/#ne-yaparim">Ne yapıyorum?</a><a href="finans-nedir.html" aria-current="page" style="color:var(--goldink)">Finans nedir?</a><a href="/#olcut">Sizde var mı?</a><a href="/#kimim">Hakkımda</a><a href="hesaplamalar.html">Hesaplamalar</a><a href="ornek-rapor.html">Örnek rapor</a><a href="/#iletisim">İletişim</a><div class="mp-bas">Hesaplama araçları</div><a class="mp-arac" href="hesaplamalar.html#a4">Taksitli ticari kredi</a><a class="mp-arac" href="hesaplamalar.html#a5">Rotatif (BCH)</a><a class="mp-arac" href="hesaplamalar.html#a6">Spot kredi</a><a class="mp-arac" href="hesaplamalar.html#a7">Çek/senet iskonto</a><a class="mp-arac" href="hesaplamalar.html#a11">Ticari KMH</a><a class="mp-arac" href="hesaplamalar.html#a9">Faktoring</a><a class="mp-arac" href="hesaplamalar.html#a10">Eline geçen ne kadar</a><a class="mp-arac" href="hesaplamalar.html#a8">POS komisyonu</a><a class="mp-arac" href="hesaplamalar.html#a1">Bilanço teşhisi</a><a class="mp-arac" href="hesaplamalar.html#a2">Borç servisi · DSCR</a><a class="mp-arac" href="hesaplamalar.html#a3">Nakit döngüsü</a><a class="mp-wa" href="https://wa.me/905337619443" target="_blank" rel="noopener">WhatsApp ile yazın</a></div>
 
 
 <header class="fn-hero"><div class="wrap">
@@ -787,13 +787,35 @@ if ('serviceWorker' in navigator) {
 /* Hash ile gelen bağlantıyı yükleme bitince yeniden çöz — bölümler animasyonla
    geldiği için tarayıcının ilk denemesi hedefi bulamıyor (ölçüldü 02.09.2026). */
 (function(){
-  function git(){
-    if(!location.hash) return;
-    var e=null; try{ e=document.querySelector(location.hash); }catch(_){}
-    if(e) e.scrollIntoView({block:'start'});
+  /* Yapiskan yiginin gercek yuksekligi — hedef baslik barin altinda kalmasin. */
+  function pay(){
+    var t = 0, u = document.querySelector('.top'), b = document.querySelector('.aracbar');
+    if(u) t += u.getBoundingClientRect().height;
+    if(b) t += b.getBoundingClientRect().height;
+    return t + 12;
   }
-  addEventListener('load', function(){ setTimeout(git,60); });
-  addEventListener('hashchange', git);
+  function git(yumusak){
+    if(!location.hash) return;
+    var e = null; try{ e = document.querySelector(location.hash); }catch(_){}
+    if(!e) return;
+    /* Hedefin USTUNDE kalan gizli bloklar once acilir; yoksa yukseklik
+       oturmadan olculen konum yanlis cikar. */
+    var ust = e.getBoundingClientRect().top + window.pageYOffset;
+    var gizli = document.querySelectorAll('.rv:not(.gor),.rv-ic:not(.gor)');
+    for(var i = 0; i < gizli.length; i++){
+      if(gizli[i].getBoundingClientRect().top + window.pageYOffset < ust)
+        gizli[i].classList.add('gor');
+    }
+    var y = e.getBoundingClientRect().top + window.pageYOffset - pay();
+    /* scrollIntoView bu sayfalarda etkisiz kaliyor (olculdu 02.09.2026) —
+       konum elle hesaplanip scrollTo ile uygulaniyor. */
+    window.scrollTo({ top: Math.max(0, y), behavior: yumusak ? 'smooth' : 'instant' });
+  }
+  addEventListener('load', function(){
+    setTimeout(function(){ git(false); }, 60);
+    setTimeout(function(){ git(false); }, 500);   /* bloklar yerlesince yeniden hizala */
+  });
+  addEventListener('hashchange', function(){ git(true); });
 })();
 </script>
 </body>
