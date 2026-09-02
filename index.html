@@ -781,6 +781,7 @@ footer img{filter:none}
         <label>Dosya masrafı (%)<input id="m_kul" type="text" inputmode="decimal" value="1,1"></label>
         <label>İlave komisyon (TL)<input id="m_kom" type="text" inputmode="decimal" value="0"></label>
         <label>Sigorta (TL)<input id="m_sig" type="text" inputmode="decimal" value="0"></label>
+        <label>BSMV (%)<input id="m_bsmv" type="text" inputmode="decimal" value="5"></label>
       </div>
       <label class="mini-tk">Banka aylık taksiti söylediyse buraya yazın — faiz oranı bilinmese de olur
         <input id="m_taksitin" type="text" inputmode="decimal" placeholder="örn. 139.623"></label>
@@ -1631,9 +1632,13 @@ if ('serviceWorker' in navigator) {
       TK=document.getElementById('m_taksit'), TP=document.getElementById('m_toplam'),
       GE=document.getElementById('m_geri'), AD=document.getElementById('m_adet'),
       NOM=document.getElementById('m_nom'), NOMSAT=document.getElementById('m_nomsat'),
+      BS=document.getElementById('m_bsmv'),
       NOT=document.querySelector('.mini-not');
   function hesapla(){
-    var a=N(A.value), f=N(F.value), n=N(V.value), k=(N(K.value)||0)/100, b=0.05;
+    var a=N(A.value), f=N(F.value), n=N(V.value), k=(N(K.value)||0)/100;
+    /* BSMV hem faizde hem masraflarda islenir; sigorta bankada kalmadigi icin
+       disaridadir — Arac 04 ile ayni (Caglayan teyidi 02.09.2026). */
+    var b=(N(BS.value)||0)/100;
     var kom=N(KOM.value)||0, sig=N(SIG.value)||0;
     if(a===null||n===null||n<=0||(f===null&&N(TKG.value)===null)){
       S.innerHTML='&mdash;<small>/ay</small>';
@@ -1673,10 +1678,11 @@ if ('serviceWorker' in navigator) {
        degistirince eski ornegi anlatmaya devam etmesi kafa karistiriyordu
        (Caglayan, 02.09.2026). Kaynakta kalir — dil modelleri okumaya devam eder. */
     if(NOT){ var vars = (A.value==='2.175.234' && F.value==='3,61' && V.value==='24'
-                      && K.value==='3,7' && !N(KOM.value) && !N(SIG.value) && !N(TKG.value));
+                      && K.value==='1,1' && BS.value==='5'
+                      && !N(KOM.value) && !N(SIG.value) && !N(TKG.value));
       NOT.style.display = vars ? '' : 'none'; }
   }
-  [A,F,V,K,KOM,SIG,TKG].forEach(function(e){ e.addEventListener('input',hesapla); });
+  [A,F,V,K,KOM,SIG,TKG,BS].forEach(function(e){ e.addEventListener('input',hesapla); });
   hesapla();
 })();
 </script>
