@@ -36,6 +36,17 @@ const TESTLER = [
            { id:'k_alt',     ara:'139.623', not:'aylik taksit' },
            { id:'k_tablo',   ara:'25.124',  not:'pesin kesilen masraf' } ] },
 
+  /* Odeme plani — taksit GERCEK takvimle cozuluyor mu, bakiye kapaniyor mu.
+     Referans tarayicida olculdu 02.09.2026: esit donem taksiti 139.623 TL,
+     gercek tarihlerle 140.536 TL. Fark taksite yansimazsa acik son taksite
+     yigilir ve plan banka planiyla yan yana konamaz. */
+  { ad: 'a04 odeme plani · takvim', fn: 'odemePlani',
+    gir: { k_ana:'2.175.234', k_faiz:'3,61', k_vade:'24', k_kul:'1,1', k_bsmv:'5',
+           k_kom:'', k_sig:'', k_tarih:'2026-09-20', k_kaydir:'ileri' },
+    olc: [ { id:'k_plantablo', ara:'140.536',   not:'takvimle cozulen esit taksit' },
+           { id:'k_plantablo', ara:'2.175.234', not:'anapara toplami — bakiye tam kapaniyor' },
+           { id:'k_planozet',  ara:'21.914',    not:'takvim etkisi · vade boyunca fark' } ] },
+
   { ad: 'a05 rotatif · sade', fn: 'rotatif',
     gir: { r_ana:'1.000.000', r_faiz:'45', r_gun:'90', r_kom:'0,5', r_komay:'3',
            r_bsmv:'5', r_kul:'', r_tahsis:'' },

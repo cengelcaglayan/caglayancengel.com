@@ -310,6 +310,44 @@ footer img{filter:none}
    içine alınınca eski '.topnav' kuralı eşleşmez olmuştu — menü ekrandan
    taşıyordu (Çağlayan, 02.09.2026). */
 @media(max-width:1023px){.menu-kutu{display:none!important}}
+/* Ödeme planı belgesi (FAZ 6 · 02.09.2026) */
+.plan{max-width:var(--maxw);margin:22px auto 0}
+.plan-ust{display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap;
+  padding:16px 20px;background:var(--band);border-left:3px solid var(--gold);border-radius:3px}
+.plan-gir{display:flex;gap:14px;flex-wrap:wrap;flex:1}
+.plan-gir label{display:flex;flex-direction:column;gap:4px;font-size:11.5px;color:var(--soft)}
+.plan-gir input,.plan-gir select{font:inherit;font-size:14px;color:var(--navy);padding:7px 9px;
+  border:1px solid var(--rule);border-radius:2px;background:var(--white)}
+.plan-btn,.plan-yaz{font:inherit;font-size:13.5px;font-weight:600;cursor:pointer;
+  padding:9px 16px;border-radius:3px;border:0;background:var(--navy);color:#fff}
+.plan-btn:hover,.plan-yaz:hover{background:var(--navy2)}
+.plan-cikti{margin-top:16px;padding:20px 22px;background:var(--white);
+  border:1px solid var(--rule);border-radius:3px}
+.plan-bas{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;
+  padding-bottom:12px;border-bottom:2px solid var(--gold);margin-bottom:12px}
+.plan-marka{display:block;font-family:'Playfair Display',serif;font-weight:700;
+  font-size:15px;letter-spacing:2px;color:var(--goldink)}
+.plan-alt{display:block;font-size:11.5px;color:var(--soft);margin-top:2px}
+.plan-ozet{margin:0 0 12px;font-size:13.5px;line-height:1.6;color:var(--body)}
+.plan-tablo-sar{overflow-x:auto}
+.plan-tablo{width:100%;border-collapse:collapse;font-size:12.5px;
+  font-variant-numeric:tabular-nums}
+.plan-tablo th{text-align:right;padding:7px 8px;border-bottom:1px solid var(--rule);
+  font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:var(--soft);font-weight:600}
+.plan-tablo th:first-child,.plan-tablo th:nth-child(2){text-align:left}
+.plan-tablo td{text-align:right;padding:6px 8px;border-bottom:1px solid #F0EDE4;color:var(--navy)}
+.plan-tablo td:first-child,.plan-tablo td:nth-child(2){text-align:left;color:var(--soft)}
+.plan-tablo tr.kaydi td:nth-child(2){color:var(--goldink);font-weight:600}
+.plan-tablo tfoot td{border-top:2px solid var(--rule);border-bottom:0;font-weight:700;padding-top:9px}
+.plan-not{margin:12px 0 0;font-size:11.5px;line-height:1.55;color:var(--soft)}
+@media print{
+  body>*:not(#a4){display:none!important}
+  #a4>.wrap>*:not(.plan){display:none!important}
+  .plan-ust,.plan-yaz{display:none!important}
+  .plan-cikti{border:0;padding:0}
+  .plan-tablo{font-size:10.5px}
+  @page{margin:14mm}
+}
 </style>
 <style>
 /* ================= HAREKET KATMANI v1 · 30.08.2026 ================= */
@@ -548,6 +586,39 @@ footer img{filter:none}
   </div>
 
 
+    
+    <div class="plan">
+      <div class="plan-ust">
+        <div class="plan-gir">
+          <label>İlk taksit tarihi<input id="k_tarih" type="date"></label>
+          <label>Hafta sonuna denk gelirse<select id="k_kaydir">
+            <option value="ileri">Sonraki iş gününe</option>
+            <option value="yok">Kaydırma yok</option>
+          </select></label>
+        </div>
+        <button type="button" class="plan-btn" id="k_planbtn">Ödeme planı oluştur</button>
+      </div>
+      <div class="plan-cikti" id="k_plan" hidden>
+        <div class="plan-bas">
+          <div>
+            <span class="plan-marka">ÇAĞLAYAN ÇENGEL</span>
+            <span class="plan-alt">Finansal Yönetim Danışmanı · caglayancengel.com</span>
+          </div>
+          <button type="button" class="plan-yaz" id="k_yazdir">Yazdır / PDF</button>
+        </div>
+        <p class="plan-ozet" id="k_planozet"></p>
+        <div class="plan-tablo-sar">
+          <table class="plan-tablo">
+            <thead><tr><th>#</th><th>Tarih</th><th>Gün</th><th>Taksit</th>
+              <th>Faiz</th><th>BSMV</th><th>Anapara</th><th>Kalan</th></tr></thead>
+            <tbody id="k_plantablo"></tbody>
+          </table>
+        </div>
+        <p class="plan-not">Bu plan bilgilendirme amaçlıdır; kredi taahhüdü değildir.
+          Bankanın planıyla küçük farklar olabilir — gün bazı (360/365), ilk dönem faizi
+          ve yuvarlama bankadan bankaya değişir. Girilen rakamlar tarayıcınızdan çıkmaz.</p>
+      </div>
+    </div>
     <div class="ornek"><span class="et">Örnek hesap</span><b>2.175.234 ₺</b> anapara, aylık <b>%3,61</b> faiz, <b>24 ay</b> vade, <b>%1,1</b> kullandırım ücreti ve <b>%5</b> BSMV ile gerçek maliyet <b>aylık %3,90</b> çıkar. Peşin kesilen masraf <b>25.124 ₺</b>, hesaba giren para <b>2.150.110 ₺</b>, aylık taksit <b>139.623 ₺</b>, toplam geri ödeme <b>3.350.955 ₺</b>, toplam maliyet <b>1.200.845 ₺</b>. Teklifteki %3,61 ile gerçekte ödenen %3,90 arasındaki fark masraf kalemlerinden gelir; peşin kesilen tutar üzerinden de faiz ödenir.<span class="eylem"><b>Ne sorulur:</b> Bankaya sorun: “Efektif aylık maliyet %3,90 çıkıyor, teklifte %3,61 yazıyor — kullandırım ücretini düşürürseniz fark kapanır mı?” Masraf kalemleri faizden daha çok pazarlığa açıktır.</span></div>
   <div class="arac-cta">
       <span>Teklifteki oranla gerçek maliyet arasındaki fark, çoğu firmada yıllık olarak ciddi tutara ulaşır.</span>
@@ -1594,6 +1665,121 @@ function kmh(){
   document.getElementById('kh_yorum').textContent=y;
 }
 
+/* ---------- ARAÇ 04 · ÖDEME PLANI (FAZ 6 · 02.09.2026) ----------
+   Takvim uyumu: taksit tarihi hafta sonuna denk gelirse SONRAKİ iş gününe kayar.
+   [OLCULDU · Mugla Optik BANKALAR v6.13 · 123 taksit] Is Bankasi 4,5M'de 36
+   taksitin 18'i Pazartesi, Vakifbank'ta 24'un 11'i — kayma ileri yonde.
+   Anadolubank 3M ise hic kaydirmiyor (Pazar 4 taksit), o yuzden secenek var:
+   kural uydurulmuyor, kullaniciya soruluyor.
+   Faiz gun bazli isler: donem faizi = kalan x aylik oran x gun/30. Esit periyot
+   varsayimi tarih kaymasini gormez; gercek planlarda ima edilen aylik oran
+   %3,44-4,06 arasinda saliniyordu. */
+function planTarih(bas, ay){
+  var d = new Date(bas.getFullYear(), bas.getMonth() + ay, bas.getDate());
+  /* Ayin 31'i olmayan aya denk gelirse ayin son gunune cek */
+  if(d.getDate() !== bas.getDate()) d = new Date(bas.getFullYear(), bas.getMonth() + ay + 1, 0);
+  return d;
+}
+function isGunu(d){
+  var g = new Date(d.getTime());
+  while(g.getDay() === 0 || g.getDay() === 6) g.setDate(g.getDate() + 1);
+  return g;
+}
+function gunFarki(a, b){ return Math.round((b - a) / 86400000); }
+function trTarih(d){
+  return ('0'+d.getDate()).slice(-2)+'.'+('0'+(d.getMonth()+1)).slice(-2)+'.'+d.getFullYear();
+}
+function odemePlani(){
+  var A = N(k_ana.value), f = N(k_faiz.value), n = N(k_vade.value);
+  if(A === null || f === null || n === null || n <= 0) return;
+  var bsmv = (N(k_bsmv.value) || 0) / 100;
+  var kulO = (N(k_kul.value) || 0) / 100, kom = N(k_kom.value) || 0, sig = N(k_sig.value) || 0;
+  var kulUc = A * kulO, pesin = kulUc + kulUc * bsmv + kom + kom * bsmv + sig;
+  var r = (f / 100) * (1 + bsmv);
+  var tk = r === 0 ? A / n : A * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
+
+  var giris = document.getElementById('k_tarih').value;
+  var bas = giris ? new Date(giris + 'T00:00:00') : (function(){
+    var t = new Date(); t.setMonth(t.getMonth() + 1); return t; })();
+  var kaydir = document.getElementById('k_kaydir').value === 'ileri';
+
+  /* 1 · tarihler bir kez uretilir (bisection her turda ayni takvimi kullansin) */
+  var basOnce = new Date(bas.getFullYear(), bas.getMonth() - 1, bas.getDate());
+  var tarih = [], gunler = [], kaymaSayisi = 0, onc = basOnce;
+  for(var j = 1; j <= n; j++){
+    var hamJ = planTarih(bas, j - 1);
+    var tJ = kaydir ? isGunu(hamJ) : hamJ;
+    if(tJ.getTime() !== hamJ.getTime()) kaymaSayisi++;
+    tarih.push({t: tJ, ham: hamJ});
+    gunler.push(gunFarki(onc, tJ));
+    onc = tJ;
+  }
+
+  /* 2 · taksit GERCEK takvimle cozulur — son donemde bakiye tam kapansin.
+     Esit donem annuitesi (tk) sadece kiyas icin durur. */
+  function kalanBakiye(taksit){
+    var k = A;
+    for(var q = 0; q < n; q++){
+      var fz = k * (f / 100) * gunler[q] / 30;
+      k -= taksit - fz - fz * bsmv;
+    }
+    return k;
+  }
+  var tkTakvim = tk;
+  if(f > 0){
+    var alt = 0, ust = A + A * (f / 100) * 2, mid = tk;
+    for(var it = 0; it < 200; it++){
+      mid = (alt + ust) / 2;
+      if(kalanBakiye(mid) > 0) alt = mid; else ust = mid;
+    }
+    tkTakvim = mid;
+  } else {
+    tkTakvim = A / n;
+  }
+
+  var kalan = A, onceki = basOnce;
+  var satir = '', toplamFaiz = 0, toplamBsmv = 0, toplamOdeme = 0, toplamAna = 0;
+  for(var i = 1; i <= n; i++){
+    var ham = tarih[i-1].ham, t = tarih[i-1].t;
+    var gun = gunler[i-1];
+    var faiz = kalan * (f / 100) * gun / 30;
+    var fbs = faiz * bsmv;
+    var odenen = (i === n) ? kalan + faiz + fbs : tkTakvim;
+    var anapara = odenen - faiz - fbs;
+    if(anapara > kalan) anapara = kalan;
+    kalan -= anapara;
+    if(kalan < 0.5) kalan = 0;
+    toplamFaiz += faiz; toplamBsmv += fbs; toplamOdeme += odenen; toplamAna += anapara;
+    satir += '<tr'+(t.getTime()!==ham.getTime()?' class="kaydi"':'')+'><td>'+i+'</td><td>'+trTarih(t)+'</td><td>'+gun+'</td><td>'
+           + TL(odenen)+'</td><td>'+TL(faiz)+'</td><td>'+TL(fbs)+'</td><td>'
+           + TL(anapara)+'</td><td>'+TL(kalan)+'</td></tr>';
+    onceki = t;
+  }
+  document.getElementById('k_plantablo').innerHTML = satir
+    + '<tr class="tf"><td colspan="3"><b>Toplam</b></td><td><b>'+TL(toplamOdeme)
+    + '</b></td><td><b>'+TL(toplamFaiz)+'</b></td><td><b>'+TL(toplamBsmv)
+    /* Olculen toplam — sabit A degil: plan kapanmazsa fark burada gorunur. */
+    + '</b></td><td><b>'+TL(toplamAna)+'</b></td><td><b>'+TL(kalan)+'</b></td></tr>';
+  document.getElementById('k_planozet').innerHTML =
+      '<b>'+TL(A)+'</b> anapara · aylık <b>%'+f.toLocaleString('tr-TR')+'</b> faiz · <b>'
+    + n+' ay</b> · BSMV %'+(bsmv*100).toLocaleString('tr-TR')
+    + ' · peşin kesilen masraf <b>'+TL(pesin)+'</b> · hesaba giren <b>'+TL(A-pesin)+'</b>'
+    + (kaymaSayisi ? ' · <b>'+kaymaSayisi+'</b> taksit hafta sonundan iş gününe kaydı' : '')
+    /* Duz annuite (esit donem) ile gercek takvimin farki — asil gosterilmek istenen
+       sey bu: banka ilan ederken esit ay varsayar, odeme takvimde yurur. */
+    /* Takvim etkisi TAKSITTE gosterilir: banka teklifiyle kiyaslanabilir
+       olan tutar taksittir, toplam degil. */
+    + (function(){ var farkT = tkTakvim - tk, farkToplam = toplamOdeme - tk*n;
+        return Math.abs(farkT) < 1 ? '' :
+          '<br><b>Takvim etkisi:</b> eşit dönem varsayımıyla aylık taksit '+TL(tk)
+          +', gerçek tarihlerle <b>'+TL(tkTakvim)+'</b> — her ay <b>'
+          +TL(Math.abs(farkT))+'</b>'+(farkT>0?' fazla':' az')+', vade boyunca <b>'
+          +TL(Math.abs(farkToplam))+'</b>.'; })()
+    + '<br>Plan tarihi: '+trTarih(new Date());
+  document.getElementById('k_plan').hidden = false;
+}
+
+
 /* ---------- nav bar aktif bolum ---------- */
 (function(){
   const bar=document.querySelector('.aracbar');
@@ -1664,6 +1850,18 @@ document.querySelectorAll('input,select').forEach(i =>
    sonucunu gosterir. Once bos gelip "—" gostermesi, kullanicinin alanlari dolu
    sanip hesabin bozuk oldugunu dusunmesine yol aciyordu. */
 hepsiniHesapla();
+
+(function(){
+  var b = document.getElementById('k_planbtn');
+  if(b) b.addEventListener('click', odemePlani);
+  var y = document.getElementById('k_yazdir');
+  if(y) y.addEventListener('click', function(){ window.print(); });
+  /* ilk taksit tarihi varsayilani: bir ay sonrasi */
+  var t = document.getElementById('k_tarih');
+  if(t && !t.value){ var d = new Date(); d.setMonth(d.getMonth()+1);
+    t.value = d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2); }
+})();
+
 
 (function(){
   const b=document.getElementById('basaDon'); if(!b) return;
