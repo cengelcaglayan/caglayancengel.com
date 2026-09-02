@@ -37,6 +37,8 @@ düz metin olarak durur — hesabı çalıştırmadan da okunabilir.
 
 ## Sayfalar
 
+- [Finans nedir](https://caglayancengel.com/finans-nedir.html): finansın mali müşavirlikten farkı; işletmenin yeşil, sarı, kırmızı bantlardan hangisinde durduğu; önümüzdeki 12 ay için nakit akışı, bütçe, maliyet ve finansman soruları.
+
 - [Ana sayfa](https://caglayancengel.com/): kapsam, çalışma biçimi, sık sorulanlar.
   Hero bölümünde taksitli kredi için hızlı hesap bulunur.
 - [Örnek rapor](https://caglayancengel.com/ornek-rapor.html): firmaya teslim edilen analiz

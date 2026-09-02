@@ -11,7 +11,7 @@ except Exception:
     SSL_CTX = ssl.create_default_context()
 
 SITE  = "https://caglayancengel.com"
-SAYFA = ["/", "/hesaplamalar.html", "/ornek-rapor.html", "/gizlilik.html", "/kart.html"]
+SAYFA = ["/", "/hesaplamalar.html", "/finans-nedir.html", "/ornek-rapor.html", "/gizlilik.html", "/kart.html"]
 hata, uyari = [], []
 
 def al(yol):
