@@ -351,25 +351,46 @@ section[id],header[id],div[id]{scroll-margin-top:calc(var(--ust,80px) + 14px)}
 .pk-iletisim{text-align:right;font-size:10.5px;color:var(--soft);line-height:1.62}
 .pk-iletisim>span{display:block}
 @media print{
-  .top,.mpanel,.hmb,.wa-top,footer,.pay-bar,#pay-not,.basa{display:none!important}
+  /* --- neyi basmayiz --- */
+  .top,.mpanel,.hmb,.wa-top,footer,.pay-bar,#pay-not,.basa,
+  .cta,.btn,button{display:none!important}
+
   body{background:#fff}
   section,.hero{padding:12px 0!important;background:#fff!important}
   .wrap{max-width:none;padding:0}
-  /* Antet HER SAYFADA (position:fixed baskida her sayfaya basilir).
-     Tam marka seti akisin icinde BIR KEZ, belgenin sonunda — bes sayfanin
-     besinde imza blogu gorunmesi belgeyi bes kez bitmis gibi gosteriyordu
-     (Caglayan 02.09.2026, baski onizlemesinden). Kimlik her sayfada,
-     iletisim bir kez: belgelerin kurali budur. */
-  .pk-ust{display:flex;position:fixed;top:0;left:0;right:0;z-index:2;
-    align-items:center;gap:9px;background:#fff;padding-bottom:5px;
-    border-bottom:1px solid var(--gold)}
+
+  /* --- kagitta okunurluk ---
+     Marka lacivertinin (#0F1C2E) govde metni olarak basimi soluk ve mavi
+     cikiyor (Caglayan 02.09.2026, EPSON ciktisi). Kagitta govde siyaha
+     yakin olur; lacivert baslik ve vurguda kalir. */
+  body,p,li,td,th,.sub,.uyari{color:#111!important}
+
+  /* Arka plan dolgular (cubuk grafikler, bantlar) tarayici varsayilaninda
+     BASILMAZ. Grafikler bu raporun kaniti — basilmalari zorunlu. */
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+
+  /* --- sayfa kirilmasi --- */
+  h1,h2,h3,.kicker{break-after:avoid-page;page-break-after:avoid}
+  table,figure,.grafik,.kart,.bulgu{break-inside:avoid;page-break-inside:avoid}
+  p{orphans:3;widows:3}
+
+  /* --- marka ---
+     ANTET SABIT DEGIL. Olculdu 02.09.2026 (basili cikti): position:fixed antet
+     her sayfada tekrarliyordu ama sayfa icerigiyle AYNI noktadan basliyor ve
+     ilk satiri eziyordu (2., 3. ve 5. sayfada tablo basliklari cizilmis gibi
+     cikti). Tarayici baskisinda sabit ogeyi kenar boslugunun icine almanin
+     guvenilir yolu yok — cozum: antet akisin icinde, bir kez, en ustte.
+     Tam marka seti yine akista, bir kez, en sonda. */
+  .pk-ust{display:flex;margin:0 0 16px;padding-bottom:6px;
+    border-bottom:1px solid var(--gold);break-after:avoid-page}
   .pk-ust .pk-logo{width:19px;height:19px}
   .pk-ust .pk-ad{font-size:11px;letter-spacing:1.7px}
-  .pk-ust-un{font-size:9.5px;color:var(--soft)}
-  .pk-ust-sag{margin-left:auto;font-size:9.5px;color:var(--soft);font-style:italic}
-  .pk-baski{display:flex;margin-top:26px;page-break-inside:avoid}
-  @page{margin:19mm 14mm 14mm}
+  .pk-ust-un{font-size:9.5px;color:#555}
+  .pk-ust-sag{margin-left:auto;font-size:9.5px;color:#555;font-style:italic}
+  .pk-baski{display:flex;margin-top:26px;break-inside:avoid;page-break-inside:avoid}
+  @page{margin:14mm}
 }
+
 </style>
 </head>
 <body>
@@ -388,6 +409,12 @@ section[id],header[id],div[id]{scroll-margin-top:calc(var(--ust,80px) + 14px)}
 
 <header class="hero">
   <div class="wrap">
+    <div class="pk-ust" aria-hidden="true">
+  <img src="logo.png" alt="" class="pk-logo">
+  <span class="pk-ad">ÇAĞLAYAN ÇENGEL</span>
+  <span class="pk-ust-un">Finansal Yönetim Danışmanı</span>
+  <span class="pk-ust-sag">Gerçek vaka · anonim</span>
+</div>
     <p class="kicker">Gerçek Vaka · Anonim</p>
     <h1 class="h1">80–90 milyon ciro, 47 bin lira kâr.</h1>
     <p class="sub">
@@ -632,12 +659,6 @@ section[id],header[id],div[id]{scroll-margin-top:calc(var(--ust,80px) + 14px)}
   </div>
 </section>
 
-<div class="pk-ust" aria-hidden="true">
-  <img src="logo.png" alt="" class="pk-logo">
-  <span class="pk-ad">ÇAĞLAYAN ÇENGEL</span>
-  <span class="pk-ust-un">Finansal Yönetim Danışmanı</span>
-  <span class="pk-ust-sag">Gerçek vaka · anonim</span>
-</div>
 <div class="plan-kunye pk-baski" aria-hidden="true">
   <img src="logo.png" alt="" class="pk-logo">
   <div class="pk-yazi">

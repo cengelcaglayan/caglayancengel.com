@@ -393,6 +393,18 @@ footer img{filter:none}
   .yazilan-arac>.wrap>*:not(.arac){display:none!important}
   .yazilan-arac .arac{border:0;padding:0}
   .yazilan-arac .arac-cta,.yazilan-arac .ornek{display:none!important}
+  /* Kagitta okunurluk — Caglayan 02.09.2026, basili cikti:
+     marka lacivertiyle basilan govde metni soluk ve mavi cikiyor. */
+  .plan-cikti,.plan-ozet,.plan-tablo td,.plan-tablo th,.plan-not{color:#111!important}
+  /* Arka plan dolgular (vurgulu satirlar, bantlar) tarayici varsayilaninda
+     BASILMAZ; belgede kaydirilan taksit satiri bu dolguyla isaretleniyor. */
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  /* Ekran ogeleri kagida gitmez */
+  .btn,.cta,.arac-cta,.ornek{display:none!important}
+  /* Sayfa kirilmasi */
+  h2,h3{break-after:avoid-page;page-break-after:avoid}
+  .plan-tablo thead{display:table-header-group}
+  .plan-kunye{break-inside:avoid;page-break-inside:avoid}
   @page{margin:14mm 14mm 28mm}
 }
 </style>
