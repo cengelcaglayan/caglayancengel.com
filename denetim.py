@@ -276,6 +276,48 @@ for y in SAYFA:
     else:
         print("  %-22s tamam (%d girdi · %d for= · %d sarmalayan)" % (y, girdi, bag, sar))
 
+
+# ---------------------------------------------------------------------------
+# 12 · MARKA ALTINI — hangi zeminde hangi ton
+# ---------------------------------------------------------------------------
+# K0 Marka (02.09.2026): #C8A951 yalniz cizgi/aksan; beyaz uzerinde 2,2:1 ile
+# metin icin okunmaz. Altin METIN koyu zeminde #E6C97A (10,6:1), acik zeminde
+# #7A6220 (5,6:1). Caglayan 02.09.2026'da kart.html ile belge kunyesindeki
+# farki gordu; standart vardi ama hicbir yerde yazili degildi.
+#
+# Kontrol ADA degil COZULEN RENGE bakar: kart.html ayni tonu --gold2, digerleri
+# --goldink diye tanimlamis. Degisken adi serbest, renk serbest degil.
+print()
+print("12 · MARKA ALTINI")
+MARKA_SEC = r"\.(?:f-nm|pk-ad|plan-marka|ft-ad|ad)\b[^{]*\{([^}]*)\}"
+IZINLI = {"#e6c97a", "#7a6220"}      # koyu zemin · acik zemin
+for y in SAYFA:
+    g = govde.get(y, "")
+    if not g:
+        continue
+    degisken = {a.lower(): b.lower() for a, b in
+                re.findall(r"(--[\w-]+)\s*:\s*(#[0-9A-Fa-f]{6})", g)}
+
+    def coz(v):
+        v = v.strip().lower()
+        m = re.fullmatch(r"var\((--[\w-]+)\)", v)
+        return degisken.get(m.group(1), v) if m else v
+
+    renkler = [coz(m.group(1)) for blok in re.findall(MARKA_SEC, g)
+               for m in re.finditer(r"color:([^;}]+)", blok)]
+    if not renkler:
+        uyari.append("%s · marka adi secicisi bulunamadi — kontrol KAPSAMADI" % y)
+        print("  %-22s ⚠ secici yok — kapsanmadi" % y)
+        continue
+    kotu = sorted({r for r in renkler if r not in IZINLI})
+    if kotu:
+        hata.append("%s · marka adinda izinsiz altin: %s (K0: koyuda #E6C97A, acikta #7A6220)"
+                    % (y, ", ".join(kotu)))
+        print("  %-22s 🔴 %s" % (y, ", ".join(kotu)))
+    else:
+        print("  %-22s tamam (%d secici: %s)"
+              % (y, len(renkler), ", ".join(sorted(set(renkler)))))
+
 print("\n" + "=" * 66)
 for u in uyari: print("  UYARI  ·", u)
 if hata:
