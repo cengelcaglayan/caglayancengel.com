@@ -192,11 +192,27 @@ else:
 # 9 · MOBIL MENU — hamburger paneli ust menuyle ayni mi
 # ---------------------------------------------------------------------------
 # Caglayan 02.09.2026: "mobilde yeni hali gorunmuyor, hamburger menude eski."
-# "Finans nedir?" uc sayfanin mpanel'inde yoktu, sira da terstir. Denetim
-# mobil paneli hic olcmuyordu — varligi degil, ICERIGI olculur.
+# "Finans nedir?" uc sayfanin mpanel'inde yoktu, sira da terstir.
+#
+# 02.09.2026 · ikinci tur: kontrol SABIT bir listeye bakiyordu, ust menuyu hic
+# okumuyordu. "Gercek vaka" ust bara eklendiginde mpanel'de olmasa bile yesil
+# yanardi. Artik BEKLENEN ust menuden TURETILIR — sabit liste yok.
 print()
 print("9 · MOBIL MENU (hamburger paneli)")
-BEKLENEN = ["Ne yapıyorum?", "Finans nedir?", "Sizde var mı?", "Hakkımda", "Hesaplamalar"]
+
+
+def ust_menu(g):
+    """Ust bardaki BIRINCI SEVIYE basliklar. Acilir alt menuler atilir."""
+    i = g.find('class="menu-kutu"')
+    j = g.find('id="mpanel"')
+    if i < 0 or j < 0:
+        return None
+    duz = re.sub(r'<div class="altm">.*?</div>\s*</span>', '</span>', g[i:j], flags=re.S)
+    et = [re.sub(r"<[^>]+>", "", a).strip()
+          for a in re.findall(r"<a\b[^>]*>(.*?)</a>", duz, re.S)]
+    return [x for x in et if x and "ÇAĞLAYAN" not in x and "WhatsApp" not in x]
+
+
 for y in ["/", "/hesaplamalar.html", "/finans-nedir.html", "/ornek-rapor.html", "/gizlilik.html"]:
     g = govde.get(y, "")
     if not g:
@@ -206,12 +222,16 @@ for y in ["/", "/hesaplamalar.html", "/finans-nedir.html", "/ornek-rapor.html", 
         hata.append("%s · mpanel (hamburger paneli) yok" % y)
         print("  %-22s 🔴 mpanel yok" % y)
         continue
+    beklenen = ust_menu(g)
+    if not beklenen:
+        hata.append("%s · ust menu okunamadi — mobil panel karsilastirilamadi" % y)
+        print("  %-22s 🔴 ust menu okunamadi" % y)
+        continue
+
     j = g.find("mp-bas", i)
-    if j < 0:
-        j = g.find("altm-bas", i)
-    blok = g[i:j if j > 0 else i + 1200]
-    eksik = [b for b in BEKLENEN if b not in blok]
-    sira = [b for b in BEKLENEN if b in blok]
+    blok = g[i:j if j > 0 else i + 1400]
+    eksik = [b for b in beklenen if b not in blok]
+    sira = [b for b in beklenen if b in blok]
     konum = [blok.find(b) for b in sira]
     if eksik:
         hata.append("%s · hamburger menude eksik: %s" % (y, ", ".join(eksik)))
@@ -220,7 +240,8 @@ for y in ["/", "/hesaplamalar.html", "/finans-nedir.html", "/ornek-rapor.html", 
         hata.append("%s · hamburger menu sirasi ust menuyle ayni degil" % y)
         print("  %-22s 🔴 sira ust menuyle ayni degil" % y)
     else:
-        print("  %-22s tamam (%d baslik, sira dogru)" % (y, len(sira)))
+        print("  %-22s tamam (%d baslik: %s)" % (y, len(sira), " · ".join(sira)))
+
 
 # ---------------------------------------------------------------------------
 # 10 · SAYFA ICI BAGLANTI — hedef yapiskan barin altinda kalmamali

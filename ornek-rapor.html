@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Örnek Rapor — Çağlayan Çengel</title>
+<title>Gerçek vaka — Çağlayan Çengel</title>
 <meta name="description" content="Gerçek bir imalat firmasının mali tablosundan çıkarılmış anonim örnek rapor — bir finansal yönetim danışmanlığı çalışmasının çıktısı nasıl görünür.">
 <meta name="author" content="Çağlayan Çengel">
 <link rel="canonical" href="https://caglayancengel.com/ornek-rapor.html">
 <meta property="og:type" content="article">
 <meta property="og:locale" content="tr_TR">
-<meta property="og:title" content="Örnek Rapor — 80-90 milyon ciro, 47 bin lira kâr">
+<meta property="og:title" content="Gerçek vaka — 80-90 milyon ciro, 47 bin lira kâr">
 <meta property="og:description" content="Gerçek bir firmanın mali tablosu. Rakamlar gerçek, kimlik anonim.">
 <meta property="og:image" content="https://caglayancengel.com/og.png">
 <meta property="og:url" content="https://caglayancengel.com/ornek-rapor.html">
@@ -324,6 +324,41 @@ section[id],header[id],div[id]{scroll-margin-top:calc(var(--ust,80px) + 14px)}
   .js-anim .step,.js-anim .kart,.js-anim .cikti-kart,.js-anim .arac-kart{transition:none}
   #okuma{display:none}
 }
+
+/* ---- paylasim ve baski · 02.09.2026 ---- */
+.pay-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;
+  margin-top:22px;padding-top:16px;border-top:1px solid var(--rule)}
+.pay-et{flex:1;min-width:160px;font-size:13px;color:var(--soft)}
+.pay-btn{font:inherit;font-size:13px;font-weight:600;cursor:pointer;
+  padding:8px 15px;border-radius:3px;border:1px solid var(--rule);
+  background:var(--white);color:var(--navy)}
+.pay-btn:hover{border-color:var(--gold);background:var(--band)}
+@media(max-width:560px){.pay-et{width:100%;flex:none}.pay-btn{flex:1}}
+#pay-not{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(14px);
+  z-index:300;background:var(--navy);color:#fff;font-size:13.5px;padding:11px 20px;
+  border-radius:4px;box-shadow:0 6px 26px rgba(15,28,46,.28);opacity:0;
+  pointer-events:none;transition:opacity .22s ease,transform .22s ease}
+#pay-not.gor{opacity:1;transform:translateX(-50%) translateY(0)}
+/* kunye yalniz kagitta */
+.pk-baski{display:none}
+.plan-kunye{align-items:center;gap:14px;padding-top:11px;border-top:2px solid var(--gold)}
+.pk-logo{width:26px;height:26px;flex:0 0 auto}
+.pk-yazi{flex:1;min-width:0}
+.pk-ad{display:block;font-family:'Playfair Display',serif;font-weight:700;font-size:13px;
+  letter-spacing:2px;color:var(--goldink)}
+.pk-unvan{display:block;font-size:10.5px;color:var(--soft);margin-top:1px}
+.pk-slogan{display:block;font-size:10.5px;font-style:italic;color:var(--soft);margin-top:1px}
+.pk-iletisim{text-align:right;font-size:10.5px;color:var(--soft);line-height:1.62}
+.pk-iletisim>span{display:block}
+@media print{
+  .top,.mpanel,.hmb,.wa-top,footer,.pay-bar,#pay-not,.basa{display:none!important}
+  body{background:#fff}
+  section,.hero{padding:12px 0!important;background:#fff!important}
+  .wrap{max-width:none;padding:0}
+  /* kunye her sayfanin dibinde */
+  .pk-baski{display:flex;position:fixed;bottom:0;left:0;right:0;margin:0;background:#fff}
+  @page{margin:14mm 14mm 28mm}
+}
 </style>
 </head>
 <body>
@@ -338,11 +373,11 @@ section[id],header[id],div[id]{scroll-margin-top:calc(var(--ust,80px) + 14px)}
   <button class="hmb" id="hmbBtn" aria-label="Menü" aria-expanded="false"><span></span></button></div>
 </div>
 
-<div class="mpanel" id="mpanel"><a href="/#ne-yaparim">Ne yapıyorum?</a><a href="finans-nedir.html">Finans nedir?</a><a href="/#olcut">Sizde var mı?</a><a href="/#kimim">Hakkımda</a><span class="mgrup"><a class="geri" href="hesaplamalar.html">Hesaplamalar</a><div class="altm"><div class="altm-bas">Hesaplama araçları</div><a href="hesaplamalar.html#a4">Taksitli ticari kredi</a><a href="hesaplamalar.html#a5">Rotatif (BCH)</a><a href="hesaplamalar.html#a6">Spot kredi</a><a href="hesaplamalar.html#a7">Çek/senet iskonto</a><a href="hesaplamalar.html#a11">Ticari KMH</a><a href="hesaplamalar.html#a9">Faktoring</a><a href="hesaplamalar.html#a10">Eline geçen ne kadar</a><a href="hesaplamalar.html#a8">POS komisyonu</a><a href="hesaplamalar.html#a1">Bilanço teşhisi</a><a href="hesaplamalar.html#a2">Borç servisi · DSCR</a><a href="hesaplamalar.html#a3">Nakit döngüsü</a></div></span><a href="ornek-rapor.html">Örnek rapor</a><span class="mgrup"><a href="/#iletisim">İletişim</a><div class="altm"><div class="altm-bas">İletişim</div><a href="tel:+905337619443"><svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true" style="vertical-align:-2px;margin-right:6px"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .57 3.6 1 1 0 0 1-.25 1z"/></svg>0533 761 94 43</a><a href="mailto:info&#64;caglayancengel&#46;com">E-posta</a><a href="kart.html">Dijital kartvizit</a><a href="/#gform">Görüşme formu — biz sizi arayalım</a></div></span><div class="mp-bas">Hesaplama araçları</div><a class="mp-arac" href="hesaplamalar.html#a4">Taksitli ticari kredi</a><a class="mp-arac" href="hesaplamalar.html#a5">Rotatif (BCH)</a><a class="mp-arac" href="hesaplamalar.html#a6">Spot kredi</a><a class="mp-arac" href="hesaplamalar.html#a7">Çek/senet iskonto</a><a class="mp-arac" href="hesaplamalar.html#a11">Ticari KMH</a><a class="mp-arac" href="hesaplamalar.html#a9">Faktoring</a><a class="mp-arac" href="hesaplamalar.html#a10">Eline geçen ne kadar</a><a class="mp-arac" href="hesaplamalar.html#a8">POS komisyonu</a><a class="mp-arac" href="hesaplamalar.html#a1">Bilanço teşhisi</a><a class="mp-arac" href="hesaplamalar.html#a2">Borç servisi · DSCR</a><a class="mp-arac" href="hesaplamalar.html#a3">Nakit döngüsü</a><a class="mp-wa" href="https://wa.me/905337619443" target="_blank" rel="noopener">WhatsApp ile yazın</a></div>
+<div class="mpanel" id="mpanel"><a href="/#ne-yaparim">Ne yapıyorum?</a><a href="finans-nedir.html">Finans nedir?</a><a href="/#olcut">Sizde var mı?</a><a href="/#kimim">Hakkımda</a><span class="mgrup"><a class="geri" href="hesaplamalar.html">Hesaplamalar</a><div class="altm"><div class="altm-bas">Hesaplama araçları</div><a href="hesaplamalar.html#a4">Taksitli ticari kredi</a><a href="hesaplamalar.html#a5">Rotatif (BCH)</a><a href="hesaplamalar.html#a6">Spot kredi</a><a href="hesaplamalar.html#a7">Çek/senet iskonto</a><a href="hesaplamalar.html#a11">Ticari KMH</a><a href="hesaplamalar.html#a9">Faktoring</a><a href="hesaplamalar.html#a10">Eline geçen ne kadar</a><a href="hesaplamalar.html#a8">POS komisyonu</a><a href="hesaplamalar.html#a1">Bilanço teşhisi</a><a href="hesaplamalar.html#a2">Borç servisi · DSCR</a><a href="hesaplamalar.html#a3">Nakit döngüsü</a></div></span><a href="ornek-rapor.html">Gerçek vaka</a><span class="mgrup"><a href="/#iletisim">İletişim</a><div class="altm"><div class="altm-bas">İletişim</div><a href="tel:+905337619443"><svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true" style="vertical-align:-2px;margin-right:6px"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .57 3.6 1 1 0 0 1-.25 1z"/></svg>0533 761 94 43</a><a href="mailto:info&#64;caglayancengel&#46;com">E-posta</a><a href="kart.html">Dijital kartvizit</a><a href="/#gform">Görüşme formu — biz sizi arayalım</a></div></span><div class="mp-bas">Hesaplama araçları</div><a class="mp-arac" href="hesaplamalar.html#a4">Taksitli ticari kredi</a><a class="mp-arac" href="hesaplamalar.html#a5">Rotatif (BCH)</a><a class="mp-arac" href="hesaplamalar.html#a6">Spot kredi</a><a class="mp-arac" href="hesaplamalar.html#a7">Çek/senet iskonto</a><a class="mp-arac" href="hesaplamalar.html#a11">Ticari KMH</a><a class="mp-arac" href="hesaplamalar.html#a9">Faktoring</a><a class="mp-arac" href="hesaplamalar.html#a10">Eline geçen ne kadar</a><a class="mp-arac" href="hesaplamalar.html#a8">POS komisyonu</a><a class="mp-arac" href="hesaplamalar.html#a1">Bilanço teşhisi</a><a class="mp-arac" href="hesaplamalar.html#a2">Borç servisi · DSCR</a><a class="mp-arac" href="hesaplamalar.html#a3">Nakit döngüsü</a><a class="mp-wa" href="https://wa.me/905337619443" target="_blank" rel="noopener">WhatsApp ile yazın</a></div>
 
 <header class="hero">
   <div class="wrap">
-    <p class="kicker">Örnek Rapor · Anonim</p>
+    <p class="kicker">Gerçek Vaka · Anonim</p>
     <h1 class="h1">80–90 milyon ciro, 47 bin lira kâr.</h1>
     <p class="sub">
       Firma büyüyordu. Cirosu bir yılda %18 arttı, aktifi ikiye katlandı, fabrika çalışıyordu.
@@ -362,7 +397,13 @@ section[id],header[id],div[id]{scroll-margin-top:calc(var(--ust,80px) + 14px)}
       <div><b>%0,05</b><span>Net kâr marjı</span></div>
       <div><b>C</b><span>Banka notu</span></div>
     </div>
-  </div>
+  
+    <div class="pay-bar" id="rapor-pay">
+      <span class="pay-et">Bu vakayı kâğıda dökün veya paylaşın.</span>
+      <button type="button" class="pay-btn" id="rp-pdf">Yazdır / PDF</button>
+      <button type="button" class="pay-btn" id="rp-link">Bağlantıyı kopyala</button>
+    </div>
+</div>
 </header>
 
 <section>
@@ -580,6 +621,19 @@ section[id],header[id],div[id]{scroll-margin-top:calc(var(--ust,80px) + 14px)}
   </div>
 </section>
 
+<div class="plan-kunye pk-baski" aria-hidden="true">
+  <img src="logo.png" alt="" class="pk-logo">
+  <div class="pk-yazi">
+    <span class="pk-ad">ÇAĞLAYAN ÇENGEL</span>
+    <span class="pk-unvan">Finansal Yönetim Danışmanı</span>
+    <span class="pk-slogan">KOBİ'lere Güven Veren Finansal Rehberlik</span>
+  </div>
+  <div class="pk-iletisim">
+    <span>0533 761 94 43</span>
+    <span><span>info</span><span style="display:none">nospam</span><span>&#64;caglayancengel&#46;com</span></span>
+    <span>caglayancengel.com</span>
+  </div>
+</div>
 <footer>
   <div class="wrap fbar">
     <img src="logo.png" alt="Çağlayan Çengel logosu">
@@ -914,6 +968,38 @@ if ('serviceWorker' in navigator) {
     setTimeout(function(){ git(false); }, 500);   /* bloklar yerlesince yeniden hizala */
   });
   addEventListener('hashchange', function(){ git(true); });
+})();
+</script>
+<script>
+/* Rapor: kagida dokme ve baglanti paylasimi · 02.09.2026 */
+(function(){
+  function not(m){
+    var e=document.getElementById('pay-not');
+    if(!e){e=document.createElement('div');e.id='pay-not';e.setAttribute('role','status');
+      document.body.appendChild(e);}
+    e.textContent=m;e.classList.add('gor');
+    clearTimeout(not._t);not._t=setTimeout(function(){e.classList.remove('gor');},2600);
+  }
+  var pdf=document.getElementById('rp-pdf');
+  if(pdf) pdf.addEventListener('click',function(){
+    if(typeof olay==='function') olay('rapor/pdf','Gerçek vaka — PDF');
+    window.print();
+  });
+  var lnk=document.getElementById('rp-link');
+  if(lnk){
+    if(navigator.share) lnk.textContent='Paylaş';
+    lnk.addEventListener('click',function(){
+      var u=location.origin+location.pathname;
+      var b=document.title;
+      if(navigator.share){ navigator.share({title:b,url:u}).catch(function(){}); return; }
+      (navigator.clipboard&&navigator.clipboard.writeText
+        ? navigator.clipboard.writeText(u)
+        : Promise.reject()
+      ).then(function(){ not('Bağlantı kopyalandı.');
+          if(typeof olay==='function') olay('rapor/baglanti','Gerçek vaka — bağlantı kopyalandı');
+        }).catch(function(){ not('Kopyalanamadı. Adres çubuğundan alabilirsiniz.'); });
+    });
+  }
 })();
 </script>
 </body>
