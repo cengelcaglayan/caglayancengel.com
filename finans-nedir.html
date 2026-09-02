@@ -170,19 +170,20 @@ footer img{filter:none}
 /* Üst bar (02.09.2026) — marka ile menü görsel olarak ayrılıyor:
    menü hafif zeminli bir kutunun içinde durur, marka dışarıda kalır.
    Çizgi sürekli değil; yalnız hover'da ve bulunduğun sayfada belirir. */
-.top .wrap>a:not(.marka):not(.wa-top), .top .mgrup>a{
-  font-size:14.5px;color:var(--navy);text-decoration:none;
-  border-bottom:1px solid transparent;padding:3px 0;transition:border-color .18s}
-.top .wrap>a:not(.marka):not(.wa-top):hover, .top .mgrup>a:hover{
-  border-bottom-color:var(--gold)}
-.top .wrap>a[aria-current="page"], .top .mgrup>a[aria-current="page"]{
-  border-bottom-color:var(--gold);color:var(--goldink)}
-.menu-kutu{display:flex;align-items:center;gap:15px;padding:6px 13px;
-  background:var(--band);border-radius:4px;white-space:nowrap}
-.menu-kutu>a,.menu-kutu .mgrup>a{white-space:nowrap}
+/* Menu linkleri artik .menu-kutu icinde — secici ona gore. */
+.menu-kutu a{
+  font-size:14.5px;color:var(--navy)!important;text-decoration:none;
+  border-bottom:0!important;transition:background .18s}
+.menu-kutu a[aria-current="page"]{
+  background:var(--navy)!important;color:#fff!important;font-weight:600}
+/* Her baslik kendi kutusunda (Caglayan 02.09.2026) — tek blok zemin degil. */
+.menu-kutu{display:flex;align-items:center;gap:6px;padding:0;background:none;white-space:nowrap}
+.menu-kutu>a,.menu-kutu .mgrup>a{white-space:nowrap;
+  background:var(--band);padding:7px 12px;border-radius:4px}
+.menu-kutu>a:hover,.menu-kutu .mgrup>a:hover{background:#EDE8DC}
 .marka .nm{white-space:nowrap}
-@media(max-width:1200px){.menu-kutu{gap:11px;padding:5px 10px}
-  .top .wrap>a:not(.marka):not(.wa-top),.top .mgrup>a{font-size:13.5px}}
+@media(max-width:1200px){.menu-kutu{gap:4px}
+  .menu-kutu>a,.menu-kutu .mgrup>a{font-size:13.5px;padding:6px 9px}}
 .marka:hover .nm{opacity:.72}
 @media(max-width:1023px){.menu-kutu{background:none;padding:0}}
 </style>

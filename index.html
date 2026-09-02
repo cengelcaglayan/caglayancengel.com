@@ -607,7 +607,13 @@ footer img{filter:none}
 .mini-tab{width:100%;border-collapse:collapse;margin-top:7px;font-size:11.5px}
 .mini-tab td{padding:4px 0;border-bottom:1px solid var(--rule);color:var(--soft)}
 .mini-tab td:last-child{text-align:right;color:var(--navy);font-variant-numeric:tabular-nums}
+.mini-ip,#m_adet{display:block;font-size:10px;opacity:.75;font-weight:400}
 .mini-tab tr:last-child td{border-bottom:0}
+.mini-tk{display:flex;flex-direction:column;gap:3px;margin-top:9px;padding-top:9px;
+  border-top:1px dashed var(--rule);font-size:10.5px;color:var(--soft)}
+.mini-tk input{font:inherit;font-size:12.5px;color:var(--navy);padding:4px 7px;
+  border:1px solid var(--rule);border-radius:2px;background:var(--paper);width:100%;box-sizing:border-box}
+.mini-tk input:focus{outline:none;border-color:var(--gold);background:var(--white)}
 .mini-not{margin:10px 0 0;font-size:11.5px;line-height:1.5;color:var(--soft)}
 .mini-not b{color:var(--body)}
 .mini-lnk{display:block;margin-top:11px;padding:9px 12px;font-size:13px;font-weight:600;
@@ -622,19 +628,20 @@ footer img{filter:none}
 /* Üst bar (02.09.2026) — marka ile menü görsel olarak ayrılıyor:
    menü hafif zeminli bir kutunun içinde durur, marka dışarıda kalır.
    Çizgi sürekli değil; yalnız hover'da ve bulunduğun sayfada belirir. */
-.top .wrap>a:not(.marka):not(.wa-top), .top .mgrup>a{
-  font-size:14.5px;color:var(--navy);text-decoration:none;
-  border-bottom:1px solid transparent;padding:3px 0;transition:border-color .18s}
-.top .wrap>a:not(.marka):not(.wa-top):hover, .top .mgrup>a:hover{
-  border-bottom-color:var(--gold)}
-.top .wrap>a[aria-current="page"], .top .mgrup>a[aria-current="page"]{
-  border-bottom-color:var(--gold);color:var(--goldink)}
-.menu-kutu{display:flex;align-items:center;gap:15px;padding:6px 13px;
-  background:var(--band);border-radius:4px;white-space:nowrap}
-.menu-kutu>a,.menu-kutu .mgrup>a{white-space:nowrap}
+/* Menu linkleri artik .menu-kutu icinde — secici ona gore. */
+.menu-kutu a{
+  font-size:14.5px;color:var(--navy)!important;text-decoration:none;
+  border-bottom:0!important;transition:background .18s}
+.menu-kutu a[aria-current="page"]{
+  background:var(--navy)!important;color:#fff!important;font-weight:600}
+/* Her baslik kendi kutusunda (Caglayan 02.09.2026) — tek blok zemin degil. */
+.menu-kutu{display:flex;align-items:center;gap:6px;padding:0;background:none;white-space:nowrap}
+.menu-kutu>a,.menu-kutu .mgrup>a{white-space:nowrap;
+  background:var(--band);padding:7px 12px;border-radius:4px}
+.menu-kutu>a:hover,.menu-kutu .mgrup>a:hover{background:#EDE8DC}
 .marka .nm{white-space:nowrap}
-@media(max-width:1200px){.menu-kutu{gap:11px;padding:5px 10px}
-  .top .wrap>a:not(.marka):not(.wa-top),.top .mgrup>a{font-size:13.5px}}
+@media(max-width:1200px){.menu-kutu{gap:4px}
+  .menu-kutu>a,.menu-kutu .mgrup>a{font-size:13.5px;padding:6px 9px}}
 .marka:hover .nm{opacity:.72}
 @media(max-width:1023px){.menu-kutu{background:none;padding:0}}
 </style>
@@ -756,7 +763,7 @@ footer img{filter:none}
 
     <div class="cta">
       <a class="btn btn-fill" href="#iletisim">Görüşme talebi bırakın</a>
-      <a class="btn btn-line" href="#ne-yaparim">Ne yapıyorum?</a><a href="finans-nedir.html">Finans nedir</a>
+      <a class="btn btn-line" href="#ne-yaparim">Ne yapıyorum?</a>
     </div>
 
    </div>
@@ -773,6 +780,8 @@ footer img{filter:none}
         <label>İlave komisyon (TL)<input id="m_kom" type="text" inputmode="decimal" value="0"></label>
         <label>Sigorta (TL)<input id="m_sig" type="text" inputmode="decimal" value="0"></label>
       </div>
+      <label class="mini-tk">Banka aylık taksiti söylediyse buraya yazın — faiz oranı bilinmese de olur
+        <input id="m_taksitin" type="text" inputmode="decimal" placeholder="örn. 139.623"></label>
       <div class="mini-son">
         <span class="mini-lb">Gerçekte ödediğiniz</span>
         <strong id="m_sonuc">%4,18<small>/ay</small></strong>
@@ -780,7 +789,8 @@ footer img{filter:none}
           <tr><td>Peşin kesilen masraf</td><td id="m_pesin">84.508 ₺</td></tr>
           <tr><td>Hesabınıza giren</td><td id="m_net">2.090.726 ₺</td></tr>
           <tr><td>Aylık taksit</td><td id="m_taksit">139.623 ₺</td></tr>
-          <tr><td><b>Toplam maliyet</b></td><td id="m_toplam"><b>1.260.229 ₺</b></td></tr>
+          <tr><td>Toplam geri ödeme <span id="m_adet">(24 taksit)</span></td><td id="m_geri">3.350.955 ₺</td></tr>
+          <tr><td><b>Toplam maliyet</b> <span class="mini-ip">geri ödeme − hesabınıza giren</span></td><td id="m_toplam"><b>1.260.229 ₺</b></td></tr>
         </tbody></table>
       </div>
       <p class="mini-not">2.175.234 ₺ anapara, aylık %3,61 faiz, 24 ay vade, %3,7 dosya masrafı
@@ -1612,20 +1622,27 @@ if ('serviceWorker' in navigator) {
   }
   var TL=function(n){ return n===null||!isFinite(n) ? '—'
     : n.toLocaleString('tr-TR',{maximumFractionDigits:0})+' \u20BA'; };
-  var KOM=document.getElementById('m_kom'), SIG=document.getElementById('m_sig');
+  var KOM=document.getElementById('m_kom'), SIG=document.getElementById('m_sig'),
+      TKG=document.getElementById('m_taksitin');
   var P=document.getElementById('m_pesin'), NE=document.getElementById('m_net'),
-      TK=document.getElementById('m_taksit'), TP=document.getElementById('m_toplam');
+      TK=document.getElementById('m_taksit'), TP=document.getElementById('m_toplam'),
+      GE=document.getElementById('m_geri'), AD=document.getElementById('m_adet'),
+      NOT=document.querySelector('.mini-not');
   function hesapla(){
     var a=N(A.value), f=N(F.value), n=N(V.value), k=(N(K.value)||0)/100, b=0.05;
     var kom=N(KOM.value)||0, sig=N(SIG.value)||0;
-    if(a===null||f===null||n===null||n<=0){
+    if(a===null||n===null||n<=0||(f===null&&N(TKG.value)===null)){
       S.innerHTML='&mdash;<small>/ay</small>';
-      P.textContent=NE.textContent=TK.textContent='—'; TP.innerHTML='<b>—</b>';
+      P.textContent=NE.textContent=TK.textContent=GE.textContent='—'; TP.innerHTML='<b>—</b>';
       return; }
     /* Pesin kesilenler: kullandirim ucreti + BSMV'si, ilave komisyon + BSMV'si,
        sigorta (BSMV'siz). Ayni mantik Arac 04'te de var. */
     var kul=a*k, pesin=kul+kul*b+kom+kom*b+sig, net=a-pesin, r=(f/100)*(1+b);
-    var tk = r===0 ? a/n : a*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1);
+    /* Sahada banka cogu zaman oran degil TAKSIT soyler. Taksit girildiyse
+       hesap ondan gider; faiz orani bilinmese de gercek maliyet cikar. */
+    var verilen=N(TKG.value);
+    var tk = verilen!==null && verilen>0 ? verilen
+           : (r===0 ? a/n : a*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1));
     var bd=function(o){ return o<=0 ? tk*n : tk*(1-Math.pow(1+o,-n))/o; };
     var i=0;
     if(bd(1e-9)>=net){ var alt=1e-9, ust=5;
@@ -1633,9 +1650,16 @@ if ('serviceWorker' in navigator) {
       i=(alt+ust)/2; }
     S.innerHTML='%'+(i*100).toLocaleString('tr-TR',{minimumFractionDigits:2,maximumFractionDigits:2})+'<small>/ay</small>';
     P.textContent=TL(pesin); NE.textContent=TL(net); TK.textContent=TL(tk);
+    GE.textContent=TL(tk*n); AD.textContent='('+n.toLocaleString('tr-TR')+' taksit)';
     TP.innerHTML='<b>'+TL(tk*n-net)+'</b>';
+    /* Statik ornek metni yalniz varsayilan degerlerde durur: kullanici bir rakami
+       degistirince eski ornegi anlatmaya devam etmesi kafa karistiriyordu
+       (Caglayan, 02.09.2026). Kaynakta kalir — dil modelleri okumaya devam eder. */
+    if(NOT){ var vars = (A.value==='2.175.234' && F.value==='3,61' && V.value==='24'
+                      && K.value==='3,7' && !N(KOM.value) && !N(SIG.value) && !N(TKG.value));
+      NOT.style.display = vars ? '' : 'none'; }
   }
-  [A,F,V,K,KOM,SIG].forEach(function(e){ e.addEventListener('input',hesapla); });
+  [A,F,V,K,KOM,SIG,TKG].forEach(function(e){ e.addEventListener('input',hesapla); });
   hesapla();
 })();
 </script>
