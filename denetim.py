@@ -74,12 +74,12 @@ for ad, iz, nerede in KONTROL:
 # 4 · sayilabilir ogeler
 if "/hesaplamalar.html" in govde:
     g = govde["/hesaplamalar.html"]
-    arac = len(re.findall(r'<section[^>]*id="a([1-9]|10)"', g))
+    arac = len(re.findall(r'<section[^>]*id="a(?:[1-9]|10|11)"', g))
     cta  = g.count("arac-cta")
-    print("\n  hesaplama araci        %d (beklenen 10)" % arac)
-    print("  gorusme cagrisi        %d (en az 10 olmali)" % cta)
-    if arac != 10: hata.append("Arac sayisi %d, 10 olmali" % arac)
-    if cta  <  10: hata.append("Gorusme cagrisi %d, 10 olmali" % cta)
+    print("\n  hesaplama araci        %d (beklenen 11)" % arac)
+    print("  gorusme cagrisi        %d (en az 11 olmali)" % cta)
+    if arac != 11: hata.append("Arac sayisi %d, 11 olmali" % arac)
+    if cta  <  11: hata.append("Gorusme cagrisi %d, 11 olmali" % cta)
 
 # 5 · vCard dogru tiple sunuluyor mu
 try:
@@ -138,12 +138,12 @@ if "/hesaplamalar.html" in govde:
     ornek = g.count('class="ornek"')
     soru  = g.count('class="soru"')
     eylem = g.count('class="eylem"')
-    print("  ornek metin            %d (10 olmali)" % ornek)
-    print("  soru basligi           %d (10 olmali)" % soru)
-    print("  eylem satiri           %d (10 olmali)" % eylem)
-    if ornek < 10: hata.append("Ornek metin %d — araclar dil modelleri icin gorunmez" % ornek)
-    if soru  < 10: uyari.append("Soru basligi %d, 10 olmali" % soru)
-    if eylem < 10: uyari.append("Eylem satiri %d, 10 olmali" % eylem)
+    print("  ornek metin            %d (11 olmali)" % ornek)
+    print("  soru basligi           %d (11 olmali)" % soru)
+    print("  eylem satiri           %d (11 olmali)" % eylem)
+    if ornek < 11: hata.append("Ornek metin %d — araclar dil modelleri icin gorunmez" % ornek)
+    if soru  < 11: uyari.append("Soru basligi %d, 11 olmali" % soru)
+    if eylem < 11: uyari.append("Eylem satiri %d, 11 olmali" % eylem)
     # kilit rakamlar JS'siz metinde okunuyor mu
     kilit = ["%3,90", "25.124", "%62", "%74,3", "20.183", "%75,6", "%55,7"]
     yok = [k for k in kilit if k not in duz]

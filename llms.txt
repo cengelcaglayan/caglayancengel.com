@@ -28,6 +28,11 @@ düz metin olarak durur — hesabı çalıştırmadan da okunabilir.
   kullandırım ücretinin kısa vadede maliyeti nasıl yükselttiğini gösterir.
 - [Çek/senet iskontosu](https://caglayancengel.com/hesaplamalar.html#a7): peşin kesintili
   işlemin gerçek yıllık maliyeti. Örnek: %45 nominal → %74,3 gerçek.
+- [Ticari KMH](https://caglayancengel.com/hesaplamalar.html#a11): kredili mevduat
+  hesabında faiz yalnız kullanılan bakiye üzerinden işler, limit tahsis ücreti ise
+  limitin tamamı üzerinden alınır. Örnek: 1.000.000 ₺ limitin 400.000 ₺'si kullanılıyor,
+  30 gün, %55 yıllık faiz → gerçek maliyet %57,8; 25.000 ₺ yıllık tahsis ücreti eklenince
+  %64,3.
 - [POS blokaj karşılaştırması](https://caglayancengel.com/hesaplamalar.html#a8): ertesi gün
   ödeme ile blokeli seçeneği, bekleyen paranın maliyetini hesaba katarak karşılaştırır.
 - [Faktoring maliyeti](https://caglayancengel.com/hesaplamalar.html#a9): avans oranının

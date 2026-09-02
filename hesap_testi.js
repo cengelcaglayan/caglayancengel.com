@@ -56,6 +56,19 @@ const TESTLER = [
     olc: [ { id:'i_yil', bek:74.3, tol:0.1, not:'yillik maliyet' },
            { id:'i_alt', ara:'870.325', not:'elinize gecen' } ] },
 
+  { ad: 'a11 ticari KMH · sade', fn: 'kmh',
+    gir: { kh_limit:'1.000.000', kh_bakiye:'400.000', kh_gun:'30', kh_faiz:'55',
+           kh_tahsis:'0', kh_bsmv:'5' },
+    olc: [ { id:'kh_yil', bek:57.8, tol:0.1, not:'yillik maliyet' },
+           { id:'kh_alt', ara:'19.250', not:'donem maliyeti' },
+           { id:'kh_alt', ara:'%40',    not:'limit kullanimi' } ] },
+
+  { ad: 'a11 ticari KMH · tahsisli', fn: 'kmh',
+    gir: { kh_limit:'1.000.000', kh_bakiye:'400.000', kh_gun:'30', kh_faiz:'55',
+           kh_tahsis:'25.000', kh_bsmv:'5' },
+    olc: [ { id:'kh_yil', bek:64.3, tol:0.1, not:'yillik maliyet' },
+           { id:'kh_alt', ara:'21.438', not:'donem maliyeti' } ] },
+
   { ad: 'a08 POS blokeli/ertesi gun', fn: 'pos',
     gir: { p_ciro:'500.000', p_k1:'2,5', p_k2:'2', p_gun:'30', p_maliyet:'4', p_bsmv:'5' },
     olc: [ { id:'p_fark',  bek:17375, tol:1, not:'toplam fark' },
@@ -283,6 +296,7 @@ const metin = e => (e.textContent && e.textContent.trim()) || (e.innerHTML || ''
       { arac:'a8',  id:'p_fark',    ara:'20.183',not:'aylık fark' },
       { arac:'a9',  id:'fk_yil',    ara:'%75,6', not:'yıllık maliyet' },
       { arac:'a10', id:'gt_denk',   ara:'%55,7', not:'denk kredi faizi' },
+      { arac:'a11', id:'kh_yil',    ara:'%57,8', not:'yillik maliyet' },
     ];
     const bolum = id => {
       const i = govde.search(new RegExp('<section[^>]*id="' + id + '"'));
