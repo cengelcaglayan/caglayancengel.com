@@ -246,6 +246,36 @@ for y in ["/", "/hesaplamalar.html", "/finans-nedir.html", "/ornek-rapor.html", 
     else:
         print("  %-22s tamam (bar payi dusuluyor)" % y)
 
+
+# ---------------------------------------------------------------------------
+# 11 · GIRDI ETIKETI — her girdinin adi ekran okuyucuya gitmeli
+# ---------------------------------------------------------------------------
+# Olculdu 02.09.2026: hesaplamalar.html'de 70 girdi "kardes" etiketliydi
+# (<label>Anapara</label><input id="k_ana">). Goz icin dogru, ekran okuyucu
+# icin etiketsiz. Sarmalayan etiket (<label>Ad<input></label>) zaten saglamdir;
+# kirmizi yalnizca baglanmamis kardes etiket icin yanar.
+print()
+print("11 · GIRDI ETIKETI")
+KARDES = re.compile(
+    r'<label>(?:(?!</?label|<input|<select).)*?</label>\s*<(?:input|select)\b[^>]*?\bid="[\w\-]+"',
+    re.S)
+for y in SAYFA:
+    g = govde.get(y, "")
+    if not g:
+        continue
+    girdi = len(re.findall(r'<(?:input|select)\b', g))
+    if girdi == 0:
+        print("  %-22s girdi yok" % y)
+        continue
+    bag  = len(re.findall(r'<label\s+for="', g))
+    sar  = len(re.findall(r'<label>(?:(?!</?label).)*?<(?:input|select)\b', g, re.S))
+    acik = KARDES.findall(g)
+    if acik:
+        hata.append("%s · %d girdi etiketi baglanmamis (label for= yok)" % (y, len(acik)))
+        print("  %-22s 🔴 %d baglanmamis etiket" % (y, len(acik)))
+    else:
+        print("  %-22s tamam (%d girdi · %d for= · %d sarmalayan)" % (y, girdi, bag, sar))
+
 print("\n" + "=" * 66)
 for u in uyari: print("  UYARI  ·", u)
 if hata:
