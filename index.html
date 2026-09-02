@@ -585,25 +585,29 @@ footer img{filter:none}
 /* ---- hero: sag sutunda calisan hesap (FAZ 2 · 02.09.2026) ----
    Ilk ekranin en degerli kosesinde kanit durur, kartvizit degil. Ziyaretci
    rakami ilk saniyede gorur; kartvizit hemen altta ve iletisim bolumunde. */
-.hero-yan{display:flex;flex-direction:column;gap:16px;
-  position:sticky;top:calc(var(--ust,80px) + 26px)}
+/* sticky kaldirildi 02.09.2026: sag sutun asagi akip "22 yil" seridinin
+   uzerine biniyordu — kutu artik yerinde durur. */
+.hero-yan{display:flex;flex-direction:column;gap:16px}
 .mini{border:1px solid var(--rule);border-top:3px solid var(--gold);border-radius:3px;
   background:var(--white);padding:16px 16px 14px;box-shadow:0 1px 3px rgba(15,28,46,.05)}
 .mini-et{display:block;font-size:10.5px;letter-spacing:1.5px;text-transform:uppercase;
   color:var(--goldink);font-weight:600;margin-bottom:5px}
 .mini>b{display:block;font-size:13.5px;line-height:1.35;color:var(--navy);margin-bottom:11px}
-.mini-g{display:grid;grid-template-columns:1fr 1fr;gap:8px 10px}
-.mini-g label{display:flex;flex-direction:column;font-size:11px;color:var(--soft);gap:3px}
-.mini-g input{font:inherit;font-size:13.5px;color:var(--navy);padding:6px 8px;
+.mini-g{display:grid;grid-template-columns:1fr 1fr;gap:6px 9px}
+.mini-g label{display:flex;flex-direction:column;font-size:10.5px;color:var(--soft);gap:2px}
+.mini-g input{font:inherit;font-size:12.5px;color:var(--navy);padding:4px 7px;
   border:1px solid var(--rule);border-radius:2px;background:var(--paper);width:100%;
   box-sizing:border-box;min-width:0}
 .mini-g input:focus{outline:none;border-color:var(--gold);background:var(--white)}
 .mini-son{margin-top:12px;padding-top:11px;border-top:1px solid var(--rule)}
 .mini-lb{display:block;font-size:10.5px;letter-spacing:1.4px;text-transform:uppercase;color:var(--soft)}
-.mini-son strong{display:block;font-family:'Playfair Display',serif;font-size:30px;
+.mini-son strong{display:block;font-family:'Playfair Display',serif;font-size:27px;
   color:var(--navy);line-height:1.1;margin:2px 0 4px}
 .mini-son strong small{font-size:15px;font-weight:400}
-.mini-alt{display:block;font-size:11.5px;color:var(--soft);line-height:1.45}
+.mini-tab{width:100%;border-collapse:collapse;margin-top:7px;font-size:11.5px}
+.mini-tab td{padding:4px 0;border-bottom:1px solid var(--rule);color:var(--soft)}
+.mini-tab td:last-child{text-align:right;color:var(--navy);font-variant-numeric:tabular-nums}
+.mini-tab tr:last-child td{border-bottom:0}
 .mini-not{margin:10px 0 0;font-size:11.5px;line-height:1.5;color:var(--soft)}
 .mini-not b{color:var(--body)}
 .mini-lnk{display:block;margin-top:11px;padding:9px 12px;font-size:13px;font-weight:600;
@@ -615,6 +619,24 @@ footer img{filter:none}
   .mini{padding:15px}
   .mini-son strong{font-size:27px}
 }
+/* Üst bar (02.09.2026) — marka ile menü görsel olarak ayrılıyor:
+   menü hafif zeminli bir kutunun içinde durur, marka dışarıda kalır.
+   Çizgi sürekli değil; yalnız hover'da ve bulunduğun sayfada belirir. */
+.top .wrap>a:not(.marka):not(.wa-top), .top .mgrup>a{
+  font-size:14.5px;color:var(--navy);text-decoration:none;
+  border-bottom:1px solid transparent;padding:3px 0;transition:border-color .18s}
+.top .wrap>a:not(.marka):not(.wa-top):hover, .top .mgrup>a:hover{
+  border-bottom-color:var(--gold)}
+.top .wrap>a[aria-current="page"], .top .mgrup>a[aria-current="page"]{
+  border-bottom-color:var(--gold);color:var(--goldink)}
+.menu-kutu{display:flex;align-items:center;gap:15px;padding:6px 13px;
+  background:var(--band);border-radius:4px;white-space:nowrap}
+.menu-kutu>a,.menu-kutu .mgrup>a{white-space:nowrap}
+.marka .nm{white-space:nowrap}
+@media(max-width:1200px){.menu-kutu{gap:11px;padding:5px 10px}
+  .top .wrap>a:not(.marka):not(.wa-top),.top .mgrup>a{font-size:13.5px}}
+.marka:hover .nm{opacity:.72}
+@media(max-width:1023px){.menu-kutu{background:none;padding:0}}
 </style>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":["ProfessionalService","FinancialService"],
@@ -696,20 +718,18 @@ footer img{filter:none}
 <div class="top">
   <div class="wrap">
     <a class="marka" href="/" aria-label="Ana sayfa — başa dön"><img src="logo.png" alt=""><span class="nm">ÇAĞLAYAN ÇENGEL</span></a>
-    <span class="sp"></span>
-    <nav class="topnav">
-      <a href="#ne-yaparim">Ne yapıyorum</a><a href="finans-nedir.html">Finans nedir</a>
+    <span class="sp"></span><span class="menu-kutu"><nav class="topnav">
+      <a href="#ne-yaparim">Ne yapıyorum?</a><a href="finans-nedir.html">Finans nedir</a>
       <a href="#olcut">Sizde var mı?</a><span class="mgrup"><a href="hesaplamalar.html">Hesaplamalar</a><div class="altm"><div class="altm-bas">Hesaplama araçları</div><a href="hesaplamalar.html#a4">Taksitli ticari kredi</a><a href="hesaplamalar.html#a5">Rotatif (BCH)</a><a href="hesaplamalar.html#a6">Spot kredi</a><a href="hesaplamalar.html#a7">Çek/senet iskonto</a><a href="hesaplamalar.html#a9">Faktoring</a><a href="hesaplamalar.html#a10">Eline geçen ne kadar</a><a href="hesaplamalar.html#a8">POS komisyonu</a><a href="hesaplamalar.html#a1">Bilanço teşhisi</a><a href="hesaplamalar.html#a2">Borç servisi · DSCR</a><a href="hesaplamalar.html#a3">Nakit döngüsü</a></div></span>
       
       <a href="#kimim">Hakkımda</a>
       <a href="#iletisim">İletişim</a>
-    </nav>
-    <a class="wa-top" href="https://wa.me/905337619443" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true" style="flex:0 0 auto"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.06 2.88 1.21 3.08c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.22 1.36.19 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35M12.04 21.5h-.01a9.5 9.5 0 0 1-4.83-1.32l-.35-.21-3.59.94.96-3.5-.23-.36a9.46 9.46 0 0 1-1.45-5.06c0-5.23 4.27-9.49 9.51-9.49 2.54 0 4.92.99 6.71 2.78a9.42 9.42 0 0 1 2.78 6.72c0 5.23-4.27 9.5-9.5 9.5m8.08-17.58A11.42 11.42 0 0 0 12.04.5C5.75.5.63 5.61.63 11.9c0 2.01.53 3.98 1.53 5.71L.5 23.5l6.05-1.59a11.4 11.4 0 0 0 5.49 1.4h.01c6.28 0 11.4-5.11 11.4-11.4 0-3.05-1.19-5.91-3.34-8.07"/></svg><span>WhatsApp</span></a>
+    </nav></span><a class="wa-top" href="https://wa.me/905337619443" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true" style="flex:0 0 auto"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.06 2.88 1.21 3.08c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.22 1.36.19 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35M12.04 21.5h-.01a9.5 9.5 0 0 1-4.83-1.32l-.35-.21-3.59.94.96-3.5-.23-.36a9.46 9.46 0 0 1-1.45-5.06c0-5.23 4.27-9.49 9.51-9.49 2.54 0 4.92.99 6.71 2.78a9.42 9.42 0 0 1 2.78 6.72c0 5.23-4.27 9.5-9.5 9.5m8.08-17.58A11.42 11.42 0 0 0 12.04.5C5.75.5.63 5.61.63 11.9c0 2.01.53 3.98 1.53 5.71L.5 23.5l6.05-1.59a11.4 11.4 0 0 0 5.49 1.4h.01c6.28 0 11.4-5.11 11.4-11.4 0-3.05-1.19-5.91-3.34-8.07"/></svg><span>WhatsApp</span></a>
   <button class="hmb" id="hmbBtn" aria-label="Menü" aria-expanded="false"><span></span></button></div>
 </div>
 
 <!-- ================= HERO ================= -->
-<div class="mpanel" id="mpanel"><a href="/#ne-yaparim">Ne yapıyorum</a><a href="/#olcut">Sizde var mı?</a><a href="hesaplamalar.html">Hesaplamalar</a><a href="/#kimim">Hakkımda</a><a href="ornek-rapor.html">Örnek rapor</a><a href="/#iletisim">İletişim</a><div class="mp-bas">Hesaplama araçları</div><a class="mp-arac" href="hesaplamalar.html#a4">Taksitli ticari kredi</a><a class="mp-arac" href="hesaplamalar.html#a5">Rotatif (BCH)</a><a class="mp-arac" href="hesaplamalar.html#a6">Spot kredi</a><a class="mp-arac" href="hesaplamalar.html#a7">Çek/senet iskonto</a><a class="mp-arac" href="hesaplamalar.html#a9">Faktoring</a><a class="mp-arac" href="hesaplamalar.html#a10">Eline geçen ne kadar</a><a class="mp-arac" href="hesaplamalar.html#a8">POS komisyonu</a><a class="mp-arac" href="hesaplamalar.html#a1">Bilanço teşhisi</a><a class="mp-arac" href="hesaplamalar.html#a2">Borç servisi · DSCR</a><a class="mp-arac" href="hesaplamalar.html#a3">Nakit döngüsü</a><a class="mp-wa" href="https://wa.me/905337619443" target="_blank" rel="noopener">WhatsApp ile yazın</a></div>
+<div class="mpanel" id="mpanel"><a href="/#ne-yaparim">Ne yapıyorum?</a><a href="/#olcut">Sizde var mı?</a><a href="hesaplamalar.html">Hesaplamalar</a><a href="/#kimim">Hakkımda</a><a href="ornek-rapor.html">Örnek rapor</a><a href="/#iletisim">İletişim</a><div class="mp-bas">Hesaplama araçları</div><a class="mp-arac" href="hesaplamalar.html#a4">Taksitli ticari kredi</a><a class="mp-arac" href="hesaplamalar.html#a5">Rotatif (BCH)</a><a class="mp-arac" href="hesaplamalar.html#a6">Spot kredi</a><a class="mp-arac" href="hesaplamalar.html#a7">Çek/senet iskonto</a><a class="mp-arac" href="hesaplamalar.html#a9">Faktoring</a><a class="mp-arac" href="hesaplamalar.html#a10">Eline geçen ne kadar</a><a class="mp-arac" href="hesaplamalar.html#a8">POS komisyonu</a><a class="mp-arac" href="hesaplamalar.html#a1">Bilanço teşhisi</a><a class="mp-arac" href="hesaplamalar.html#a2">Borç servisi · DSCR</a><a class="mp-arac" href="hesaplamalar.html#a3">Nakit döngüsü</a><a class="mp-wa" href="https://wa.me/905337619443" target="_blank" rel="noopener">WhatsApp ile yazın</a></div>
 
 <header class="hero">
   <div class="wrap hero-iki">
@@ -736,7 +756,7 @@ footer img{filter:none}
 
     <div class="cta">
       <a class="btn btn-fill" href="#iletisim">Görüşme talebi bırakın</a>
-      <a class="btn btn-line" href="#ne-yaparim">Ne yapıyorum</a><a href="finans-nedir.html">Finans nedir</a>
+      <a class="btn btn-line" href="#ne-yaparim">Ne yapıyorum?</a><a href="finans-nedir.html">Finans nedir</a>
     </div>
 
    </div>
@@ -750,11 +770,18 @@ footer img{filter:none}
         <label>Aylık faiz (%)<input id="m_faiz" type="text" inputmode="decimal" value="3,61"></label>
         <label>Vade (ay)<input id="m_vade" type="text" inputmode="decimal" value="24"></label>
         <label>Dosya masrafı (%)<input id="m_kul" type="text" inputmode="decimal" value="3,7"></label>
+        <label>İlave komisyon (TL)<input id="m_kom" type="text" inputmode="decimal" value="0"></label>
+        <label>Sigorta (TL)<input id="m_sig" type="text" inputmode="decimal" value="0"></label>
       </div>
       <div class="mini-son">
         <span class="mini-lb">Gerçekte ödediğiniz</span>
         <strong id="m_sonuc">%4,18<small>/ay</small></strong>
-        <span class="mini-alt" id="m_alt">Aylık taksit 139.623 ₺ · peşin kesilen 84.508 ₺</span>
+        <table class="mini-tab"><tbody>
+          <tr><td>Peşin kesilen masraf</td><td id="m_pesin">84.508 ₺</td></tr>
+          <tr><td>Hesabınıza giren</td><td id="m_net">2.090.726 ₺</td></tr>
+          <tr><td>Aylık taksit</td><td id="m_taksit">139.623 ₺</td></tr>
+          <tr><td><b>Toplam maliyet</b></td><td id="m_toplam"><b>1.260.229 ₺</b></td></tr>
+        </tbody></table>
       </div>
       <p class="mini-not">2.175.234 ₺ anapara, aylık %3,61 faiz, 24 ay vade, %3,7 dosya masrafı
       ve %5 BSMV ile gerçekte ödenen <b>aylık %4,18</b> olur. Banka 84.508 ₺'yi baştan keser,
@@ -1585,11 +1612,19 @@ if ('serviceWorker' in navigator) {
   }
   var TL=function(n){ return n===null||!isFinite(n) ? '—'
     : n.toLocaleString('tr-TR',{maximumFractionDigits:0})+' \u20BA'; };
+  var KOM=document.getElementById('m_kom'), SIG=document.getElementById('m_sig');
+  var P=document.getElementById('m_pesin'), NE=document.getElementById('m_net'),
+      TK=document.getElementById('m_taksit'), TP=document.getElementById('m_toplam');
   function hesapla(){
     var a=N(A.value), f=N(F.value), n=N(V.value), k=(N(K.value)||0)/100, b=0.05;
-    if(a===null||f===null||n===null||n<=0){ S.innerHTML='&mdash;<small>/ay</small>';
-      L.textContent='Anapara, faiz ve vadeyi girin.'; return; }
-    var kul=a*k, pesin=kul+kul*b, net=a-pesin, r=(f/100)*(1+b);
+    var kom=N(KOM.value)||0, sig=N(SIG.value)||0;
+    if(a===null||f===null||n===null||n<=0){
+      S.innerHTML='&mdash;<small>/ay</small>';
+      P.textContent=NE.textContent=TK.textContent='—'; TP.innerHTML='<b>—</b>';
+      return; }
+    /* Pesin kesilenler: kullandirim ucreti + BSMV'si, ilave komisyon + BSMV'si,
+       sigorta (BSMV'siz). Ayni mantik Arac 04'te de var. */
+    var kul=a*k, pesin=kul+kul*b+kom+kom*b+sig, net=a-pesin, r=(f/100)*(1+b);
     var tk = r===0 ? a/n : a*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1);
     var bd=function(o){ return o<=0 ? tk*n : tk*(1-Math.pow(1+o,-n))/o; };
     var i=0;
@@ -1597,9 +1632,10 @@ if ('serviceWorker' in navigator) {
       for(var c=0;c<300;c++){ var o=(alt+ust)/2; if(bd(o)>net) alt=o; else ust=o; }
       i=(alt+ust)/2; }
     S.innerHTML='%'+(i*100).toLocaleString('tr-TR',{minimumFractionDigits:2,maximumFractionDigits:2})+'<small>/ay</small>';
-    L.textContent='Aylık taksit '+TL(tk)+' · peşin kesilen '+TL(pesin);
+    P.textContent=TL(pesin); NE.textContent=TL(net); TK.textContent=TL(tk);
+    TP.innerHTML='<b>'+TL(tk*n-net)+'</b>';
   }
-  [A,F,V,K].forEach(function(e){ e.addEventListener('input',hesapla); });
+  [A,F,V,K,KOM,SIG].forEach(function(e){ e.addEventListener('input',hesapla); });
   hesapla();
 })();
 </script>

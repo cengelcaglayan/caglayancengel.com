@@ -335,19 +335,20 @@ const metin = e => (e.textContent && e.textContent.trim()) || (e.innerHTML || ''
           RegExp, isFinite, parseFloat, parseInt, JSON, Date });
         for (const m of ana.matchAll(/<input id="(m_[a-z]+)"[^>]*\bvalue="([^"]*)"/g)) el2(m[1]).value = m[2];
         try { vm.runInContext(mb, ctx3, { timeout: 8000 }); } catch (e) { sorun.push('mini hesap kosmadi: ' + e.message); }
-        const s2 = el2('m_sonuc'), a2 = el2('m_alt');
-        const cikan = ((s2.innerHTML || s2.textContent) + '').replace(/<[^>]*>/g, '');
-        const altMetin = a2.textContent || '';
-        const beklenen = { oran:'%4,18', taksit:'139.623', pesin:'84.508' };
+        const oku2 = id => { const e = el2(id); return ((e.innerHTML || e.textContent) + '').replace(/<[^>]*>/g, ''); };
+        const cikan = oku2('m_sonuc');
+        const beklenen = { oran:'%4,18', taksit:'139.623', pesin:'84.508', net:'2.090.726', toplam:'1.260.229' };
         const hata2 = [];
-        if (!cikan.includes(beklenen.oran))      hata2.push(`oran "${beklenen.oran}" değil, "${cikan}"`);
-        if (!altMetin.includes(beklenen.taksit)) hata2.push(`taksit ${beklenen.taksit} yok`);
-        if (!altMetin.includes(beklenen.pesin))  hata2.push(`peşin masraf ${beklenen.pesin} yok`);
+        if (!cikan.includes(beklenen.oran))            hata2.push(`oran "${beklenen.oran}" değil, "${cikan}"`);
+        if (!oku2('m_taksit').includes(beklenen.taksit)) hata2.push(`taksit ${beklenen.taksit} yok`);
+        if (!oku2('m_pesin').includes(beklenen.pesin))   hata2.push(`peşin masraf ${beklenen.pesin} yok`);
+        if (!oku2('m_net').includes(beklenen.net))       hata2.push(`hesaba giren ${beklenen.net} yok`);
+        if (!oku2('m_toplam').includes(beklenen.toplam)) hata2.push(`toplam maliyet ${beklenen.toplam} yok`);
         /* statik metin de aynı rakamı taşımalı — modelin okuduğu yer orası */
         const notMetin = (ana.match(/<p class="mini-not">[\s\S]*?<\/p>/) || [''])[0];
         if (!notMetin) hata2.push('statik açıklama (mini-not) yok — model için görünmez');
-        else for (const [ad, deg] of Object.entries(beklenen))
-          if (!notMetin.includes(deg)) hata2.push(`statik metinde ${ad} (${deg}) yok`);
+        else for (const ad of ['oran','taksit','pesin'])
+          if (!notMetin.includes(beklenen[ad])) hata2.push(`statik metinde ${ad} (${beklenen[ad]}) yok`);
 
         if (hata2.length) {
           sorun.push(...hata2.map(x => 'mini hesap — ' + x));
