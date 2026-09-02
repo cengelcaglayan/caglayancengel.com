@@ -1850,7 +1850,11 @@ function odemePlani(){
           +TL(Math.abs(farkT))+'</b>'+(farkT>0?' fazla':' az')+', vade boyunca <b>'
           +TL(Math.abs(farkToplam))+'</b>.'; })()
     + '<br>Plan tarihi: '+trTarih(new Date());
-  document.getElementById('k_plan').hidden = false;
+  var kb = document.getElementById('k_plan');
+  kb.hidden = false;
+  /* Belge acilinca ekranin altinda kalmasin — buton basildi ama
+     bir sey olmadi izlenimi veriyordu. 'nearest': zaten gorunuyorsa oynatmaz. */
+  kb.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
 
 /* ================= BELGE URETIMI — rotatif · spot · iskonto =================
@@ -1927,7 +1931,11 @@ function rotatifPlani(){
     + '</b> tarihinde, kullandırımdan <b>' + ilkGun + ' gün</b> sonra doğar — '
     + 'toplam <b>' + sonlar.length + ' dönem</b> ödemesi vardır.'
     + '<br>Belge tarihi: ' + trTarih(new Date());
-  document.getElementById('r_plan').hidden = false;
+  var rb = document.getElementById('r_plan');
+  rb.hidden = false;
+  /* Belge acilinca ekranin altinda kalmasin — buton basildi ama
+     bir sey olmadi izlenimi veriyordu. 'nearest': zaten gorunuyorsa oynatmaz. */
+  rb.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
 
 function spotPlani(){
@@ -1965,7 +1973,11 @@ function spotPlani(){
         + kaymaGun + ' gün</b> ileri kaydı; bunun faiz bedeli <b>' + TL(kaymaBedeli)
         + '</b>.' : '')
     + '<br>Belge tarihi: ' + trTarih(new Date());
-  document.getElementById('s_plan').hidden = false;
+  var sb = document.getElementById('s_plan');
+  sb.hidden = false;
+  /* Belge acilinca ekranin altinda kalmasin — buton basildi ama
+     bir sey olmadi izlenimi veriyordu. 'nearest': zaten gorunuyorsa oynatmaz. */
+  sb.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
 
 function iskontoPlani(){
@@ -2006,7 +2018,11 @@ function iskontoPlani(){
         + 'gerçek vade <b>' + gun + ' gün</b> — aradaki ' + Math.abs(fark)
         + ' günün bedeli <b>' + TL(farkTutar) + '</b>.' : '')
     + '<br>Belge tarihi: ' + trTarih(new Date());
-  document.getElementById('i_plan').hidden = false;
+  var ib = document.getElementById('i_plan');
+  ib.hidden = false;
+  /* Belge acilinca ekranin altinda kalmasin — buton basildi ama
+     bir sey olmadi izlenimi veriyordu. 'nearest': zaten gorunuyorsa oynatmaz. */
+  ib.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
 
 
