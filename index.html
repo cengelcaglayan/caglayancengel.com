@@ -60,6 +60,8 @@ section{padding:104px 0}
 }
 .dark .kicker{color:var(--gold)}
 h2{font-size:clamp(26px,2.9vw,34px);margin-bottom:14px}
+.ince{font-size:16px;color:var(--soft)}
+.dark .ince{color:rgba(255,255,255,.72)}
 .rule{width:40px;height:2px;background:var(--gold);margin:0 0 26px}
 .hizli{
   list-style:none;margin:30px 0 6px;padding:0;display:flex;flex-wrap:wrap;gap:14px 16px
@@ -1004,11 +1006,14 @@ section[id],header[id],div[id]{scroll-margin-top:calc(var(--ust,80px) + 14px)}
             ve baktığı şey ödeme gücüdür. Aynı veriden iki farklı sonuç çıkar. Bu fark
             yönetilmediğinde firma, bankanın gördüğü tabloyu ilk kez talebi olumsuz
             sonuçlandığında öğrenir.</p>
-          <p>Bilanço, gelir tablosu ve mizan, bankaların kredi analizinde kullandığı spread
-            mantığıyla yeniden düzenlenir: kalemler yeniden sınıflandırılır, ortaklardan
-            alacaklar ve grup içi hareketler ayrıştırılır, özkaynağın gerçek büyüklüğü
-            hesaplanır. Sonuçta üç rakam görünür hâle gelir — faaliyetin ürettiği kâr,
-            işletme sermayesi ihtiyacı ve bankanın ödeme gücü olarak gördüğü tutar.</p>
+          <p>Yapılan iş şudur: firmanın kendi tablosu, bankanın göreceği hâline çevrilir.
+            Hangi rakamın soru yaratacağı, banka sormadan görünür hâle gelir. Sonuçta üç
+            rakam ortaya çıkar — faaliyetin ürettiği kâr, işletme sermayesi ihtiyacı ve
+            bankanın ödeme gücü olarak gördüğü tutar.</p>
+          <p class="ince">Bunun için bilanço, gelir tablosu ve mizan, bankaların kredi
+            analizinde kullandığı <em>spread</em> mantığıyla yeniden düzenlenir: kalemler
+            yeniden sınıflandırılır, ortaklardan alacaklar ve grup içi hareketler
+            ayrıştırılır, özkaynağın gerçek büyüklüğü hesaplanır.</p>
         </div>
       </div>
       
@@ -1086,6 +1091,24 @@ section[id],header[id],div[id]{scroll-margin-top:calc(var(--ust,80px) + 14px)}
 <!-- ================= KIMIM ================= -->
 
 <!-- ================= OZ DEGERLENDIRME ================= -->
+<section class="band" id="cikti">
+  <div class="narrow">
+    <p class="kicker">Çıktı nasıl görünüyor</p>
+    <h2>Örnek rapor ve hesaplama araçları</h2>
+    <div class="rule"></div>
+    <p>
+      Anonimleştirilmiş gerçek bir dosyadan çıkarılmış örnek rapor; ve firmanızın kendi
+      rakamlarını girip bankanın baktığı oranları görebileceğiniz araçlar. Girdiğiniz
+      rakamlar tarayıcınızdan çıkmaz.
+    </p>
+    <div class="cta">
+      <a class="btn btn-fill" href="ornek-rapor.html">Örnek raporu gör</a>
+      <a class="btn btn-line" href="hesaplamalar.html">Hesaplama araçları</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ILETISIM ================= -->
 <section id="olcut">
   <div class="wrap">
     <p class="kicker">Finans sadece kredi değildir</p>
@@ -1250,24 +1273,6 @@ section[id],header[id],div[id]{scroll-margin-top:calc(var(--ust,80px) + 14px)}
 </section>
 
 <!-- ================= CIKTI ================= -->
-<section class="band" id="cikti">
-  <div class="narrow">
-    <p class="kicker">Çıktı nasıl görünüyor</p>
-    <h2>Örnek rapor ve hesaplama araçları</h2>
-    <div class="rule"></div>
-    <p>
-      Anonimleştirilmiş gerçek bir dosyadan çıkarılmış örnek rapor; ve firmanızın kendi
-      rakamlarını girip bankanın baktığı oranları görebileceğiniz araçlar. Girdiğiniz
-      rakamlar tarayıcınızdan çıkmaz.
-    </p>
-    <div class="cta">
-      <a class="btn btn-fill" href="ornek-rapor.html">Örnek raporu gör</a>
-      <a class="btn btn-line" href="hesaplamalar.html">Hesaplama araçları</a>
-    </div>
-  </div>
-</section>
-
-<!-- ================= ILETISIM ================= -->
 <section class="dark" id="iletisim">
   <div class="wrap ct">
     <div class="ct-l">
