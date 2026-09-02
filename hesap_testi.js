@@ -330,7 +330,8 @@ const metin = e => (e.textContent && e.textContent.trim()) || (e.innerHTML || ''
       } else {
         const kyt = new Map();
         const el2 = id => { if (!kyt.has(id)) kyt.set(id, { id, value:'', textContent:'', innerHTML:'', addEventListener(){} }); return kyt.get(id); };
-        const ctx3 = vm.createContext({ document:{ getElementById: el2, addEventListener(){} },
+        const ctx3 = vm.createContext({ document:{ getElementById: el2, addEventListener(){},
+            querySelector(){ return { style:{} }; }, querySelectorAll(){ return []; } },
           console:{ log(){}, warn(){}, error(){} }, Math, Number, String, Array, Object, Intl,
           RegExp, isFinite, parseFloat, parseInt, JSON, Date });
         for (const m of ana.matchAll(/<input id="(m_[a-z]+)"[^>]*\bvalue="([^"]*)"/g)) el2(m[1]).value = m[2];
