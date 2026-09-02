@@ -652,7 +652,10 @@ footer img{filter:none}
 @media(max-width:1200px){.menu-kutu{gap:4px}
   .menu-kutu>a,.menu-kutu .mgrup>a{font-size:13.5px;padding:6px 9px}}
 .marka:hover .nm{opacity:.72}
-@media(max-width:1023px){.menu-kutu{background:none;padding:0}}
+/* Mobilde üst menü gizlenir, hamburger devreye girer. Linkler .menu-kutu
+   içine alınınca eski '.topnav' kuralı eşleşmez olmuştu — menü ekrandan
+   taşıyordu (Çağlayan, 02.09.2026). */
+@media(max-width:1023px){.menu-kutu{display:none!important}}
 .ucret-l{margin:10px 0 12px;padding-left:20px}
 .ucret-l li{margin:5px 0;line-height:1.6}
 /* Görüşme formu (02.09.2026) — WhatsApp kullanmayan, "beni arayın" diyen
