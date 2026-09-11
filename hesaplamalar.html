@@ -157,7 +157,11 @@ select{appearance:none;-webkit-appearance:none;cursor:pointer;padding-right:34px
    Ayrica .plan-gir'in `padding:7px 9px` kurali, select'in `padding-right:34px`
    ok payini eziyordu: ok (sag 12 px, 11 px genis) metnin uzerine biniyordu.
    Olculen kesiklik: #r_donem 211>194, #k_kaydir 111>101. */
-.plan-gir select{width:auto;max-width:100%;padding-right:30px}
+.plan-gir select{width:auto;max-width:100%}
+/* padding-right, .plan-gir input,.plan-gir select kurali (asagida, ayni
+   ozgullukte) tarafindan eziliyordu — ok metnin uzerine biniyordu.
+   Ozgulluk .plan-ust ile bir basamak yukseltildi (olculdu 11.09.2026). */
+.plan-ust .plan-gir select{padding-right:30px}
 /* a12 #l_ind: uc sutunlu .gg'nin 10. ve SON hucresi — 4. satirda tek basina,
    yanindaki iki sutun bos. Iki sutuna yayilmak yukseklige mal olmaz.
    Olculen kesiklik: 206>177 ve 187>177. */
