@@ -425,8 +425,10 @@ footer{background:var(--navy);border-top:2px solid var(--gold);padding:30px 0 24
   .olc-band-btn{padding:7px 14px}
   .olc{margin-top:2px}
   .olc label{padding:1px 0;line-height:1.4}
-  .olc-blok{margin:14px 0 2px;padding-bottom:4px}
-  .olc-blok:first-child{margin-top:2px}
+  /* `#olcut` on eki SART: asagidaki genel `.olc-blok` (ayni ozgullukte ama
+     dosyada SONRA) bu kurali eziyordu — olculdu canli, mt 26px kalmisti. */
+  #olcut .olc-blok{margin:10px 0 2px;padding-bottom:4px}
+  #olcut .olc-blok:first-child{margin-top:2px}
   /* 800 px tarayici yuksekliginde de TEK EKRAN (olculdu 11.09.2026 canli:
      son kutunun alti 869 px'te kaldi, 69 px tasiyordu — IMG_5731.MOV 118-135 sn
      "yukarisi var asagisi yok"). Kisilan yalniz BOSLUK; yazi boyutu ve satir
