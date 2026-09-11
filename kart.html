@@ -223,5 +223,32 @@ if ('serviceWorker' in navigator) {
   if (window.caches) caches.keys().then(a => a.forEach(x => caches.delete(x))).catch(() => {});
 }
 </script>
+
+<script>
+/* ===== HEDEFE ANINDA VARIS · 11.09.2026 =====
+   Menuden bir bolume atlandiginda o bolumun bloklari animasyon sirasini
+   BEKLEMEZ. Olcum: atlama 3,0 sn kaydirma + 0,8 sn animasyon suruyordu;
+   ziyaretci ekrana bakip "geldi mi" diye bekliyordu. */
+(function(){
+  function ac(){
+    var h = location.hash;
+    if (!h || h.length < 2) return;
+    var s; try { s = document.querySelector(h); } catch(e) { return; }
+    if (!s) return;
+    var kap = s.closest ? (s.closest('section') || s) : s;
+    kap.querySelectorAll('.rv:not(.gor),.rv-ic:not(.gor),.rule:not(.gor)')
+       .forEach(function(el){ el.classList.add('gor'); });
+    if (kap.classList) kap.classList.add('gor');
+  }
+  window.addEventListener('hashchange', ac);
+  document.addEventListener('click', function(e){
+    var a = e.target && e.target.closest && e.target.closest('a[href*="#"]');
+    if (a) setTimeout(ac, 0);
+  }, true);
+  if (document.readyState === 'loading')
+    document.addEventListener('DOMContentLoaded', ac);
+  else ac();
+})();
+</script>
 </body>
 </html>
