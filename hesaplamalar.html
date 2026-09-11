@@ -2426,10 +2426,15 @@ function iskontoPlani(){
      false kalirdi (olculdu 11.09.2026, canli). Bayrak artik tiklamanin
      kendisinden turetiliyor. */
   let sonCubukTik=0;
-  function gorunurYap(a){
+  /* SOL_PAY: tiklanan oge kabin sol kenarindan bu kadar iceride durur. */
+  const SOL_PAY=16;
+  /* solaAl=true (TIKLAMA): oge sola cekilir, ardindaki araclar saga acilir.
+     solaAl=false (kaydirma): oge yalnizca gorunur olacak EN AZ kadar kayar. */
+  function gorunurYap(a,solaAl){
     const b=a.getBoundingClientRect(), k=kayd.getBoundingClientRect();
     let fark=0;
-    if(b.right>k.right-PAY)     fark=b.right-(k.right-PAY);
+    if(solaAl)                  fark=b.left-(k.left+SOL_PAY);
+    else if(b.right>k.right-PAY)     fark=b.right-(k.right-PAY);
     else if(b.left<k.left+PAY)  fark=b.left-(k.left+PAY);
     if(!fark) return;
     const en=Math.max(0,Math.min(kayd.scrollLeft+fark,kayd.scrollWidth-kayd.clientWidth));
@@ -2450,7 +2455,7 @@ function iskontoPlani(){
     var a = e.target && e.target.closest && e.target.closest('a');
     if(!a) return;
     sonCubukTik=Date.now();
-    gorunurYap(a);
+    gorunurYap(a,true);
   },true);
   /* Hizalama yalniz isaretci cubuktan ayrilinca: masaustunde fare cekilince,
      dokunmatikte parmak kalkinca. Iki durumda da altindan kacacak bir sey yok. */

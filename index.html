@@ -390,6 +390,10 @@ footer{background:var(--navy);border-top:2px solid var(--gold);padding:30px 0 24
 }
 .olc-sonuc b{font-family:'Playfair Display',Georgia,serif;font-size:38px;color:#fff;line-height:1}
 .olc-sonuc b small{font-size:19px;color:#9FB0C6}
+.olc-band-sag{margin-left:auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+#olc_band_eksik{font-size:14.5px;color:#9FB0C6}
+.olc-band-btn{padding:9px 16px;font-size:14.5px;white-space:nowrap}
+@media(max-width:700px){.olc-band-sag{margin-left:0;width:100%}}
 .olc-sonuc.parla{animation:parla .5s ease}
 @keyframes parla{0%{background:var(--navy)}35%{background:#28405F}100%{background:var(--navy)}}
 .olc-sonuc b{transition:transform .2s}
@@ -1156,6 +1160,13 @@ section[id],header[id],div[id]{scroll-margin-top:calc(var(--ust,80px) + 14px)}
         <span class="olc-yuzde" id="olc_yuzde">%0</span>
       </div>
       <span id="olc_yorum">Kutuları işaretleyin.</span>
+      <!-- Sonucun ozeti bandin icinde: band yapiskan oldugu icin skor, eksik
+           sayisi ve dugme kutular boyunca ekranda kalir (olculdu 11.09.2026 —
+           uc parca tam boyuyla ayni ekrana sigmiyordu). -->
+      <span class="olc-band-sag">
+        <span id="olc_band_eksik"></span>
+        <a class="btn btn-fill olc-band-btn" id="olc_wa2" href="#" target="_blank" rel="noopener" hidden>Sonucu WhatsApp’tan gönderin</a>
+      </span>
     </div>
 
     <div class="olc">
@@ -1411,7 +1422,15 @@ section[id],header[id],div[id]{scroll-margin-top:calc(var(--ust,80px) + 14px)}
 
     /* isaretlenmeyenler geri listelenir — yuzde bir histir, bu liste bir gundemdir */
     const eksikler=secili.filter(k=>!k.checked).map(k=>k.nextElementSibling.textContent.trim());
-    if(n===0||eksikler.length===0){ eksikKap.hidden=true; eksikListe.innerHTML=''; eksikBas.textContent=''; return; }
+    var bandEksik=document.getElementById('olc_band_eksik'), waBtn2=document.getElementById('olc_wa2');
+    if(n===0||eksikler.length===0){
+      eksikKap.hidden=true; eksikListe.innerHTML=''; eksikBas.textContent='';
+      if(bandEksik) bandEksik.textContent='';
+      if(waBtn2) waBtn2.hidden=true;
+      return;
+    }
+    if(bandEksik) bandEksik.textContent='İşaretlenmeyen '+eksikler.length+' madde';
+    if(waBtn2) waBtn2.hidden=false;
     eksikKap.hidden=false;
     eksikBas.textContent='İşaretlemediğiniz '+eksikler.length+' madde:';
     eksikListe.innerHTML='';
@@ -1419,6 +1438,7 @@ section[id],header[id],div[id]{scroll-margin-top:calc(var(--ust,80px) + 14px)}
     const kisa=eksikler.map(function(t){ return '· '+t; }).join('\n');
     const msg='Merhaba. Sitedeki kontrol listesinde '+N+' maddeden '+n+"'i bende çıktı.\n\nİşaretlemediklerim:\n"+kisa+'\n\nKonuşabilir miyiz?';
     waBtn.href='https://wa.me/905337619443?text='+encodeURIComponent(msg);
+    if(waBtn2) waBtn2.href=waBtn.href;
   }
   kutular.forEach(k=>k.addEventListener('change',guncelle));
 })();
