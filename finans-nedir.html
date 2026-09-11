@@ -112,6 +112,16 @@ footer{background:var(--navy);border-top:2px solid var(--gold);padding:30px 0 24
   border:0;white-space:nowrap;transition:.12s
 }
 .altm a:hover{background:var(--band);color:var(--navy)}
+/* KLAVYE ODAGI — tarayicinin MAVI dikdortgeni cikiyordu (Caglayan,
+   11.09.2026 canli, ok tusuyla gezerken). Odak GIZLENMIYOR, yalniz
+   gorunumu markanin kendi isaretine birakiliyor:
+     ust basliklar -> altin alt serit (`:focus` kurali zaten yaziliydi)
+     alt menu      -> acik zemin (hover ile ayni; `:focus` stili YOKTU,
+                      once o eklendi — yoksa odak tumden gorunmez kalirdi) */
+.altm a:focus{background:var(--band);color:var(--navy);outline:none}
+.menu-kutu>a:focus,.topnav>a:focus,.menu-kutu .mgrup>a:focus,
+.menu-kutu>a:focus-visible,.topnav>a:focus-visible,
+.menu-kutu .mgrup>a:focus-visible{outline:none}
 .altm .altm-bas{
   padding:5px 18px 9px;font-size:11px;letter-spacing:1.4px;text-transform:uppercase;
   color:var(--goldink);font-weight:600;border-bottom:1px solid var(--rule);margin-bottom:5px
