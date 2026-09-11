@@ -716,8 +716,15 @@ footer img{filter:none}
    hover:hover sorgusuna kapatilmadi: dokunmatik cihazda dokununca da gorunur. */
 .menu-kutu>a,.topnav>a,.menu-kutu .mgrup>a{border-bottom:2px solid transparent;transition:border-color .18s}
 .menu-kutu>a,.topnav>a:hover,.menu-kutu .mgrup>a:hover,
-.menu-kutu>a,.topnav>a:focus,.menu-kutu .mgrup>a:focus,
 .menu-kutu>a,.topnav>a:active,.menu-kutu .mgrup>a:active{border-bottom-color:var(--gold);background:none}
+/* KLAVYE ODAGI ile BULUNULAN BOLUM ayri gorunur — Caglayan 11.09.2026:
+   "ust barda klavyeden gezerken 2 sari cizgi oluyor". Ikisi de altin alt
+   serit tasiyordu; hangisi "sayfada buradasin", hangisi "klavye burada"
+   ayirt edilemiyordu. Arac cubugundaki emsal (.sec) uygulandi:
+     alt serit   = sayfada BULUNULAN bolum (.act) — tek cizgi
+     altin zemin = klavyenin DURDUGU baslik (:focus) — cizgi yok */
+.menu-kutu>a:focus,.topnav>a:focus,.menu-kutu .mgrup>a:focus{
+  background:rgba(200,169,81,.18);color:var(--navy)}
 /* BULUNULAN BOLUM — sayfa kaydirilirken ust menude o bolumun basligi
    altin serit alir (olculdu 11.09.2026, Caglayan). Hover ve odakla ayni
    gorunum: ucu de ziyaretci icin "buradasin" demek. */
