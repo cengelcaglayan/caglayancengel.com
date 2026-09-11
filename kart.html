@@ -312,7 +312,13 @@ if ('serviceWorker' in navigator) {
     for (var i = 0; i < hep.length; i++) {
       var s  = hep[i];
       var ic = s.querySelector ? s.querySelector('.arac-ic') : null;
-      if (!ic) { s.style.scrollMarginTop = (yap + 14) + 'px'; continue; }
+      if (!ic) {
+        /* Bolumun kendi ust dolgusu ekranin basinda bos band olarak duruyordu
+           (olculdu 11.09.2026: 80-110 px). 18 px'i disinda hedefe katilmaz. */
+        var dolgu = parseFloat(getComputedStyle(s).paddingTop) || 0;
+        s.style.scrollMarginTop = Math.round(yap + 14 - Math.max(0, dolgu - 18)) + 'px';
+        continue;
+      }
       var off = yer(ic) - yer(s);
       /* Ustte birakilacak pay: kutu siginca baslik da gorunsun, sigmayinca
          payi kis ve hesabin kendisine yer ac. */
