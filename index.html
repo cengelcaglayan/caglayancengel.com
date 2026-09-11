@@ -1781,7 +1781,7 @@ if ('serviceWorker' in navigator) {
    site statik olduğu için sunucu yok. Formspree hesabı açılıp ID buraya
    yazıldığında gönderiler doğrudan e-postaya düşer, başka değişiklik gerekmez. */
 (function(){
-  var FORMSPREE = '';   /* örn: 'https://formspree.io/f/xxxxxxx' */
+  var FORMSPREE = 'https://formspree.io/f/mqpknngr';   /* Görüşme talebi · 11.09.2026 */
   var f=document.getElementById('gform'); if(!f) return;
   var durum=document.getElementById('g_durum');
   function d(id){ return (document.getElementById(id).value||'').trim(); }
@@ -1794,8 +1794,14 @@ if ('serviceWorker' in navigator) {
                zaman:d('g_zaman'), not:d('g_not') };
     if(FORMSPREE){
       durum.hidden=false; durum.textContent='Gönderiliyor…';
+      /* Formspree yanit adresini `email` alanindan okur, konu basligini
+         `_subject`ten alir. Kendi alan adimiz `eposta` oldugu icin kopyasi
+         eklenir; bos birakilmissa hic gonderilmez. */
+      var g={}; for(var k in veri) g[k]=veri[k];
+      if(veri.eposta) g.email=veri.eposta;
+      g._subject='Görüşme talebi — '+veri.ad;
       fetch(FORMSPREE,{method:'POST',headers:{'Accept':'application/json',
-        'Content-Type':'application/json'},body:JSON.stringify(veri)})
+        'Content-Type':'application/json'},body:JSON.stringify(g)})
         .then(function(r){ durum.textContent = r.ok
           ? 'Talebiniz alındı. En kısa sürede döneceğim.'
           : 'Gönderilemedi — WhatsApp\'tan yazabilirsiniz.'; if(r.ok) f.reset(); })
