@@ -104,6 +104,11 @@ footer{background:var(--navy);border-top:2px solid var(--gold);padding:30px 0 24
 @media(hover:hover) and (pointer:fine){.mgrup:hover .altm{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}}
 .mgrup:focus-within .altm{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
 .altm::before{content:"";position:absolute;top:-10px;left:0;right:0;height:10px}
+/* Menuden arac secilince menu kendiliginden KAPANMIYORDU: imlec .altm'in
+   uzerinde kaldigi icin :hover suruyor, acik kutu kartin sonuc tablosunu
+   ortuyordu (olculdu 11.09.2026, ekran kaydi — 13 aracin hepsinde).
+   Ozgulluk :hover kuraliyla esit (0,3,0); bu yuzden ONDAN SONRA durur. */
+.mgrup.kapandi .altm{opacity:0;visibility:hidden;transform:translateX(-50%) translateY(-6px)}
 .altm a{
   display:block;padding:9px 18px;font-size:14.5px;color:var(--body);text-decoration:none;
   border:0;white-space:nowrap;transition:.12s
@@ -960,6 +965,33 @@ if ('serviceWorker' in navigator) {
   else { payla(); ac(); }
   addEventListener('load', tazele);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(tazele);
+})();
+</script>
+<script>
+/* ACILIR MENU KAPANISI — olculdu 11.09.2026.
+   Menu CSS :hover ile acilir; bir oge tiklandiginda imlec hala menunun
+   uzerinde oldugu icin menu acik kalip kartin sonuc tablosunu ortuyordu.
+   Tiklamada `kapandi` konur; imlec menuden cikinca veya menuye klavyeyle
+   donulunce kalkar. blur() :focus-within yolunu da kapatir. */
+(function(){
+  var g = document.querySelectorAll('.mgrup');
+  function kapat(m){
+    m.classList.add('kapandi');
+    if (document.activeElement && document.activeElement.blur)
+      document.activeElement.blur();
+  }
+  for (var i = 0; i < g.length; i++) (function(m){
+    m.addEventListener('click', function(e){
+      var a = e.target && e.target.closest && e.target.closest('.altm a');
+      if (a) kapat(m);
+    });
+    m.addEventListener('mouseleave', function(){ m.classList.remove('kapandi'); });
+    m.addEventListener('focusin',    function(){ m.classList.remove('kapandi'); });
+  })(g[i]);
+  document.addEventListener('keydown', function(e){
+    if (e.key !== 'Escape' && e.keyCode !== 27) return;
+    for (var i = 0; i < g.length; i++) kapat(g[i]);
+  });
 })();
 </script>
 </body>
