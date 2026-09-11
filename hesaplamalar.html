@@ -197,7 +197,10 @@ footer{background:var(--navy);border-top:2px solid var(--gold);padding:30px 0 24
   /* Dar ekranda tek sutun: girdiler, dokum, sonuc (sonuc yapisik kalsin).
      Id'li masaustu kurallari daha ozgul — burada acikca geri alinir. */
   .arac-ic.ust,#a9 .arac-ic.ust,#a1 .arac-ic.ust{grid-template-columns:1fr}
-  .arac-ic.ust .gg,#a9 .arac-ic.ust .gg,#a1 .arac-ic.ust .gg{grid-template-columns:1fr}
+  /* Dokumu olmayan dort arac (.ust degil) telefonda da uc sutunda kaliyordu:
+     alan 76 px, '14.000.000' sigmiyordu (olculdu 375x812). Kural artik
+     butun araclari kapsar. */
+  .arac-ic .gg,.arac-ic.ust .gg,#a9 .arac-ic.ust .gg,#a1 .arac-ic.ust .gg{grid-template-columns:1fr}
   .arac-ic.ust .girdiler{grid-column:1;grid-row:1}
   .arac-ic.ust .skor.alt{grid-column:1;grid-row:2;border-left:0}
   .arac-ic.ust .cikti{grid-column:1;grid-row:3;display:block}
