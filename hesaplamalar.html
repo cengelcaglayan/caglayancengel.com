@@ -2417,7 +2417,11 @@ function iskontoPlani(){
      ortalama kenardaki ogeyi ekranin ortasina tasidigi icin hareket
      buyuyordu. PAY = solma bandi (54) + 6 px nefes. */
   const PAY=60;
-  let fareCubukta=false;
+  /* `mouseenter` DEGIL: o olay dokunmatikte hic atesleneemez ve sentetik
+     tiklamada da yoktur — bayrak tam kacmayi onlemesi gereken durumda
+     false kalirdi (olculdu 11.09.2026, canli). Bayrak artik tiklamanin
+     kendisinden turetiliyor. */
+  let sonCubukTik=0;
   function gorunurYap(a,yumusak){
     const b=a.getBoundingClientRect(), k=kayd.getBoundingClientRect();
     let fark=0;
@@ -2430,15 +2434,22 @@ function iskontoPlani(){
     else kayd.scrollLeft=en;
   }
   function toparla(yumusak){ if(sonAkt>=0&&cift[sonAkt]) gorunurYap(cift[sonAkt].a,yumusak); }
-  bar.addEventListener('mouseenter',function(){ fareCubukta=true; });
-  bar.addEventListener('mouseleave',function(){ fareCubukta=false; toparla(true); });
+  bar.addEventListener('click',function(e){
+    if(e.target&&e.target.closest&&e.target.closest('a')) sonCubukTik=Date.now();
+  },true);
+  /* Hizalama yalniz isaretci cubuktan ayrilinca: masaustunde fare cekilince,
+     dokunmatikte parmak kalkinca. Iki durumda da altindan kacacak bir sey yok. */
+  bar.addEventListener('mouseleave',function(){ toparla(true); });
+  bar.addEventListener('touchend',function(){ setTimeout(function(){ toparla(true); },400); },{passive:true});
   /* Atlama sirasinda scroll olayi kacabiliyor: olculdu 11.09.2026, POS -> Leasing
      -> POS dizisinde isaret dort gecis boyunca eski aracta kaldi. Capa degisince
      `sonAkt` onbellegi sifirlanir ve olcum yeniden yapilir. */
-  /* Capadan gelisde de toparlanir — ama yalniz fare cubukta DEGILSE.
-     Ust menuden secildiginde imlec menunun uzerindedir, cubukta degil. */
+  /* Capadan gelisde de toparlanir — ama tiklama CUBUGUN KENDISINDEN
+     geldiyse hayir: orada isaretci hala cubugun uzerindedir. Ust menuden
+     veya baska sayfadan gelindiginde cubuk serbesttir, hizalanir. */
   addEventListener('hashchange',function(){ sonAkt=-1;
-    setTimeout(function(){ guncelle(); if(!fareCubukta) toparla(false); },60); },false);
+    setTimeout(function(){ guncelle();
+      if(Date.now()-sonCubukTik>400) toparla(false); },60); },false);
   olc(); guncelle(); toparla(false);
 })();
 
