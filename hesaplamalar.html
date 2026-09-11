@@ -119,6 +119,26 @@ select{appearance:none;-webkit-appearance:none;cursor:pointer;padding-right:34px
   background:var(--white);border-left:1px solid var(--rule)}
 .arac-ic.ust .skor.alt table{font-size:13.5px;margin-top:0}
 .arac-ic.ust .skor.alt th,.arac-ic.ust .skor.alt td{padding:5px 8px}
+/* --- KARTIN TAMAMI TEK EKRANA (olculdu 11.09.2026) ---------------------
+   Cetvel `.arac-ic` degil `.arac`: ziyaretci kartin basligini da goruyor.
+   Asagidaki degerler o olcumun sonucu, buyutulurse kart tasar. */
+.arac-bas{padding:14px 28px 12px}
+.arac-ic .gg{grid-template-columns:1fr 1fr 1fr;gap:9px 16px}
+.arac-ic .gg label{font-size:11px;line-height:1.25}
+.arac-ic .gg input,.arac-ic .gg select{padding:6px 8px;font-size:13.5px}
+.arac-ic.ust .girdiler{padding:14px 24px}
+.arac-ic.ust .cikti{padding:10px 26px 12px}
+.arac-ic.ust .cikti .yorum{margin-top:3px}
+.arac-ic.ust .skor.alt{padding:12px 20px 14px}
+.arac-ic.ust .skor.alt th,.arac-ic.ust .skor.alt td{padding:4px 8px}
+/* Aciklama paragrafi kartin altina alindi — kartin basi hesapla baslasin */
+.arac-not{margin:10px 0 0;font-size:15px;line-height:1.6;color:var(--soft);max-width:78ch}
+/* Sayfanin en uzun dokumlu uc araci: satir dolgusu bir tik daha kisilir */
+#a9 .arac-ic.ust{grid-template-columns:1fr 400px}
+#a1 .arac-ic.ust{grid-template-columns:1fr 470px}
+#a9 .skor.alt table,#a1 .skor.alt table,#a8 .skor.alt table{font-size:12.5px}
+#a9 .skor.alt th,#a9 .skor.alt td,#a1 .skor.alt th,#a1 .skor.alt td,
+#a8 .skor.alt th,#a8 .skor.alt td{padding:3px 7px}
 /* a9: 9 girdi iki sutunda 445 px tutuyordu, uc sutunda 294 (olculdu) */
 #a9 .arac-ic.ust{grid-template-columns:1fr 400px}
 #a9 .arac-ic.ust .gg{grid-template-columns:1fr 1fr 1fr}
@@ -662,7 +682,7 @@ footer img{filter:none}
 <!-- ============ ARAÇ 1 — HIZLI TEŞHİS ============ -->
 <section class="band" id="a4">
   <div class="wrap">
-    <p class="kicker">Araç 04</p>
+    <p class="kicker">Araç 01</p>
     <h2>Bankanın söylediği oran, ödediğiniz oran değildir</h2><p class="soru">Taksitli ticari kredinin gerçek aylık maliyeti nasıl hesaplanır?</p>
     <div class="rule"></div>
     <p style="max-width:62ch">
@@ -673,9 +693,9 @@ footer img{filter:none}
 
     <div class="arac">
       <div class="arac-bas">
-        <span class="arac-no">Araç 04 · Ticari kredi maliyeti</span>
+        <span class="arac-no">Araç 01 · Ticari kredi maliyeti</span>
         <h3>Taksitli ticari kredide efektif maliyet</h3>
-        <p><strong>BSMV %5 dolu gelir</strong> — ticari kredide faiz ve masraflar bu vergiye tabidir, kaldırılırsa maliyet olduğundan düşük çıkar. Ticari kredide KKDF %0'dır, o yüzden boştur. Kullandırım ücreti ve komisyon alanlarını, teklifte yoksa boş bırakın — boş alan sıfır sayılır. Bireysel kredide iki oran da farklıdır (KKDF %15, BSMV %15); o hesap için elle değiştirin.</p>
+        
       </div>
       <div class="arac-ic ust">
         <div class="girdiler">
@@ -699,11 +719,13 @@ footer img{filter:none}
         <div class="skor alt">
         <table>
           <thead><tr><th>Kalem</th><th>Tutar</th></tr></thead>
-          <tbody id="k_tablo"><tr><td class="d-bos" colspan="2">Rakam bekleniyor…</td></tr></tbody>
+          <tbody id="k_tablo"><tr><td class="d-bos" colspan="2">Rakam bekleniyor…</td></tr>
+      <p class="arac-not">Rakamları bin veya milyon ayırmadan, olduğu gibi girin.</p></tbody>
         </table>
       </div>
       </div>
     </div>
+      <p class="arac-not"><strong>BSMV %5 dolu gelir</strong> — ticari kredide faiz ve masraflar bu vergiye tabidir, kaldırılırsa maliyet olduğundan düşük çıkar. Ticari kredide KKDF %0'dır, o yüzden boştur. Kullandırım ücreti ve komisyon alanlarını, teklifte yoksa boş bırakın — boş alan sıfır sayılır. Bireysel kredide iki oran da farklıdır (KKDF %15, BSMV %15); o hesap için elle değiştirin.</p>
   </div>
 
 
@@ -764,7 +786,7 @@ footer img{filter:none}
 <!-- ============ 05 ROTATİF ============ -->
 <section id="a5">
   <div class="wrap">
-    <p class="kicker">Araç 05</p>
+    <p class="kicker">Araç 02</p>
     <h2>Rotatif kredinin gerçek yıllık maliyeti</h2><p class="soru">Rotatif kredinin gerçek yıllık maliyeti nasıl hesaplanır?</p>
     <div class="rule"></div>
     <p style="max-width:62ch">
@@ -772,7 +794,7 @@ footer img{filter:none}
       vergiler eklenip <strong>yıllığa çevrildiğinde</strong> tablo değişir.
     </p>
     <div class="arac">
-      <div class="arac-bas"><span class="arac-no">Araç 05 · Rotatif</span>
+      <div class="arac-bas"><span class="arac-no">Araç 02 · Rotatif</span>
         <h3>Rotatif kredi maliyeti</h3></div>
       <div class="arac-ic ust">
         <div class="girdiler"><div class="gg">
@@ -846,7 +868,7 @@ footer img{filter:none}
 <!-- ============ 06 SPOT ============ -->
 <section class="band" id="a6">
   <div class="wrap">
-    <p class="kicker">Araç 06</p>
+    <p class="kicker">Araç 03</p>
     <h2>Spot kredi — tek ödemeli</h2><p class="soru">Spot kredinin gerçek maliyeti nedir, kullandırım ücreti nasıl etkiler?</p>
     <div class="rule"></div>
     <p style="max-width:62ch">
@@ -854,7 +876,7 @@ footer img{filter:none}
       çevrildiğinde taksitli krediden pahalı çıkabilir.
     </p>
     <div class="arac">
-      <div class="arac-bas"><span class="arac-no">Araç 06 · Spot</span>
+      <div class="arac-bas"><span class="arac-no">Araç 03 · Spot</span>
         <h3>Spot kredi maliyeti</h3></div>
       <div class="arac-ic ust">
         <div class="girdiler"><div class="gg">
@@ -925,7 +947,7 @@ footer img{filter:none}
 <!-- ============ 07 İSKONTO ============ -->
 <section id="a7">
   <div class="wrap">
-    <p class="kicker">Araç 07</p>
+    <p class="kicker">Araç 04</p>
     <h2>Çek/senet kırdırmanın maliyeti</h2><p class="soru">Çek kırdırmanın (iskonto) gerçek yıllık maliyeti nedir?</p>
     <div class="rule"></div>
     <p style="max-width:62ch">
@@ -934,7 +956,7 @@ footer img{filter:none}
       çoğu zaman kredi faizinden yüksektir.
     </p>
     <div class="arac">
-      <div class="arac-bas"><span class="arac-no">Araç 07 · İskonto</span>
+      <div class="arac-bas"><span class="arac-no">Araç 04 · İskonto</span>
         <h3>Çek/senet iskonto maliyeti</h3></div>
       <div class="arac-ic ust">
         <div class="girdiler"><div class="gg">
@@ -1006,7 +1028,7 @@ footer img{filter:none}
 <!-- ============ POS ============ -->
 <section class="band" id="a11">
   <div class="wrap">
-    <p class="kicker">Araç 11</p>
+    <p class="kicker">Araç 05</p>
     <h2>Ticari KMH — limitin tamamına mı ödüyorsunuz?</h2>
     <p class="soru">Ticari kredili mevduat hesabının (KMH) gerçek yıllık maliyeti nasıl hesaplanır?</p>
     <div class="rule"></div>
@@ -1016,7 +1038,7 @@ footer img{filter:none}
       kullanıyorsanız o ücret, gerçek maliyeti göründüğünden çok yukarı çeker.
     </p>
     <div class="arac">
-      <div class="arac-bas"><span class="arac-no">Araç 11 · Ticari KMH</span>
+      <div class="arac-bas"><span class="arac-no">Araç 05 · Ticari KMH</span>
         <h3>KMH maliyeti</h3></div>
       <div class="arac-ic ust">
         <div class="girdiler"><div class="gg">
@@ -1063,7 +1085,7 @@ footer img{filter:none}
 
 <section class="band" id="a9">
   <div class="wrap">
-    <p class="kicker">Araç 09</p>
+    <p class="kicker">Araç 06</p>
     <h2>Faktoringde asıl soru: elinize ne geçiyor</h2><p class="soru">Faktoring maliyeti nasıl hesaplanır, avans oranı neyi değiştirir?</p>
     <div class="rule"></div>
     <p style="max-width:62ch">
@@ -1073,7 +1095,7 @@ footer img{filter:none}
       ilan edilen orandan belirgin biçimde ayrışır.
     </p>
     <div class="arac">
-      <div class="arac-bas"><span class="arac-no">Araç 09 · Faktoring</span>
+      <div class="arac-bas"><span class="arac-no">Araç 06 · Faktoring</span>
         <h3>Faktoring maliyeti ve avans etkisi</h3></div>
       <div class="arac-ic ust">
         <div class="girdiler"><div class="gg">
@@ -1113,7 +1135,7 @@ footer img{filter:none}
 <!-- ============ NET TUTARDAN GERIYE ============ -->
 <section id="a10">
   <div class="wrap">
-    <p class="kicker">Araç 10</p>
+    <p class="kicker">Araç 07</p>
     <h2>&ldquo;Hesabına şu kadar geçer&rdquo; — bu kaça geliyor?</h2><p class="soru">Hesaba geçecek tutardan gerçek faiz nasıl bulunur?</p>
     <div class="rule"></div>
     <p style="max-width:62ch">
@@ -1123,7 +1145,7 @@ footer img{filter:none}
       düştüğünü</strong> söyler. Çek iskontosu, faktoring, peşin kesintili her işlem için çalışır.
     </p>
     <div class="arac">
-      <div class="arac-bas"><span class="arac-no">Araç 10 · Geriye hesap</span>
+      <div class="arac-bas"><span class="arac-no">Araç 07 · Geriye hesap</span>
         <h3>Net tutardan gerçek maliyet</h3></div>
       <div class="arac-ic ust">
         <div class="girdiler"><div class="gg">
@@ -1231,7 +1253,7 @@ footer img{filter:none}
 <!-- ============ ARAÇ 12 — LEASİNG Mİ KREDİ Mİ ============ -->
 <section id="a12">
   <div class="wrap">
-    <p class="kicker">Araç 12</p>
+    <p class="kicker">Araç 09</p>
     <h2>Leasing mi, kredi mi?</h2><p class="soru">Makine yatırımında hangisi daha ucuza gelir?</p>
     <div class="rule"></div>
     <p style="max-width:62ch">
@@ -1243,7 +1265,7 @@ footer img{filter:none}
 
     <div class="arac">
       <div class="arac-bas">
-        <span class="arac-no">Araç 12 · Yatırım finansmanı</span>
+        <span class="arac-no">Araç 09 · Yatırım finansmanı</span>
         <h3>Leasing ve kredi karşılaştırması</h3>
       </div>
       <div class="arac-ic">
@@ -1285,7 +1307,7 @@ footer img{filter:none}
 <!-- ============ ARAÇ 13 — TAKSİT KAPASİTESİ ============ -->
 <section class="band" id="a13">
   <div class="wrap">
-    <p class="kicker">Araç 13</p>
+    <p class="kicker">Araç 10</p>
     <h2>Bu taksidi kaldırır mısınız?</h2><p class="soru">Aylık şu kadar ödeyebilirim — ne kadar kredi eder?</p>
     <div class="rule"></div>
     <p style="max-width:62ch">
@@ -1297,7 +1319,7 @@ footer img{filter:none}
 
     <div class="arac">
       <div class="arac-bas">
-        <span class="arac-no">Araç 13 · Kredi kapasitesi</span>
+        <span class="arac-no">Araç 10 · Kredi kapasitesi</span>
         <h3>Taksitten kredi tutarı ve tahsis tavanı</h3>
       </div>
       <div class="arac-ic">
@@ -1343,9 +1365,9 @@ footer img{filter:none}
 
     <div class="arac">
       <div class="arac-bas">
-        <span class="arac-no">Araç 01 · Teşhis</span>
+        <span class="arac-no">Araç 11 · Teşhis</span>
         <h3>Hızlı bilanço teşhisi</h3>
-        <p>Rakamları bin veya milyon ayırmadan, olduğu gibi girin.</p>
+        
       </div>
       <div class="arac-ic ust">
         <div class="girdiler">
@@ -1392,7 +1414,7 @@ footer img{filter:none}
 <!-- ============ ARAÇ 2 — DSCR ============ -->
 <section class="band" id="a2">
   <div class="wrap">
-    <p class="kicker">Araç 02</p>
+    <p class="kicker">Araç 12</p>
     <h2>Borç servis karşılama gücü</h2><p class="soru">DSCR nedir, bankalar kaçın üstünü ister?</p>
     <div class="rule"></div>
     <p style="max-width:62ch">
@@ -1402,7 +1424,7 @@ footer img{filter:none}
 
     <div class="arac">
       <div class="arac-bas">
-        <span class="arac-no">Araç 02 · Kredi tahsis</span>
+        <span class="arac-no">Araç 12 · Kredi tahsis</span>
         <h3>DSCR ve ek kredi kapasitesi</h3>
       </div>
       <div class="arac-ic">
@@ -1436,7 +1458,7 @@ footer img{filter:none}
 <!-- ============ ARAÇ 3 — NAKİT DÖNGÜSÜ ============ -->
 <section id="a3">
   <div class="wrap">
-    <p class="kicker">Araç 03</p>
+    <p class="kicker">Araç 13</p>
     <h2>Paranın kaç gün dışarıda kaldığı</h2><p class="soru">Nakit döngüsü kaç gün olmalı, ne kadar sermaye bağlar?</p>
     <div class="rule"></div>
     <p style="max-width:62ch">
@@ -1447,7 +1469,7 @@ footer img{filter:none}
 
     <div class="arac">
       <div class="arac-bas">
-        <span class="arac-no">Araç 03 · İşletme sermayesi</span>
+        <span class="arac-no">Araç 13 · İşletme sermayesi</span>
         <h3>Nakit dönüş süresi</h3>
       </div>
       <div class="arac-ic">
@@ -3062,7 +3084,10 @@ if ('serviceWorker' in navigator) {
     var hep = document.querySelectorAll('section[id],header[id],div[id]');
     for (var i = 0; i < hep.length; i++) {
       var s  = hep[i];
-      var ic = s.querySelector ? s.querySelector('.arac-ic') : null;
+      /* Hedef KARTIN KENDISI. Once `.arac-ic` idi; basligi uzun olan aracta
+         baslik yapiskan cubugun arkasinda kaliyordu — ziyaretci hangi araca
+         geldigini goremiyordu (olculdu 11.09.2026). */
+      var ic = s.querySelector ? s.querySelector('.arac') : null;
       if (!ic) {
         /* Bolumun kendi ust dolgusu ekranin basinda bos band olarak duruyordu
            (olculdu 11.09.2026: 80-110 px). 18 px'i disinda hedefe katilmaz. */
