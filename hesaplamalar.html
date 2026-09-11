@@ -2383,48 +2383,35 @@ function iskontoPlani(){
   }
   function olc(){ kok.style.setProperty('--yapiskan',Math.round(yigin())+'px'); }
 
-  /* Aktif baglanti tasiyicinin disinda kalabiliyor (yatay kaydirmali cubuk):
-     isaretlemek yetmiyor, gorunur hale de getirmek gerek. */
-  /* Kenarlardaki solma bandi 54 px; baglanti bunun ICINDE tamamen
-     goruniyorsa cubuga DOKUNULMAZ. Eskiden her aktif degisiminde
-     ortalaniyordu ve gereksiz her hareket titreme uretiyordu
-     (olculdu 11.09.2026, ekran goruntusu). */
-  const SOLMA=54;
-  function gorunurYap(a){
-    const b=a.getBoundingClientRect(), k=kayd.getBoundingClientRect();
-    if(b.left>=k.left+SOLMA && b.right<=k.right-SOLMA) return;
-    const hedef=kayd.scrollLeft+(b.left-k.left)-(kayd.clientWidth-a.offsetWidth)/2;
-    const en=Math.max(0,Math.min(hedef,kayd.scrollWidth-kayd.clientWidth));
-    /* Aninda konumlanir. Capaya atlarken sayfa zaten yer degistiriyor;
-       cubugun ayrica animasyonla suzulmesi ikinci bir hareket demekti. */
-    if(Math.abs(en-kayd.scrollLeft)>4) kayd.scrollLeft=en;
-  }
-  /* SAYFA KAYDIRILIRKEN CUBUK OYNAMAZ — Caglayan ucuncu bildirim, 11.09.2026.
-     Once her aktif degisiminde ortalaniyordu, sonra kaydirma durunca 180 ms
-     gecikmeyle oynuyordu. Ikisi de cubugu ziyaretcinin ELI DEGMEDEN hareket
-     ettiriyor. Olculdu: gecikmeli halde 33 sn gercek tekerlek kaydirmasinda
-     hareket cikmadi, ama trackpad momentumundaki kisa duraklamalar
-     zamanlayiciyi tetikleyebiliyor. Kaynak kaldirildi: `hareket` yalniz
-     capaya gidisde ve yeniden boyutlandirmada true. Altin isaret kaydirirken
-     aninda guncellenmeye devam eder. */
-  function guncelle(hareket){
+  /* CUBUK KENDILIGINDEN HIC OYNAMAZ — kaynak silindi 11.09.2026.
+     Kanit: Caglayan'in ekran kaydi (IMG_5729.MOV, 0,25 sn araliklarla 239
+     kare). 45,0-53,0 sn arasi bar kimildamiyor; 53,0'da imlec "Leasing"
+     uzerinde tikliyor; 53,5'te bar SAGA FIRLIYOR ve tikladigi baglanti
+     imlecin altindan kaciyor (imlec "Nakit dongusu"nde kaliyor).
+     Sebep: aktif baglantiyi ORTALAYAN `gorunurYap`. Ziyaretcinin tikladigi
+     sey parmaginin altindan kayiyordu — tarif edilen "geri ileri kendi
+     kendine gitme" buydu, kaydirma titremesi degil.
+     Once ortalama her aktif degisiminde kosuyordu, sonra 180 ms gecikmeye
+     alindi, sonra yalniz capaya birakildi; ucu de cubugu ziyaretcinin eli
+     degmeden oynatiyor. Fonksiyon tumden kaldirildi.
+     Bedeli: cok saga dusen bir araca gidildiginde altin isaret cubukta
+     gorunmeyebilir; ziyaretci cubugu eliyle kaydirir — kenardaki solma
+     bandi ve ok devami oldugunu zaten gosteriyor. */
+  function guncelle(){
     const esik=yigin()+16;
     let akt=0;
     cift.forEach((x,i)=>{ if(x.b.getBoundingClientRect().top<=esik) akt=i; });
     if(akt===sonAkt) return;
     sonAkt=akt;
     cift.forEach((x,i)=>x.a.classList.toggle('act',i===akt));
-    if(hareket===true) gorunurYap(cift[akt].a);
   }
-  /* Dogrudan baglanmaz: dinleyiciye gelen Event nesnesi `hareket` yerine
-     gecip truthy okunurdu. */
-  addEventListener('scroll',function(){ guncelle(false); },{passive:true});
-  addEventListener('resize',function(){ olc(); sonAkt=-1; guncelle(true); },{passive:true});
+  addEventListener('scroll',guncelle,{passive:true});
+  addEventListener('resize',function(){ olc(); sonAkt=-1; guncelle(); },{passive:true});
   /* Atlama sirasinda scroll olayi kacabiliyor: olculdu 11.09.2026, POS -> Leasing
      -> POS dizisinde isaret dort gecis boyunca eski aracta kaldi. Capa degisince
      `sonAkt` onbellegi sifirlanir ve olcum yeniden yapilir. */
-  addEventListener('hashchange',function(){ sonAkt=-1; setTimeout(function(){ guncelle(true); },60); },false);
-  olc(); guncelle(true);
+  addEventListener('hashchange',function(){ sonAkt=-1; setTimeout(guncelle,60); },false);
+  olc(); guncelle();
 })();
 
 (function(){
