@@ -464,7 +464,12 @@ footer img{filter:none}
    rakamları adresin içinde taşır; açan kişi aynı hesabı görür. JS
    çalışmazsa çubuk hiç basılmaz — araç yine çalışır. */
 .pay-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;
-  margin-top:14px;padding-top:13px;border-top:1px solid var(--rule)}
+  margin-top:14px;padding-top:13px;border-top:1px solid var(--rule);
+  /* Yatay ic bosluk YOKTU: yazi kartin sol cizgisine, PDF dugmesi sag cizgisine
+     degiyordu (olculdu 11.09.2026 — girinti 1 px; girdi etiketleri 25 px,
+     sonuc bandi basligi 27 px iceride). 26 px kartin kendi ritmi; yukseklige
+     mal olmaz — kartlarin ekran payi 7-9 px, yer yok. */
+  padding-left:26px;padding-right:26px}
 .pay-et{flex:1;min-width:150px;font-size:12.5px;color:var(--soft)}
 .pay-btn{font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;
   display:inline-flex;align-items:center;gap:6px;
