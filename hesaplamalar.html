@@ -2407,11 +2407,39 @@ function iskontoPlani(){
   }
   addEventListener('scroll',guncelle,{passive:true});
   addEventListener('resize',function(){ olc(); sonAkt=-1; guncelle(); },{passive:true});
+
+  /* --- HAREKET GERI GELDI, AMA FARE CUBUKTAN AYRILINCA --- 11.09.2026
+     Hareketi tumden silince tiklanan baglanti sag kenarda YARIM kaliyordu
+     ("Leasin"). Kacmanin sebebi tiklama degil, hareketin fare HALA cubugun
+     uzerindeyken yapilmasiydi: oge kayiyor, imlec yerinde kaliyordu.
+     Fare ayrildiktan sonra kaydirmak kimseyi sasirtmaz.
+     Ortalama da birakildi — oge yalnizca gorunur olacak EN AZ kadar kayar;
+     ortalama kenardaki ogeyi ekranin ortasina tasidigi icin hareket
+     buyuyordu. PAY = solma bandi (54) + 6 px nefes. */
+  const PAY=60;
+  let fareCubukta=false;
+  function gorunurYap(a,yumusak){
+    const b=a.getBoundingClientRect(), k=kayd.getBoundingClientRect();
+    let fark=0;
+    if(b.right>k.right-PAY)     fark=b.right-(k.right-PAY);
+    else if(b.left<k.left+PAY)  fark=b.left-(k.left+PAY);
+    if(!fark) return;
+    const en=Math.max(0,Math.min(kayd.scrollLeft+fark,kayd.scrollWidth-kayd.clientWidth));
+    if(Math.abs(en-kayd.scrollLeft)<=2) return;
+    if(yumusak&&kayd.scrollTo) kayd.scrollTo({left:en,behavior:'smooth'});
+    else kayd.scrollLeft=en;
+  }
+  function toparla(yumusak){ if(sonAkt>=0&&cift[sonAkt]) gorunurYap(cift[sonAkt].a,yumusak); }
+  bar.addEventListener('mouseenter',function(){ fareCubukta=true; });
+  bar.addEventListener('mouseleave',function(){ fareCubukta=false; toparla(true); });
   /* Atlama sirasinda scroll olayi kacabiliyor: olculdu 11.09.2026, POS -> Leasing
      -> POS dizisinde isaret dort gecis boyunca eski aracta kaldi. Capa degisince
      `sonAkt` onbellegi sifirlanir ve olcum yeniden yapilir. */
-  addEventListener('hashchange',function(){ sonAkt=-1; setTimeout(guncelle,60); },false);
-  olc(); guncelle();
+  /* Capadan gelisde de toparlanir — ama yalniz fare cubukta DEGILSE.
+     Ust menuden secildiginde imlec menunun uzerindedir, cubukta degil. */
+  addEventListener('hashchange',function(){ sonAkt=-1;
+    setTimeout(function(){ guncelle(); if(!fareCubukta) toparla(false); },60); },false);
+  olc(); guncelle(); toparla(false);
 })();
 
 (function(){
@@ -3143,10 +3171,13 @@ if ('serviceWorker' in navigator) {
         continue;
       }
       var off = yer(ic) - yer(s);
-      /* Ustte birakilacak pay: kutu siginca baslik da gorunsun, sigmayinca
-         payi kis ve hesabin kendisine yer ac. */
-      var pay = Math.max(0, Math.min(120,
-                Math.round(window.innerHeight - yap - ic.offsetHeight - 8)));
+      /* Ustte birakilan pay 10 px. Eskiden 120 px'e kadar cikiyordu (bolum
+         basligi da gorunsun diye) ama pay kart boyuna bagliydi: kisa kartta
+         ustte giris metni kaliyor, uzun kartta kalmiyordu — ayni tiklama
+         araca gore farkli davraniyordu. Caglayan 11.09.2026: kart dogrudan
+         cubugun altinda bassin. Baslik ve giris paragrafi kartin ustunde
+         durmaya devam eder, yukari kaydirinca okunur. */
+      var pay = 10;
       s.style.scrollMarginTop = Math.round(yap + pay - off) + 'px';
     }
   }
