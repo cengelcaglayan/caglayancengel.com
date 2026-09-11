@@ -2459,12 +2459,17 @@ function iskontoPlani(){
     /* `false` SART: `true` (tiklama mantigi) ogeyi kabin SOL kenarina ceker ve
        hedef max'a kirpilip cubuk sona atlar — olculdu canli, 0 -> 593 tek
        basista. `false` yalnizca gorunur olacak KADAR kaydirir. */
+    /* 2 px tolerans SART: `gorunurYap` ogeyi tam `k.right-PAY`e hizalar; pay
+       olmadan ayni oge bir sonraki basista yine "tasiyor" sayilir ve kademe
+       orada kilitlenir (olculdu canli: 0 -> 80 -> 80 -> 80 ...). */
     if(yon>0){
       for(let i=0;i<a.length;i++)
-        if(a[i].getBoundingClientRect().right>k.right-PAY-1){ gorunurYap(a[i],false); return true; }
+        if(a[i].getBoundingClientRect().right>k.right-PAY+2){ gorunurYap(a[i],false); return true; }
     }else{
       for(let i=a.length-1;i>=0;i--)
-        if(a[i].getBoundingClientRect().left<k.left+PAY-1){ gorunurYap(a[i],false); return true; }
+        if(a[i].getBoundingClientRect().left<k.left+PAY-2){ gorunurYap(a[i],false); return true; }
+      /* Aday yok ama cubuk hala kaymis: "Araclar" etiketi gizli kalmis demektir. */
+      if(kayd.scrollLeft>2){ kayd.scrollLeft=0; return true; }
     }
     return false;
   }
