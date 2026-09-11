@@ -423,7 +423,7 @@ footer{background:var(--navy);border-top:2px solid var(--gold);padding:30px 0 24
   .olc-sonuc{padding:14px 22px;margin:8px 0 4px}
   .olc-band-btn{padding:7px 14px}
   .olc{margin-top:6px}
-  .olc label{padding:3px 0;line-height:1.4}
+  .olc label{padding:2px 0;line-height:1.4}
   .olc-blok{margin:8px 0 2px;padding-bottom:5px}
   .olc-blok:first-child{margin-top:2px}
   /* Basliktan son kutuya kadar tek ekran (olculdu 11.09.2026, 1440x900:
@@ -434,7 +434,12 @@ footer{background:var(--navy);border-top:2px solid var(--gold);padding:30px 0 24
   #olcut .rule{margin-bottom:14px}
   /* Giris paragrafi 64ch'te uc satir tutuyordu; genisleyince iki satira
      duser — 31 px. Okuma genisligi olarak hala makul. */
-  #olcut .rule + p{max-width:92ch}
+  /* 92ch bu fontta 691 px cikti, hala uc satirdi (olculdu). Piksel ile. */
+  #olcut .rule + p{max-width:1100px}
+  /* Dugme gorununce band 66 -> 102 px'e cikiyordu (satir sarmasi). Genis
+     ekranda band tek satir kalir; yorum metni sigmazsa kisalir. */
+  .olc-sonuc{flex-wrap:nowrap}
+  #olc_yorum{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
 }
 
 .basa{
@@ -2008,7 +2013,11 @@ if ('serviceWorker' in navigator) {
         /* Bolumun kendi ust dolgusu ekranin basinda bos band olarak duruyordu
            (olculdu 11.09.2026: 80-110 px). 18 px'i disinda hedefe katilmaz. */
         var dolgu = parseFloat(getComputedStyle(s).paddingTop) || 0;
-        s.style.scrollMarginTop = Math.round(yap + 14 - Math.max(0, dolgu - 18)) + 'px';
+        /* #olcut tek ekrana sigacak: ust dolgusunun TAMAMI hedeften dusulur,
+           kicker dogrudan ust cubugun altinda basar (8 px nefes). */
+        s.style.scrollMarginTop = (s.id === 'olcut')
+          ? Math.round(yap + 8 - dolgu) + 'px'
+          : Math.round(yap + 14 - Math.max(0, dolgu - 18)) + 'px';
         continue;
       }
       var off = yer(ic) - yer(s);
