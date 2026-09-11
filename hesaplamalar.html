@@ -2385,16 +2385,22 @@ function iskontoPlani(){
 
   /* Aktif baglanti tasiyicinin disinda kalabiliyor (yatay kaydirmali cubuk):
      isaretlemek yetmiyor, gorunur hale de getirmek gerek. */
+  /* Kenarlardaki solma bandi 54 px; baglanti bunun ICINDE tamamen
+     goruniyorsa cubuga DOKUNULMAZ. Eskiden her aktif degisiminde
+     ortalaniyordu ve gereksiz her hareket titreme uretiyordu
+     (olculdu 11.09.2026, ekran goruntusu). */
+  const SOLMA=54;
   function gorunurYap(a){
-    const hedef=kayd.scrollLeft
-      +(a.getBoundingClientRect().left-kayd.getBoundingClientRect().left)
-      -(kayd.clientWidth-a.offsetWidth)/2;
+    const b=a.getBoundingClientRect(), k=kayd.getBoundingClientRect();
+    if(b.left>=k.left+SOLMA && b.right<=k.right-SOLMA) return;
+    const hedef=kayd.scrollLeft+(b.left-k.left)-(kayd.clientWidth-a.offsetWidth)/2;
     const en=Math.max(0,Math.min(hedef,kayd.scrollWidth-kayd.clientWidth));
     if(Math.abs(en-kayd.scrollLeft)>4){
       if(kayd.scrollTo) kayd.scrollTo({left:en,behavior:'smooth'});
       else kayd.scrollLeft=en;
     }
   }
+  let bekleyen=0;
   function guncelle(){
     const esik=yigin()+16;
     let akt=0;
@@ -2402,7 +2408,12 @@ function iskontoPlani(){
     if(akt===sonAkt) return;
     sonAkt=akt;
     cift.forEach((x,i)=>x.a.classList.toggle('act',i===akt));
-    gorunurYap(cift[akt].a);
+    /* Hareket kaydirma DURDUKTAN sonra. Kaydirma surerken iki bolum sinirinda
+       `akt` ileri geri oynuyor; her oynamada yeni bir yumusak kaydirma baslayip
+       oncekini kesiyordu — titremenin kendisi buydu. Altin isaret yine aninda
+       guncellenir, yalniz cubugun HAREKETI ertelenir. */
+    clearTimeout(bekleyen);
+    bekleyen=setTimeout(function(){ gorunurYap(cift[sonAkt].a); },180);
   }
   addEventListener('scroll',guncelle,{passive:true});
   addEventListener('resize',function(){ olc(); sonAkt=-1; guncelle(); },{passive:true});
