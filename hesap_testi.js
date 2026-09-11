@@ -140,6 +140,28 @@ const TESTLER = [
     gir: { n_dso:'75,5', n_dio:'60', n_dpo:'45', n_ns:'9.000.000' },
     olc: [ { id:'n_ccc', bek:91, tol:0.5, not:'gun sayisi' },
            { id:'n_alt', ara:'2.231.507', not:'baglanan isletme sermayesi' } ] },
+
+  /* Arac 12 — leasing / kredi. Referans bagimsiz hesapla turetildi
+     (scratchpad/referans.py, 11.09.2026): kredide BSMV faize biner (%3,78),
+     leasing kirasinda binmez (%3,20); KDV kredide pesin, leasingde kiraya yayilir. */
+  { ad: 'a12 leasing / kredi', fn: 'leasingKarsilastir',
+    gir: { l_tutar:'2.000.000', l_vade:'36', l_lfaiz:'3,20', l_kfaiz:'3,60',
+           l_lkdv:'1', l_skdv:'20', l_kul:'0,50', l_bsmv:'5', l_mas:'15.000',
+           l_ind:'evet' },
+    olc: [ { id:'l_fark', ara:'291.141', not:'finansman yuku farki' },
+           { id:'l_alt',  ara:'94.362',  not:'aylik kira (KDV haric)' },
+           { id:'l_alt',  ara:'102.574', not:'kredi taksidi' },
+           { id:'l_alt',  ara:'410.500', not:'kredide ilk gun cikisi' } ] },
+
+  /* Arac 13 — taksitten kredi + tahsis tavani. Ayni referans dosyasi:
+     istenen 2.339.440 TL, DSCR 1,25 bandini koruyan tavan 1.871.552 TL. */
+  { ad: 'a13 taksitten kredi', fn: 'kapasite',
+    gir: { g_taksit:'150.000', g_faiz:'3,60', g_vade:'24', g_bsmv:'5', g_kul:'0,50',
+           g_favok:'4.800.000', g_mevcut:'2.400.000' },
+    olc: [ { id:'g_ana',   ara:'2.339.440', not:'taksidin karsiligi anapara' },
+           { id:'g_alt',   ara:'2.327.158', not:'elinize gecen' },
+           { id:'g_alt',   ara:'1,14',      not:'yeni DSCR' },
+           { id:'g_yorum', ara:'1.871.552', not:'DSCR 1,25 tavani' } ] },
 ];
 
 /* ---------- yapisal kontrol ----------
@@ -281,8 +303,8 @@ const metin = e => (e.textContent && e.textContent.trim()) || (e.innerHTML || ''
      Bu kontrol hicbir sey yazmadan, sadece HTML'deki varsayilan degerlerle
      hesabi kosturur: ziyaretcinin ilk saniyede gordugu ekrani olcer.            */
   {
-    const SONUC = ['t_skor','d_dscr','n_ccc','k_efektif','r_yil','s_yil','i_yil','p_fark','fk_yil','gt_denk'];
-    const ISTEGE_BAGLI = new Set(['fk_kredi','gt_kredi']);
+    const SONUC = ['t_skor','d_dscr','n_ccc','k_efektif','r_yil','s_yil','i_yil','p_fark','fk_yil','gt_denk','l_fark','g_ana'];
+    const ISTEGE_BAGLI = new Set(['fk_kredi','gt_kredi','g_favok','g_mevcut']);
     const dom2 = domKur();
     const ctx2 = baglamKur(dom2);
     let kosdu = true;
@@ -291,7 +313,7 @@ const metin = e => (e.textContent && e.textContent.trim()) || (e.innerHTML || ''
 
     if (kosdu) {
       for (const m of govde.matchAll(/<input id="([^"]+)"[^>]*\bvalue="([^"]*)"/g)) dom2.el(m[1]).value = m[2];
-      for (const f of ['teshis','dscr','ccc','taksit','rotatif','spot','iskonto','pos','faktoring','geriye']) {
+      for (const f of ['teshis','dscr','ccc','taksit','rotatif','spot','iskonto','pos','faktoring','geriye','leasingKarsilastir','kapasite']) {
         try { if (typeof ctx2[f] === 'function') ctx2[f](); } catch (e) { sorun.push(`karsilama: ${f}() hata — ${e.message}`); }
       }
       const bos = SONUC.filter(id => { const m = metin(dom2.el(id)); return !m || m === '—' || m === '—/ay'; });
@@ -302,7 +324,7 @@ const metin = e => (e.textContent && e.textContent.trim()) || (e.innerHTML || ''
         sorun.push('karsilama ekrani: sayfa ilk acildiginda ' + bos.length + ' arac sonuc uretmiyor (' + bos.join(', ') + ')');
         console.log('  🔴 KARSILAMA   ilk acilista bos kalan: %s', bos.join(', '));
       } else {
-        console.log('  tamam  karsilama ekrani        10 aracin 10\'u ilk acilista sonuc gosteriyor');
+        console.log('  tamam  karsilama ekrani        12 aracin 12\'si ilk acilista sonuc gosteriyor');
       }
       if (ph.length) {
         sorun.push('karsilama ekrani: hesap alaninda placeholder geri gelmis (' + ph.join(', ') + ') — dolu gorunen bos kutu');
@@ -330,6 +352,8 @@ const metin = e => (e.textContent && e.textContent.trim()) || (e.innerHTML || ''
       { arac:'a9',  id:'fk_yil',    ara:'%75,6', not:'yıllık maliyet' },
       { arac:'a10', id:'gt_denk',   ara:'%55,7', not:'denk kredi faizi' },
       { arac:'a11', id:'kh_yil',    ara:'%57,8', not:'yillik maliyet' },
+      { arac:'a12', id:'l_fark',     ara:'291.141', not:'leasing lehine fark' },
+      { arac:'a13', id:'g_ana',      ara:'2.339.440', not:'taksidin karsiligi' },
     ];
     const bolum = id => {
       const i = govde.search(new RegExp('<section[^>]*id="' + id + '"'));
@@ -353,7 +377,7 @@ const metin = e => (e.textContent && e.textContent.trim()) || (e.innerHTML || ''
       for (const x of sapan) console.log('  🔴 ÖRNEK METİN %s', x);
     }
     if (!eksikBlok.length && !sapan.length)
-      console.log('  tamam  örnek metinler          10 araçta var, rakamlar hesapla tutuyor');
+      console.log('  tamam  örnek metinler          12 araçta var, rakamlar hesapla tutuyor');
   }
 
   /* ---------- ANA SAYFA MİNİ HESABI (FAZ 2) ----------

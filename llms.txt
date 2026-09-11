@@ -39,6 +39,16 @@ düz metin olarak durur — hesabı çalıştırmadan da okunabilir.
   efektif maliyeti nasıl değiştirdiğini gösterir. Örnek: %45 nominal → %75,6 gerçek.
 - [Geriye hesap](https://caglayancengel.com/hesaplamalar.html#a10): "hesabınıza şu kadar
   geçer" rakamından, işlemin kaç faizli krediye denk düştüğünü bulur.
+- [Leasing ve kredi karşılaştırması](https://caglayancengel.com/hesaplamalar.html#a12): aynı
+  makine için iki yolu yan yana koyar. Farkı faizden önce KDV yaratır: kredide makinenin KDV'si
+  ilk gün peşin çıkar, leasingde kiralara yayılır ve makine listesindeyse %1'dir; kredi faizine
+  BSMV biner, leasing kirasına binmez. Örnek: 2.000.000 ₺ · 36 ay · leasing %3,20, kredi %3,60 →
+  finansman yükü farkı 291.141 ₺ leasing lehine, ilk gün çıkışı kredide 410.500 ₺.
+- [Kredi kapasitesi](https://caglayancengel.com/hesaplamalar.html#a13): ödenebilecek aylık
+  taksitten anaparayı bulur, üstüne bankanın tahsis tavanını hesaplar. Örnek: aylık 150.000 ₺ ·
+  %3,60 · 24 ay → 2.339.440 ₺ anapara; ancak 4.800.000 ₺ FAVÖK ve mevcut 2.400.000 ₺ borç
+  servisiyle DSCR 1,14×'e düşer, 1,25 bandını koruyan tavan 1.871.552 ₺'dir. Aynı tutar 36 aya
+  yayılırsa taksit 119.983 ₺'ye iner ve oran 1,25×'e çıkar.
 
 ## Sayfalar
 
