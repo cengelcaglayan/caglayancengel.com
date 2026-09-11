@@ -150,6 +150,18 @@ select{appearance:none;-webkit-appearance:none;cursor:pointer;padding-right:34px
 #a1 .arac-bas{padding:6px 28px 6px}
 #a1 .arac-ic.ust .skor.alt{padding:8px 18px 10px}
 #a1 .skor.alt th,#a1 .skor.alt td{padding:1px 7px;line-height:1.4}
+
+/* --- ACILIR LISTE METNI KESILIYOR (olculdu 11.09.2026, 1440x760) ---
+   .plan-gir select'leri width:100% ile bogazlaniyordu; kap 902 px, yer var.
+   width:auto tarayiciya en uzun secenege gore olcturur (select'in dogal hali).
+   Ayrica .plan-gir'in `padding:7px 9px` kurali, select'in `padding-right:34px`
+   ok payini eziyordu: ok (sag 12 px, 11 px genis) metnin uzerine biniyordu.
+   Olculen kesiklik: #r_donem 211>194, #k_kaydir 111>101. */
+.plan-gir select{width:auto;max-width:100%;padding-right:30px}
+/* a12 #l_ind: uc sutunlu .gg'nin 10. ve SON hucresi — 4. satirda tek basina,
+   yanindaki iki sutun bos. Iki sutuna yayilmak yukseklige mal olmaz.
+   Olculen kesiklik: 206>177 ve 187>177. */
+#a12 .arac-ic .gg>div:last-child{grid-column:span 2}
 /* a9: 9 girdi iki sutunda 445 px tutuyordu, uc sutunda 294 (olculdu) */
 #a9 .arac-ic.ust{grid-template-columns:1fr 400px}
 #a9 .arac-ic.ust .gg{grid-template-columns:1fr 1fr 1fr}
@@ -201,6 +213,8 @@ footer{background:var(--navy);border-top:2px solid var(--gold);padding:30px 0 24
      alan 76 px, '14.000.000' sigmiyordu (olculdu 375x812). Kural artik
      butun araclari kapsar. */
   .arac-ic .gg,.arac-ic.ust .gg,#a9 .arac-ic.ust .gg,#a1 .arac-ic.ust .gg{grid-template-columns:1fr}
+  /* Tek sutunda `span 2` hayali ikinci sutun acar — geri alinir. */
+  #a12 .arac-ic .gg>div:last-child{grid-column:auto}
   .arac-ic.ust .girdiler{grid-column:1;grid-row:1}
   .arac-ic.ust .skor.alt{grid-column:1;grid-row:2;border-left:0}
   .arac-ic.ust .cikti{grid-column:1;grid-row:3;display:block}
