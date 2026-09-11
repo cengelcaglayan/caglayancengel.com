@@ -1797,8 +1797,18 @@ if ('serviceWorker' in navigator) {
       /* Formspree yanit adresini `email` alanindan okur, konu basligini
          `_subject`ten alir. Kendi alan adimiz `eposta` oldugu icin kopyasi
          eklenir; bos birakilmissa hic gonderilmez. */
-      var g={}; for(var k in veri) g[k]=veri[k];
-      if(veri.eposta) g.email=veri.eposta;
+      /* Alan adlari postada BASLIK olarak gorunur; okunur Turkce olmali.
+         Onceki hal ic anahtarlari yaziyordu ve Gmail bunlari Ingilizce
+         sanip cevirdi: `ad` -> "reklam", `not` -> "Olumsuz"
+         (olculdu 11.09.2026, gelen gercek postadan). Bos alan hic
+         gonderilmez — postada basliksiz bosluk birakiyordu. */
+      var g={}, alan=[['Ad soyad',veri.ad],['Firma',veri.firma],
+        ['Telefon',veri.telefon],['E-posta',veri.eposta],
+        ['Uygun zaman',veri.zaman],['Kısa not',veri.not]];
+      for(var i=0;i<alan.length;i++) if(alan[i][1]) g[alan[i][0]]=alan[i][1];
+      /* Alt cizgili alanlar postada gorunmez. _replyto: postaya "Yanitla"
+         dendiginde ziyaretciye gitsin. _subject: posta basligi. */
+      if(veri.eposta) g._replyto=veri.eposta;
       g._subject='Görüşme talebi — '+veri.ad;
       fetch(FORMSPREE,{method:'POST',headers:{'Accept':'application/json',
         'Content-Type':'application/json'},body:JSON.stringify(g)})
