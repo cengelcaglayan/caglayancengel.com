@@ -2395,33 +2395,36 @@ function iskontoPlani(){
     if(b.left>=k.left+SOLMA && b.right<=k.right-SOLMA) return;
     const hedef=kayd.scrollLeft+(b.left-k.left)-(kayd.clientWidth-a.offsetWidth)/2;
     const en=Math.max(0,Math.min(hedef,kayd.scrollWidth-kayd.clientWidth));
-    if(Math.abs(en-kayd.scrollLeft)>4){
-      if(kayd.scrollTo) kayd.scrollTo({left:en,behavior:'smooth'});
-      else kayd.scrollLeft=en;
-    }
+    /* Aninda konumlanir. Capaya atlarken sayfa zaten yer degistiriyor;
+       cubugun ayrica animasyonla suzulmesi ikinci bir hareket demekti. */
+    if(Math.abs(en-kayd.scrollLeft)>4) kayd.scrollLeft=en;
   }
-  let bekleyen=0;
-  function guncelle(){
+  /* SAYFA KAYDIRILIRKEN CUBUK OYNAMAZ — Caglayan ucuncu bildirim, 11.09.2026.
+     Once her aktif degisiminde ortalaniyordu, sonra kaydirma durunca 180 ms
+     gecikmeyle oynuyordu. Ikisi de cubugu ziyaretcinin ELI DEGMEDEN hareket
+     ettiriyor. Olculdu: gecikmeli halde 33 sn gercek tekerlek kaydirmasinda
+     hareket cikmadi, ama trackpad momentumundaki kisa duraklamalar
+     zamanlayiciyi tetikleyebiliyor. Kaynak kaldirildi: `hareket` yalniz
+     capaya gidisde ve yeniden boyutlandirmada true. Altin isaret kaydirirken
+     aninda guncellenmeye devam eder. */
+  function guncelle(hareket){
     const esik=yigin()+16;
     let akt=0;
     cift.forEach((x,i)=>{ if(x.b.getBoundingClientRect().top<=esik) akt=i; });
     if(akt===sonAkt) return;
     sonAkt=akt;
     cift.forEach((x,i)=>x.a.classList.toggle('act',i===akt));
-    /* Hareket kaydirma DURDUKTAN sonra. Kaydirma surerken iki bolum sinirinda
-       `akt` ileri geri oynuyor; her oynamada yeni bir yumusak kaydirma baslayip
-       oncekini kesiyordu — titremenin kendisi buydu. Altin isaret yine aninda
-       guncellenir, yalniz cubugun HAREKETI ertelenir. */
-    clearTimeout(bekleyen);
-    bekleyen=setTimeout(function(){ gorunurYap(cift[sonAkt].a); },180);
+    if(hareket===true) gorunurYap(cift[akt].a);
   }
-  addEventListener('scroll',guncelle,{passive:true});
-  addEventListener('resize',function(){ olc(); sonAkt=-1; guncelle(); },{passive:true});
+  /* Dogrudan baglanmaz: dinleyiciye gelen Event nesnesi `hareket` yerine
+     gecip truthy okunurdu. */
+  addEventListener('scroll',function(){ guncelle(false); },{passive:true});
+  addEventListener('resize',function(){ olc(); sonAkt=-1; guncelle(true); },{passive:true});
   /* Atlama sirasinda scroll olayi kacabiliyor: olculdu 11.09.2026, POS -> Leasing
      -> POS dizisinde isaret dort gecis boyunca eski aracta kaldi. Capa degisince
      `sonAkt` onbellegi sifirlanir ve olcum yeniden yapilir. */
-  addEventListener('hashchange',function(){ sonAkt=-1; setTimeout(guncelle,60); },false);
-  olc(); guncelle();
+  addEventListener('hashchange',function(){ sonAkt=-1; setTimeout(function(){ guncelle(true); },60); },false);
+  olc(); guncelle(true);
 })();
 
 (function(){
