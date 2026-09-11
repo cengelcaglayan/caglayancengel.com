@@ -2,6 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Gizlilik, KVKK ve Yasal Uyarı — Çağlayan Çengel</title>
 <meta name="description" content="Bu sitede çerez kullanılmaz, kişisel veri toplanmaz. KVKK aydınlatma metni ve yasal uyarı.">
@@ -821,120 +822,138 @@ if ('serviceWorker' in navigator) {
   if (window.caches) caches.keys().then(a => a.forEach(x => caches.delete(x))).catch(() => {});
 }
 </script>
-<script>
-/* Hash ile gelen bağlantıyı yükleme bitince yeniden çöz — bölümler animasyonla
-   geldiği için tarayıcının ilk denemesi hedefi bulamıyor (ölçüldü 02.09.2026). */
-(function(){
-  /* Yapiskan yiginin gercek yuksekligi — hedef baslik barin altinda kalmasin. */
-  function pay(){
-    var t = 0, u = document.querySelector('.top'), b = document.querySelector('.aracbar');
-    if(u) t += u.getBoundingClientRect().height;
-    if(b) t += b.getBoundingClientRect().height;
-    return t + 12;
-  }
-  function git(yumusak){
-    if(!location.hash) return;
-    var e = null; try{ e = document.querySelector(location.hash); }catch(_){}
-    if(!e) return;
-    /* Hedefin USTUNDE kalan gizli bloklar once acilir; yoksa yukseklik
-       oturmadan olculen konum yanlis cikar. */
-    var ust = e.getBoundingClientRect().top + window.pageYOffset;
-    var gizli = document.querySelectorAll('.rv:not(.gor),.rv-ic:not(.gor)');
-    for(var i = 0; i < gizli.length; i++){
-      if(gizli[i].getBoundingClientRect().top + window.pageYOffset < ust)
-        gizli[i].classList.add('gor');
-    }
-    var y = e.getBoundingClientRect().top + window.pageYOffset - pay();
-    /* scrollIntoView bu sayfalarda etkisiz kaliyor (olculdu 02.09.2026) —
-       konum elle hesaplanip scrollTo ile uygulaniyor. */
-    window.scrollTo({ top: Math.max(0, y), behavior: yumusak ? 'smooth' : 'instant' });
-  }
-  addEventListener('load', function(){
-    setTimeout(function(){ git(false); }, 60);
-    setTimeout(function(){ git(false); }, 500);   /* bloklar yerlesince yeniden hizala */
-  });
-  addEventListener('hashchange', function(){ git(true); });
-})();
-</script>
 
 <script>
-/* ===== HEDEFE ANINDA VARIS · 11.09.2026 =====
+/* ===== HEDEFE ANINDA VARIS · v4 · 11.09.2026 =====
    Menuden bir bolume atlandiginda o bolumun bloklari animasyon sirasini
-   BEKLEMEZ. Olcum: atlama 3,0 sn kaydirma + 0,8 sn animasyon suruyordu;
-   ziyaretci ekrana bakip "geldi mi" diye bekliyordu. */
+   BEKLEMEZ (olcum: atlama 3,0 sn kaydirma + 0,8 sn animasyon suruyordu).
+   Kaydirmayi ise JS DEGIL TARAYICI yapar — gerekcesi payla() basinda. */
 (function(){
-  function ac(){
-    var h = location.hash;
-    if (!h || h.length < 2) return;
-    var s; try { s = document.querySelector(h); } catch(e) { return; }
-    if (!s) return;
+  function gor(sec){
+    var s; try { s = document.querySelector(sec); } catch(e) { return null; }
+    if (!s) return null;
     var kap = s.closest ? (s.closest('section') || s) : s;
     kap.querySelectorAll('.rv:not(.gor),.rv-ic:not(.gor),.rule:not(.gor)')
        .forEach(function(el){ el.classList.add('gor'); });
     if (kap.classList) kap.classList.add('gor');
-    araca(kap);
+    return kap;
   }
-  /* ===== ARACA IN · 11.09.2026 =====
-     Olculdu (1000x700): yapiskan yigin 134px, kullanilabilir ekran 566px.
-     Bolum basindan girdilere 389-560px, SONUCUN ALTINA 708-1013px — yani
-     13 aracin 13'unde girdi ve sonuc ayni anda GORUNMUYORDU. Arac kutusunun
-     kendisi ~453px, ekrana rahat siginca sorun kutunun degil, ustundeki
-     baslik+metin yigininin. Bu yuzden bolumun BASINA degil ARACA inilir;
-     baslikin alt kismi 60px pay ile gorunur kalir. */
-  function araca(kap){
-    if (!kap || !kap.querySelector) return;
-    var ic = kap.querySelector('.arac-ic') || kap.querySelector('.arac');
-    if (!ic) return;                         /* arac tasimayan sayfalar etkilenmez */
-    function git(){
-      var ust = document.querySelector('.top');
-      var bar = document.querySelector('.aracbar');
-      var yap = (ust ? ust.getBoundingClientRect().height : 0)
-              + (bar ? bar.getBoundingClientRect().height : 0);
-      var bosluk = window.innerHeight - yap;           /* kullanilabilir ekran */
-      var icYuk  = ic.getBoundingClientRect().height;  /* girdiler + cikti */
+  function ac(){
+    var h = location.hash;
+    if (!h || h.length < 2) return;
+    gor(h);
+  }
+  /* Yerlesim olcusu — getBoundingClientRect DONUSUMU sayar, acilmamis bloklar
+     translateY(34px) tasir ve olcum animasyon suresince kayar (olculdu
+     11.09.2026: 13 aractan 2'si sasti). offsetTop zinciri donusumu saymaz. */
+  function yer(el){ var t = 0; while (el) { t += el.offsetTop; el = el.offsetParent; } return t; }
+
+  /* ===== ARACA IN · v4 · 11.09.2026 =====
+     Olculdu (1440x900): bolum basindan arac kutusuna 566 px var. Cipa bolumun
+     BASINI gosterdigi icin ziyaretci bir araca geldiginde hesap makinesini
+     degil uc paragraf metni goruyordu — 13 aracin 13'unde girdi ile sonuc ayni
+     anda gorunmuyordu.
+     v1-v3 bunu JS ile kaydirarak duzeltmeye calisti ve tarayicinin KENDI cipa
+     atlamasiyla yaristi: 0 ms dogru, 150 ms yanlis, 900 ms tekrar dogru —
+     ziyaretci sayfanin zipladigini goruyordu.
+     v4 yarismaz. Her bolume scroll-margin-top yazilir; arac tasiyan bolumde bu
+     deger NEGATIF olur (ornek: -312 px) ve atlamayi tarayici yapar. Menu, baska
+     sayfa, adres cubugu, geri tusu — hepsi ayni mekanizma, hepsi ayni yer. */
+  /* Ziyaretci kendi kaydirdiysa hizalama DURUR. Bayrak her atlamada sifirlanir:
+     bes dakika once tekerlek cevirmis olmasi, simdiki atlamayi bozmamali. */
+  var oynadi = false;
+  ['wheel','touchstart','keydown'].forEach(function(o){
+    addEventListener(o, function(){ oynadi = true; }, { passive: true });
+  });
+  /* Bir girdiye girdiyse ziyaretci artik hesapla mesgul — sayfayi oynatma. */
+  addEventListener('focusin', function(e){
+    var t = e.target;
+    if (t && /^(INPUT|SELECT|TEXTAREA)$/.test(t.tagName)) oynadi = true;
+  }, { passive: true });
+
+  /* Atlamadan sonra sayfa kayar: gecilen araclar acilir, sonuc alanlari dolar
+     ve hedefin ustundeki icerik buyur. Sabit gecikme listesi bunu kovalayamaz
+     (olculdu 11.09.2026: 1100 ms'lik son hizalamadan sonra da 3 arac kaydi).
+     Bu yuzden sure degil YERLESIM izlenir. */
+  var izleyici = null, bitis = 0;
+  function hizala(parca){
+    oynadi = false;
+    bitis = Date.now() + 2500;
+    function bir(){
+      if (oynadi) return;
+      payla();
+      var s; try { s = document.querySelector(parca); } catch (e) { return; }
+      if (s) s.scrollIntoView();       /* scroll-margin'i tarayici uygular */
+    }
+    bir();
+    if (window.ResizeObserver) {
+      if (izleyici) izleyici.disconnect();
+      izleyici = new ResizeObserver(function(){
+        if (oynadi || Date.now() > bitis) {
+          if (izleyici) { izleyici.disconnect(); izleyici = null; }
+          return;
+        }
+        bir();
+      });
+      izleyici.observe(document.body);
+    }
+    [90, 250, 600, 1200, 2000].forEach(function(ms){
+      setTimeout(function(){ if (!oynadi && Date.now() <= bitis) bir(); }, ms);
+    });
+  }
+
+  function payla(){
+    var ust = document.querySelector('.top');
+    var bar = document.querySelector('.aracbar');
+    var yap = (ust ? ust.offsetHeight : 0) + (bar ? bar.offsetHeight : 0);
+    var hep = document.querySelectorAll('section[id],header[id],div[id]');
+    for (var i = 0; i < hep.length; i++) {
+      var s  = hep[i];
+      var ic = s.querySelector ? s.querySelector('.arac-ic') : null;
+      if (!ic) { s.style.scrollMarginTop = (yap + 14) + 'px'; continue; }
+      var off = yer(ic) - yer(s);
       /* Ustte birakilacak pay: kutu siginca baslik da gorunsun, sigmayinca
-         payi kis ve hesabin kendisine yer ac. Olculdu 11.09.2026. */
-      var pay = Math.max(0, Math.min(120, Math.round(bosluk - icYuk - 8)));
-      var h = ic.getBoundingClientRect().top + (window.pageYOffset||0) - yap - pay;
-      var enc = Math.max(0, document.body.scrollHeight - window.innerHeight);
-      window.scrollTo(0, Math.max(0, Math.min(Math.round(h), enc)));
+         payi kis ve hesabin kendisine yer ac. */
+      var pay = Math.max(0, Math.min(120,
+                Math.round(window.innerHeight - yap - ic.offsetHeight - 8)));
+      s.style.scrollMarginTop = Math.round(yap + pay - off) + 'px';
     }
-    /* tarayicinin kendi hash atlamasi bizden SONRA gelebilir — iki kare bekle,
-       yazi tipleri gec yuklenirse 'load' sonrasi bir kez daha duzelt. */
-    if (window.requestAnimationFrame)
-      requestAnimationFrame(function(){ requestAnimationFrame(git); });
-    /* rAF gizli sekmede DURUR — yedek zamanlayici (olculdu 11.09.2026).
-       git() hedefi her seferinde yeniden hesaplar, iki kez kosmasi zararsiz. */
-    setTimeout(git, 45);
-    if (document.readyState !== 'complete')
-      addEventListener('load', function(){ setTimeout(git, 0); }, { once: true });
   }
-  window.addEventListener('hashchange', ac);
-  /* Ayni sayfadaki cipa: tarayicinin atlamasini HIC baslatma — yoksa bizim
-     konumlandirmamizi eziyor (olculdu 11.09.2026: 13 aracin 11'i sasti). */
+
+  /* Yazi tipleri ve sonuc alani yerine oturunca kutu boyu degisir; cipa hedefi
+     yeniden olculur ve tarayicinin kendi hizalamasiyla (scrollIntoView, ayni
+     scroll-margin'i kullanir) bir kez tazelenir. */
+  function tazele(){
+    payla();
+    if (oynadi) return;
+    var h = location.hash;
+    if (h && h.length > 1) hizala(h);
+  }
+
+  window.addEventListener('hashchange', function(){
+    payla(); ac();
+    if (location.hash.length > 1) hizala(location.hash);
+  });
+  /* Tiklamadan HEMEN once yeniden olc — yakalama evresi, tarayicinin
+     atlamasindan oncedir. Boylece atlama daima guncel olcuyle yapilir. */
   document.addEventListener('click', function(e){
-    if (e.defaultPrevented || e.button || e.metaKey || e.ctrlKey ||
-        e.shiftKey || e.altKey) return;
     var a = e.target && e.target.closest && e.target.closest('a[href*="#"]');
-    if (!a || a.target === '_blank') return;
+    if (!a) return;
     var ham = a.getAttribute('href') || '';
-    var k = ham.indexOf('#');
-    var parca = ham.slice(k);
-    if (parca.length < 2) return;
-    var ayniSayfa = (k === 0) || (a.pathname === location.pathname);
-    var s = null; try { s = document.querySelector(parca); } catch (hata) { return; }
-    if (ayniSayfa && s) {
-      e.preventDefault();
-      if (window.history && history.pushState) history.pushState(null, '', parca);
-      else location.hash = parca;
-      ac();
-    } else {
-      setTimeout(ac, 0);
-    }
+    var parca = ham.slice(ham.indexOf('#'));
+    /* ONCE ac, SONRA olc: kapali bolumun yerlesimi animasyon bitene kadar
+       oynuyor; olcum bitmis yerlesim uzerinde yapilmali. */
+    if (parca.length > 1) { try { if (document.querySelector(parca)) gor(parca); } catch (hata) {} }
+    payla();
+    if (parca.length > 1) hizala(parca);
   }, true);
+  addEventListener('resize', payla, { passive: true });
+
   if (document.readyState === 'loading')
-    document.addEventListener('DOMContentLoaded', ac);
-  else ac();
+    document.addEventListener('DOMContentLoaded', function(){ payla(); ac(); });
+  else { payla(); ac(); }
+  addEventListener('load', tazele);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(tazele);
 })();
 </script>
 </body>
