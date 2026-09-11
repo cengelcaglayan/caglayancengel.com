@@ -417,8 +417,13 @@ footer{background:var(--navy);border-top:2px solid var(--gold);padding:30px 0 24
 @media(min-width:1000px){
   /* Canli olcum (1440x760, yayin sonrasi): son kutunun alti 786 px'te kaldi,
      26 px tasiyordu. Dolgu 7->5 ve ust bosluk 14->10 ile 28 px alindi. */
+  /* Band, dugme eklenince 82 -> 121 px oldu ve son kutu 796'ya dustu (36 px
+     tasma, olculdu canli 1440x760). Bandin kendi dolgusu ve ust boslugu ile
+     etiket dolgusundan 40 px alindi. */
+  .olc-sonuc{padding:14px 22px;margin:14px 0 4px}
+  .olc-band-btn{padding:7px 14px}
   .olc{margin-top:10px}
-  .olc label{padding:5px 0;line-height:1.4}
+  .olc label{padding:4px 0;line-height:1.4}
   .olc-blok{margin:14px 0 2px;padding-bottom:5px}
   .olc-blok:first-child{margin-top:2px}
 }
