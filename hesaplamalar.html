@@ -254,6 +254,10 @@ footer{background:var(--navy);border-top:2px solid var(--gold);padding:30px 0 24
 .aracbar a{flex:0 0 auto;padding:14px 14px 12px;font-size:14px;color:var(--soft);text-decoration:none;
   border-bottom:2px solid transparent;white-space:nowrap;transition:.15s;font-weight:500}
 .aracbar a:hover{color:var(--navy)}
+/* Cubuk artik klavye odagi alir (tabindex=0). Fare ile tiklandiginda
+   halka cikmasin, yalniz klavyeyle gelindiginde gorunsun. */
+.aracbar .in:focus{outline:none}
+.aracbar .in:focus-visible{outline:2px solid var(--gold);outline-offset:-2px;border-radius:4px}
 /* --- cubuk tasma isareti · 11.09.2026 · olculdu: icerik 1713px / kap 1000px,
        13 aractan 6'si ekran disinda kaliyordu ve kaydirilabildigi belli degildi --- */
 .aracbar::before,.aracbar::after{content:'';position:absolute;top:0;bottom:1px;width:54px;
@@ -2446,6 +2450,54 @@ function iskontoPlani(){
        gelince kesilmesi riski de kalkiyor. */
     kayd.scrollLeft=en;
   }
+  /* Ogeyi SAG kenara yaslar — sola giderken kullanilir. */
+  function sagaAl(a){
+    const b=a.getBoundingClientRect(), k=kayd.getBoundingClientRect();
+    const en=Math.max(0,Math.min(kayd.scrollLeft+(b.right-(k.right-SOL_PAY)),
+                                 kayd.scrollWidth-kayd.clientWidth));
+    if(Math.abs(en-kayd.scrollLeft)<=2) return false;
+    kayd.scrollLeft=en; return true;
+  }
+  /* KADEMELI KAYDIRMA — bir tiklamada/tusta BIR sonraki gizli arac ortaya cikar.
+     Eskiden ok dugmesi scrollBy(clientWidth*0.7)=700 px atiyordu; tasma 593 px
+     oldugu icin tek tiklamada sona gidiyor, ara duraklar hic gorunmuyordu
+     (olculdu 11.09.2026, IMG_5731.MOV 210-230 sn). */
+  function kaydirYon(yon){
+    const k=kayd.getBoundingClientRect(), a=kayd.querySelectorAll('a');
+    if(yon>0){
+      for(let i=0;i<a.length;i++)
+        if(a[i].getBoundingClientRect().right>k.right-PAY-1){ gorunurYap(a[i],true); return true; }
+    }else{
+      for(let i=a.length-1;i>=0;i--)
+        if(a[i].getBoundingClientRect().left<k.left+PAY-1) return sagaAl(a[i]);
+    }
+    return false;
+  }
+  bar._kaydirYon=kaydirYon;   /* ok dugmeleri de ayni kademeyi kullansin */
+  /* KLAVYE — olculdu 11.09.2026, IMG_5731.MOV 186-230 sn. Cubuk `overflow-x:auto`
+     idi ama odak ALAMIYORDU: Tab ile uzerine gelinmez, ok tuslari hicbir sey
+     yapmazdi. Ziyaretci fareyi cubugun uzerine getirip yon tuslarina basti,
+     cubuk kipirdamadi. Bu yuzden iki yol birden aciliyor:
+       a) tabindex=0  -> Tab ile gelinir, ok tuslari calisir (erisilebilirlik),
+       b) fare cubugun UZERINDEYKEN de ok tuslari calisir (ziyaretcinin denedigi yol).
+     Yukari/asagi tuslarina DOKUNULMAZ — onlar sayfayi kaydirmaya devam eder. */
+  kayd.setAttribute('tabindex','0');
+  let fareCubukta=false;
+  bar.addEventListener('mouseenter',function(){ fareCubukta=true; });
+  bar.addEventListener('mouseleave',function(){ fareCubukta=false; });
+  document.addEventListener('keydown',function(e){
+    if(e.metaKey||e.ctrlKey||e.altKey) return;
+    const o=document.activeElement;
+    if(!fareCubukta && !(o&&bar.contains(o))) return;
+    if(o&&/^(INPUT|SELECT|TEXTAREA)$/.test(o.tagName)) return;
+    let tutuldu=true;
+    if(e.key==='ArrowRight')      kaydirYon(1);
+    else if(e.key==='ArrowLeft')  kaydirYon(-1);
+    else if(e.key==='Home')       kayd.scrollLeft=0;
+    else if(e.key==='End')        kayd.scrollLeft=kayd.scrollWidth;
+    else tutuldu=false;
+    if(tutuldu) e.preventDefault();
+  });
   function toparla(){ if(sonAkt>=0&&cift[sonAkt]) gorunurYap(cift[sonAkt].a); }
   /* TIKLAMADA HIZALA — olculdu 11.09.2026, IMG_5730.MOV 96-114 sn.
      `mouseleave` yetmiyordu: ziyaretci fareyi cubugun ICINDE gezdirince o
@@ -3274,6 +3326,9 @@ if ('serviceWorker' in navigator) {
     d.type='button'; d.className='ok '+sinif; d.textContent=im;
     d.setAttribute('aria-label', yon<0?'Önceki araçlar':'Sonraki araçlar');
     d.addEventListener('click',function(){
+      /* Kademeli: bir tiklama = bir sonraki gizli arac. Eskiden 0.7*kap (700 px)
+         atiyordu, tasma 593 px oldugu icin tek tiklamada sona gidiyordu. */
+      if(bar._kaydirYon){ bar._kaydirYon(yon); return; }
       kayd.scrollBy({left:yon*Math.round(kayd.clientWidth*0.7),behavior:'smooth'});
     });
     bar.appendChild(d); return d;
