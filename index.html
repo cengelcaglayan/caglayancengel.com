@@ -411,8 +411,10 @@ footer{background:var(--navy);border-top:2px solid var(--gold);padding:30px 0 24
    1440x760: band+izgara 807 px, kullanilabilir 671 px — 136 px tasiyordu).
    Alinan sey yalniz bos dikey bosluk; yazi boyutu ayni kalir. */
 @media(min-width:1000px){
-  .olc{margin-top:14px}
-  .olc label{padding:7px 0;line-height:1.4}
+  /* Canli olcum (1440x760, yayin sonrasi): son kutunun alti 786 px'te kaldi,
+     26 px tasiyordu. Dolgu 7->5 ve ust bosluk 14->10 ile 28 px alindi. */
+  .olc{margin-top:10px}
+  .olc label{padding:5px 0;line-height:1.4}
   .olc-blok{margin:14px 0 2px;padding-bottom:5px}
   .olc-blok:first-child{margin-top:2px}
 }
