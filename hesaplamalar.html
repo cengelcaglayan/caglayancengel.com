@@ -99,16 +99,36 @@ select{appearance:none;-webkit-appearance:none;cursor:pointer;padding-right:34px
 
 /* skor tablosu */
 .skor{padding:0 28px 26px}
-/* Dokum tablosu sag sutunda, sonucun altinda — olculdu 11.09.2026: sonuc
-   kutusunun icerigi 217-290 px ama kutu 319-563 px, sagda 78-321 px bos
-   koyu alan duruyordu; dokum ise karti asagi uzatiyordu. */
-.arac-ic.uc{grid-template-columns:1fr 400px}   /* 340 px dar geldi: dokum satirlari kiriliyordu (olculdu) */
-.arac-ic.uc .girdiler{grid-column:1;grid-row:1/3}
-.arac-ic.uc .cikti{grid-column:2;grid-row:1}
-.arac-ic.uc .skor.sag{grid-column:2;grid-row:2;padding:12px 22px 18px;
+/* Sonuc USTTE yatay serit — olculdu 11.09.2026 (1440x760, kullanilabilir 626 px).
+   Sonuc sag sutunda iken kutu 319-563 px yer yiyordu ama icerigi 270-320 px idi;
+   ayni icerik tam genislikte serit olunca 159 px. Asil kazanc yukseklik degil
+   GENISLIK: girdiler ile dokum yan yana siginca dokumlu 9 aracin 9'u da tek
+   ekrana girdi (onceki duzende 5/9). */
+.arac-ic.ust{grid-template-columns:1fr 460px}
+.arac-ic.ust .cikti{grid-column:1/3;grid-row:1;padding:12px 26px 14px;
+  display:grid;grid-template-columns:auto auto 1fr;column-gap:22px;row-gap:2px;
+  align-items:baseline}
+.arac-ic.ust .cikti .cb{grid-column:1;grid-row:1}
+.arac-ic.ust .cikti .buyuk{grid-column:1;grid-row:2;line-height:1.05}
+.arac-ic.ust .cikti .alt{grid-column:2;grid-row:2}
+/* 4. cocuk rozet kutusudur — 13 aracin 13'unde sira ayni: cb>buyuk>alt>rozet>yorum */
+.arac-ic.ust .cikti>div:nth-child(4){grid-column:3;grid-row:2;justify-self:start}
+.arac-ic.ust .cikti .yorum{grid-column:1/4;grid-row:3;margin-top:6px}
+.arac-ic.ust .girdiler{grid-column:1;grid-row:2;padding:18px 26px}
+.arac-ic.ust .skor.alt{grid-column:2;grid-row:2;padding:16px 22px 18px;
   background:var(--white);border-left:1px solid var(--rule)}
-.arac-ic.uc .skor.sag table{font-size:13.5px;margin-top:0}
-.arac-ic.uc .skor.sag th,.arac-ic.uc .skor.sag td{padding:6px 0}
+.arac-ic.ust .skor.alt table{font-size:13.5px;margin-top:0}
+.arac-ic.ust .skor.alt th,.arac-ic.ust .skor.alt td{padding:5px 8px}
+/* a9: 9 girdi iki sutunda 445 px tutuyordu, uc sutunda 294 (olculdu) */
+#a9 .arac-ic.ust{grid-template-columns:1fr 400px}
+#a9 .arac-ic.ust .gg{grid-template-columns:1fr 1fr 1fr}
+/* a1 sayfanin en buyuk araci: 10 girdi + dort sutunlu 9 satirlik tablo.
+   480 px'in altinda tablo satirlari kiriliyor, 311 px yerine 532 px oluyor. */
+#a1 .arac-ic.ust{grid-template-columns:1fr 480px}
+#a1 .arac-ic.ust .gg{grid-template-columns:1fr 1fr 1fr}
+#a1 .arac-ic.ust .girdiler{padding:14px 24px}
+#a1 .arac-ic.ust .skor.alt table{font-size:13px}
+#a1 .arac-ic.ust .skor.alt th,#a1 .arac-ic.ust .skor.alt td{padding:4px 8px}
 .skor table{width:100%;border-collapse:collapse;font-size:15px;margin-top:6px}
 .skor th,.skor td{text-align:right;padding:9px 10px;border-bottom:1px solid var(--rule)}
 .skor th:first-child,.skor td:first-child{text-align:left}
@@ -143,11 +163,13 @@ footer{background:var(--navy);border-top:2px solid var(--gold);padding:30px 0 24
 
 @media(max-width:900px){
   .arac-ic{grid-template-columns:1fr}
-  /* Dar ekranda tek sutun: girdiler, dokum, sonuc (sonuc yapisik kalsin) */
-  .arac-ic.uc{grid-template-columns:1fr}
-  .arac-ic.uc .girdiler{grid-column:1;grid-row:1}
-  .arac-ic.uc .skor.sag{grid-column:1;grid-row:2;border-left:0}
-  .arac-ic.uc .cikti{grid-column:1;grid-row:3}
+  /* Dar ekranda tek sutun: girdiler, dokum, sonuc (sonuc yapisik kalsin).
+     Id'li masaustu kurallari daha ozgul — burada acikca geri alinir. */
+  .arac-ic.ust,#a9 .arac-ic.ust,#a1 .arac-ic.ust{grid-template-columns:1fr}
+  .arac-ic.ust .gg,#a9 .arac-ic.ust .gg,#a1 .arac-ic.ust .gg{grid-template-columns:1fr}
+  .arac-ic.ust .girdiler{grid-column:1;grid-row:1}
+  .arac-ic.ust .skor.alt{grid-column:1;grid-row:2;border-left:0}
+  .arac-ic.ust .cikti{grid-column:1;grid-row:3;display:block}
   /* Sonuc ekranin altina yapisir — olculdu 11.09.2026: telefonda sonuc
      kutusu girdilerin 50-313 px altinda kaliyordu, yazan kisi cevabi
      gormuyordu. Yukseklik sinirli, icerigi uzunsa kendi icinde kayar. */
@@ -655,7 +677,7 @@ footer img{filter:none}
         <h3>Taksitli ticari kredide efektif maliyet</h3>
         <p><strong>BSMV %5 dolu gelir</strong> — ticari kredide faiz ve masraflar bu vergiye tabidir, kaldırılırsa maliyet olduğundan düşük çıkar. Ticari kredide KKDF %0'dır, o yüzden boştur. Kullandırım ücreti ve komisyon alanlarını, teklifte yoksa boş bırakın — boş alan sıfır sayılır. Bireysel kredide iki oran da farklıdır (KKDF %15, BSMV %15); o hesap için elle değiştirin.</p>
       </div>
-      <div class="arac-ic uc">
+      <div class="arac-ic ust">
         <div class="girdiler">
           <div class="gg">
             <div><label for="k_ana">Anapara (TL)</label><input id="k_ana" type="text" inputmode="decimal" value="2.175.234"></div>
@@ -674,7 +696,7 @@ footer img{filter:none}
           <div id="k_rozet"></div>
           <div class="yorum" id="k_yorum">Anapara, faiz ve vadeyi girin.</div>
         </div>
-        <div class="skor sag">
+        <div class="skor alt">
         <table>
           <thead><tr><th>Kalem</th><th>Tutar</th></tr></thead>
           <tbody id="k_tablo"><tr><td class="d-bos" colspan="2">Rakam bekleniyor…</td></tr></tbody>
@@ -752,7 +774,7 @@ footer img{filter:none}
     <div class="arac">
       <div class="arac-bas"><span class="arac-no">Araç 05 · Rotatif</span>
         <h3>Rotatif kredi maliyeti</h3></div>
-      <div class="arac-ic uc">
+      <div class="arac-ic ust">
         <div class="girdiler"><div class="gg">
           <div><label for="r_ana">Anapara (TL)</label><input id="r_ana" type="text" inputmode="decimal" value="1.000.000"></div>
           <div><label for="r_faiz">Yıllık faiz (%)</label><input id="r_faiz" type="text" inputmode="decimal" value="55"></div>
@@ -770,7 +792,7 @@ footer img{filter:none}
           <div id="r_rozet"></div>
           <div class="yorum" id="r_yorum">Anapara, faiz ve gün sayısını girin.</div>
         </div>
-        <div class="skor sag"><table><thead><tr><th>Kalem</th><th>Tutar</th></tr></thead>
+        <div class="skor alt"><table><thead><tr><th>Kalem</th><th>Tutar</th></tr></thead>
         <tbody id="r_tablo"><tr><td class="d-bos" colspan="2">Rakam bekleniyor…</td></tr></tbody></table></div>
       </div>
     </div>
@@ -834,7 +856,7 @@ footer img{filter:none}
     <div class="arac">
       <div class="arac-bas"><span class="arac-no">Araç 06 · Spot</span>
         <h3>Spot kredi maliyeti</h3></div>
-      <div class="arac-ic uc">
+      <div class="arac-ic ust">
         <div class="girdiler"><div class="gg">
           <div><label for="s_ana">Anapara (TL)</label><input id="s_ana" type="text" inputmode="decimal" value="5.000.000"></div>
           <div><label for="s_faiz">Yıllık faiz (%)</label><input id="s_faiz" type="text" inputmode="decimal" value="55"></div>
@@ -849,7 +871,7 @@ footer img{filter:none}
           <div id="s_rozet"></div>
           <div class="yorum" id="s_yorum">Anapara, faiz ve vadeyi girin.</div>
         </div>
-        <div class="skor sag"><table><thead><tr><th>Kalem</th><th>Tutar</th></tr></thead>
+        <div class="skor alt"><table><thead><tr><th>Kalem</th><th>Tutar</th></tr></thead>
         <tbody id="s_tablo"><tr><td class="d-bos" colspan="2">Rakam bekleniyor…</td></tr></tbody></table></div>
       </div>
     </div>
@@ -914,7 +936,7 @@ footer img{filter:none}
     <div class="arac">
       <div class="arac-bas"><span class="arac-no">Araç 07 · İskonto</span>
         <h3>Çek/senet iskonto maliyeti</h3></div>
-      <div class="arac-ic uc">
+      <div class="arac-ic ust">
         <div class="girdiler"><div class="gg">
           <div><label for="i_nom">Nominal tutar (TL)</label><input id="i_nom" type="text" inputmode="decimal" value="1.000.000"></div>
           <div><label for="i_faiz">Yıllık iskonto faizi (%)</label><input id="i_faiz" type="text" inputmode="decimal" value="45"></div>
@@ -930,7 +952,7 @@ footer img{filter:none}
           <div id="i_rozet"></div>
           <div class="yorum" id="i_yorum">Nominal tutar, faiz ve vadeyi girin.</div>
         </div>
-        <div class="skor sag"><table><thead><tr><th>Kalem</th><th>Tutar</th></tr></thead>
+        <div class="skor alt"><table><thead><tr><th>Kalem</th><th>Tutar</th></tr></thead>
         <tbody id="i_tablo"><tr><td class="d-bos" colspan="2">Rakam bekleniyor…</td></tr></tbody></table></div>
       </div>
     </div>
@@ -996,7 +1018,7 @@ footer img{filter:none}
     <div class="arac">
       <div class="arac-bas"><span class="arac-no">Araç 11 · Ticari KMH</span>
         <h3>KMH maliyeti</h3></div>
-      <div class="arac-ic uc">
+      <div class="arac-ic ust">
         <div class="girdiler"><div class="gg">
           <div><label for="kh_limit">Tahsis edilen limit (TL)</label><input id="kh_limit" type="text" inputmode="decimal" value="1.000.000"></div>
           <div><label for="kh_bakiye">Ortalama kullanılan bakiye (TL)<br><span class="ipucu">ekstredeki ortalama, anlık bakiye değil</span></label><input id="kh_bakiye" type="text" inputmode="decimal" value="400.000"></div>
@@ -1012,7 +1034,7 @@ footer img{filter:none}
           <div id="kh_rozet"></div>
           <div class="yorum" id="kh_yorum">Limit, bakiye ve faizi girin.</div>
         </div>
-        <div class="skor sag"><table>
+        <div class="skor alt"><table>
         <thead><tr><th>Kalem</th><th>Tutar</th></tr></thead>
         <tbody id="kh_tablo"><tr><td class="d-bos" colspan="2">Rakam bekleniyor…</td></tr></tbody>
       </table></div>
@@ -1053,7 +1075,7 @@ footer img{filter:none}
     <div class="arac">
       <div class="arac-bas"><span class="arac-no">Araç 09 · Faktoring</span>
         <h3>Faktoring maliyeti ve avans etkisi</h3></div>
-      <div class="arac-ic uc">
+      <div class="arac-ic ust">
         <div class="girdiler"><div class="gg">
           <div><label for="fk_tut">Fatura tutarı (TL)</label><input id="fk_tut" type="text" inputmode="decimal" value="1.000.000"></div>
           <div><label for="fk_gun">Vade (gün)</label><input id="fk_gun" type="text" inputmode="decimal" value="90"></div>
@@ -1075,7 +1097,7 @@ footer img{filter:none}
           <div id="fk_rozet"></div>
           <div class="yorum" id="fk_yorum">Fatura tutarı, vade, faiz ve avans oranını girin.</div>
         </div>
-        <div class="skor sag"><table><thead><tr><th>Kalem</th><th>Tutar</th></tr></thead>
+        <div class="skor alt"><table><thead><tr><th>Kalem</th><th>Tutar</th></tr></thead>
         <tbody id="fk_tablo"><tr><td class="d-bos" colspan="2">Rakam bekleniyor…</td></tr></tbody></table></div>
       </div>
     </div>
@@ -1103,7 +1125,7 @@ footer img{filter:none}
     <div class="arac">
       <div class="arac-bas"><span class="arac-no">Araç 10 · Geriye hesap</span>
         <h3>Net tutardan gerçek maliyet</h3></div>
-      <div class="arac-ic">
+      <div class="arac-ic ust">
         <div class="girdiler"><div class="gg">
           <div><label for="gt_nom">Nominal tutar — çek/fatura (TL)</label><input id="gt_nom" type="text" inputmode="decimal" value="100.000"></div>
           <div><label for="gt_gun">Vade (gün)</label><input id="gt_gun" type="text" inputmode="decimal" value="92"></div>
@@ -1118,6 +1140,8 @@ footer img{filter:none}
           <div id="gt_rozet"></div>
           <div class="yorum" id="gt_yorum">Nominal tutarı, vadeyi ve elinize geçecek tutarı girin.</div>
         </div>
+        <div class="skor alt"><table><thead><tr><th>Kalem</th><th>Değer</th></tr></thead>
+        <tbody id="gt_tablo"><tr><td class="d-bos" colspan="2">Rakam bekleniyor…</td></tr></tbody></table></div>
       </div>
       <div class="saha">
         <strong>Nasıl okunur.</strong> &ldquo;Denk kredi faizi&rdquo;, bankanın size ilan ettiği faizle aynı
@@ -1126,8 +1150,6 @@ footer img{filter:none}
         çek kırdırmak limit kullanmaz, faktoring rücusuzsa tahsilat riskini de devreder. Kredide
         ikisi de sizde kalır.
       </div>
-      <div class="skor"><table><thead><tr><th>Kalem</th><th>Değer</th></tr></thead>
-        <tbody id="gt_tablo"><tr><td class="d-bos" colspan="2">Rakam bekleniyor…</td></tr></tbody></table></div>
     </div>
   </div>
 
@@ -1156,7 +1178,7 @@ footer img{filter:none}
         <span class="arac-no">Araç 08 · POS</span>
         <h3>POS komisyon karşılaştırması</h3>
       </div>
-      <div class="arac-ic">
+      <div class="arac-ic ust">
         <div class="girdiler">
           <div class="gg">
             <div><label for="p_ciro">Aylık POS cirosu (TL)</label><input id="p_ciro" type="text" inputmode="decimal" value="950.000"></div>
@@ -1174,11 +1196,11 @@ footer img{filter:none}
           <div id="p_rozet"></div>
           <div class="yorum" id="p_yorum">Ciro ve iki komisyon oranını girin.</div>
         </div>
-      </div>
-      <div class="skor"><table>
+        <div class="skor alt"><table>
         <thead><tr><th>Aylık</th><th>Ertesi gün POS</th><th>Blokeli POS</th></tr></thead>
         <tbody id="p_tablo"><tr><td class="d-bos" colspan="3">Rakam bekleniyor…</td></tr></tbody>
       </table></div>
+      </div>
     </div>
 
     <div class="kaynak-not">
@@ -1325,7 +1347,7 @@ footer img{filter:none}
         <h3>Hızlı bilanço teşhisi</h3>
         <p>Rakamları bin veya milyon ayırmadan, olduğu gibi girin.</p>
       </div>
-      <div class="arac-ic">
+      <div class="arac-ic ust">
         <div class="girdiler">
           <div class="gg">
             <div><label for="t_dv">Dönen varlıklar</label><input id="t_dv" type="text" inputmode="decimal" value="4.200.000"></div>
@@ -1347,14 +1369,14 @@ footer img{filter:none}
           <div id="t_rozet"></div>
           <div class="yorum" id="t_yorum"></div>
         </div>
-      </div>
-      <div class="skor">
+        <div class="skor alt">
         <table>
           <thead><tr><th>Oran</th><th>Sonuç</th><th>Banka bandı</th><th>Durum</th></tr></thead>
           <tbody id="t_tablo">
             <tr><td class="d-bos" colspan="4">Rakam bekleniyor…</td></tr>
           </tbody>
         </table>
+      </div>
       </div>
     </div>
   </div>

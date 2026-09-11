@@ -478,7 +478,9 @@ body.kilit{overflow:hidden}
 .qr-yazi a{font-size:13.5px;color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(200,169,81,.45);align-self:flex-start;padding-bottom:1px}
 @media(max-width:560px){.qr-kutu{flex-direction:column;align-items:flex-start;gap:13px}}
 /* ---- hero: sag sutunda karekod ---- */
-.hero .wrap.hero-iki{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:46px;align-items:start}
+/* Yan sutun 320 -> 400 px: hizli hesap kartinin uzun etiketleri tek satira
+   dustu, kart 37 px kisaldi (olculdu 11.09.2026). Sol sutun 622 px kaldi. */
+.hero .wrap.hero-iki{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:46px;align-items:start}
 .hero-qr{display:grid;grid-template-columns:96px minmax(0,1fr);gap:4px 13px;
   align-items:start;padding:14px;border:1px solid var(--rule);border-radius:3px;
   background:var(--white)}
@@ -509,6 +511,8 @@ body.kilit{overflow:hidden}
    okutabilir. Kutu yatay duzene gecer. */
 @media(max-width:900px){
   .hero .wrap.hero-iki{grid-template-columns:1fr;gap:0}
+  /* Dar ekranda uc sutun girdi okunmaz — ikiye doner */
+  .mini-g{grid-template-columns:1fr 1fr}
   .hero-qr{margin-top:0;display:grid;
     grid-template-columns:96px minmax(0,1fr);grid-template-rows:auto auto auto;
     gap:5px 16px;align-items:start;padding:15px}
@@ -597,19 +601,20 @@ footer img{filter:none}
 .mini-et{display:block;font-size:10.5px;letter-spacing:1.5px;text-transform:uppercase;
   color:var(--goldink);font-weight:600;margin-bottom:5px}
 .mini>b{display:block;font-size:13.5px;line-height:1.35;color:var(--navy);margin-bottom:11px}
-.mini-g{display:grid;grid-template-columns:1fr 1fr;gap:6px 9px}
+/* 7 girdi uc sutunda uc satira siger — iki sutunda dort satirdi (224 -> 167 px) */
+.mini-g{display:grid;grid-template-columns:repeat(3,1fr);gap:6px 9px}
 .mini-g label{display:flex;flex-direction:column;font-size:10.5px;color:var(--soft);gap:2px}
 .mini-g input{font:inherit;font-size:12.5px;color:var(--navy);padding:4px 7px;
   border:1px solid var(--rule);border-radius:2px;background:var(--paper);width:100%;
   box-sizing:border-box;min-width:0}
 .mini-g input:focus{outline:none;border-color:var(--gold);background:var(--white)}
-.mini-son{margin-top:12px;padding-top:11px;border-top:1px solid var(--rule)}
+.mini-son{margin-top:8px;padding-top:11px;border-top:1px solid var(--rule)}
 .mini-lb{display:block;font-size:10.5px;letter-spacing:1.4px;text-transform:uppercase;color:var(--soft)}
 .mini-son strong{display:block;font-family:'Playfair Display',serif;font-size:27px;
   color:var(--navy);line-height:1.1;margin:2px 0 4px}
 .mini-son strong small{font-size:15px;font-weight:400}
 .mini-tab{width:100%;border-collapse:collapse;margin-top:7px;font-size:11.5px}
-.mini-tab td{padding:4px 0;border-bottom:1px solid var(--rule);color:var(--soft)}
+.mini-tab td{padding:3px 0;border-bottom:1px solid var(--rule);color:var(--soft)}
 .mini-tab td:last-child{text-align:right;color:var(--navy);font-variant-numeric:tabular-nums}
 .mini-ip,#m_adet{display:block;font-size:10px;opacity:.75;font-weight:400}
 .mini-tab tr:last-child td{border-bottom:0}
@@ -839,10 +844,11 @@ section[id],header[id],div[id]{scroll-margin-top:calc(var(--ust,80px) + 14px)}
           <tr><td><b>Toplam geri ödeme</b> <span id="m_adet">(24 taksit)</span></td><td id="m_geri"><b>3.350.955 ₺</b></td></tr>
         </tbody></table>
       </div>
-      <p class="mini-not">2.175.234 ₺ anapara, aylık %3,61 faiz, 24 ay vade, %1,1 dosya masrafı
-      ve %5 BSMV ile gerçekte ödenen <b>aylık %3,90</b> olur. Banka 25.124 ₺'yi baştan keser,
-      hesabınıza 2.150.110 ₺ girer; ama faiz 2.175.234 ₺ üzerinden işler ve aylık taksit
-      139.623 ₺ olur. Fark buradan doğar.</p>
+      <!-- Tablonun aynen tekrari olan cumleler cikarildi (olculdu 11.09.2026:
+           104 -> 35 px). Kalan cumle tabloda olmayan sey soyluyor: faizin hangi
+           tutar uzerinden islediigi. -->
+      <p class="mini-not">Banka 25.124 ₺ masrafı baştan keser — hesabınıza 2.150.110 ₺ girer,
+      ama faiz <b>2.175.234 ₺</b> üzerinden işler. Fark buradan doğar.</p>
       <a class="mini-lnk" href="hesaplamalar.html">Diğer 10 hesaplama aracı &rarr;</a>
     </div>
     </div>
