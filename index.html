@@ -1845,11 +1845,65 @@ if ('serviceWorker' in navigator) {
     kap.querySelectorAll('.rv:not(.gor),.rv-ic:not(.gor),.rule:not(.gor)')
        .forEach(function(el){ el.classList.add('gor'); });
     if (kap.classList) kap.classList.add('gor');
+    araca(kap);
+  }
+  /* ===== ARACA IN · 11.09.2026 =====
+     Olculdu (1000x700): yapiskan yigin 134px, kullanilabilir ekran 566px.
+     Bolum basindan girdilere 389-560px, SONUCUN ALTINA 708-1013px — yani
+     13 aracin 13'unde girdi ve sonuc ayni anda GORUNMUYORDU. Arac kutusunun
+     kendisi ~453px, ekrana rahat siginca sorun kutunun degil, ustundeki
+     baslik+metin yigininin. Bu yuzden bolumun BASINA degil ARACA inilir;
+     baslikin alt kismi 60px pay ile gorunur kalir. */
+  function araca(kap){
+    if (!kap || !kap.querySelector) return;
+    var ic = kap.querySelector('.arac-ic') || kap.querySelector('.arac');
+    if (!ic) return;                         /* arac tasimayan sayfalar etkilenmez */
+    function git(){
+      var ust = document.querySelector('.top');
+      var bar = document.querySelector('.aracbar');
+      var yap = (ust ? ust.getBoundingClientRect().height : 0)
+              + (bar ? bar.getBoundingClientRect().height : 0);
+      var bosluk = window.innerHeight - yap;           /* kullanilabilir ekran */
+      var icYuk  = ic.getBoundingClientRect().height;  /* girdiler + cikti */
+      /* Ustte birakilacak pay: kutu siginca baslik da gorunsun, sigmayinca
+         payi kis ve hesabin kendisine yer ac. Olculdu 11.09.2026. */
+      var pay = Math.max(0, Math.min(120, Math.round(bosluk - icYuk - 8)));
+      var h = ic.getBoundingClientRect().top + (window.pageYOffset||0) - yap - pay;
+      var enc = Math.max(0, document.body.scrollHeight - window.innerHeight);
+      window.scrollTo(0, Math.max(0, Math.min(Math.round(h), enc)));
+    }
+    /* tarayicinin kendi hash atlamasi bizden SONRA gelebilir — iki kare bekle,
+       yazi tipleri gec yuklenirse 'load' sonrasi bir kez daha duzelt. */
+    if (window.requestAnimationFrame)
+      requestAnimationFrame(function(){ requestAnimationFrame(git); });
+    /* rAF gizli sekmede DURUR — yedek zamanlayici (olculdu 11.09.2026).
+       git() hedefi her seferinde yeniden hesaplar, iki kez kosmasi zararsiz. */
+    setTimeout(git, 45);
+    if (document.readyState !== 'complete')
+      addEventListener('load', function(){ setTimeout(git, 0); }, { once: true });
   }
   window.addEventListener('hashchange', ac);
+  /* Ayni sayfadaki cipa: tarayicinin atlamasini HIC baslatma — yoksa bizim
+     konumlandirmamizi eziyor (olculdu 11.09.2026: 13 aracin 11'i sasti). */
   document.addEventListener('click', function(e){
+    if (e.defaultPrevented || e.button || e.metaKey || e.ctrlKey ||
+        e.shiftKey || e.altKey) return;
     var a = e.target && e.target.closest && e.target.closest('a[href*="#"]');
-    if (a) setTimeout(ac, 0);
+    if (!a || a.target === '_blank') return;
+    var ham = a.getAttribute('href') || '';
+    var k = ham.indexOf('#');
+    var parca = ham.slice(k);
+    if (parca.length < 2) return;
+    var ayniSayfa = (k === 0) || (a.pathname === location.pathname);
+    var s = null; try { s = document.querySelector(parca); } catch (hata) { return; }
+    if (ayniSayfa && s) {
+      e.preventDefault();
+      if (window.history && history.pushState) history.pushState(null, '', parca);
+      else location.hash = parca;
+      ac();
+    } else {
+      setTimeout(ac, 0);
+    }
   }, true);
   if (document.readyState === 'loading')
     document.addEventListener('DOMContentLoaded', ac);
