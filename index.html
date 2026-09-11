@@ -683,6 +683,7 @@ footer img{filter:none}
 .gform-bas{margin:0 0 13px;font-size:15px;color:#EDF1F6}
 .gform-bas b{color:#E6C97A}
 .gform-g{display:grid;grid-template-columns:1fr 1fr;gap:10px 12px}
+.gform-g .gen{grid-column:1/-1}
 .gform label{display:flex;flex-direction:column;gap:4px;font-size:11.5px;
   color:rgba(255,255,255,.62)}
 .gform input,.gform select,.gform textarea{font:inherit;font-size:14px;color:#fff;
@@ -1303,7 +1304,8 @@ section[id],header[id],div[id]{scroll-margin-top:calc(var(--ust,80px) + 14px)}
           <label>Ad soyad<input id="g_ad" type="text" autocomplete="name" required></label>
           <label>Firma<input id="g_firma" type="text" autocomplete="organization"></label>
           <label>Telefon<input id="g_tel" type="tel" inputmode="tel" autocomplete="tel" required></label>
-          <label>Uygun zaman<select id="g_zaman">
+          <label>E-posta (isteğe bağlı)<input id="g_eposta" type="email" inputmode="email" autocomplete="email"></label>
+          <label class="gen">Uygun zaman<select id="g_zaman">
             <option>Fark etmez</option><option>Sabah (09–12)</option>
             <option>Öğleden sonra (13–17)</option>
           </select></label>
@@ -1788,7 +1790,7 @@ if ('serviceWorker' in navigator) {
     var ad=d('g_ad'), tel=d('g_tel');
     if(!ad || !tel){
       durum.hidden=false; durum.textContent='Ad ve telefon gerekli.'; return; }
-    var veri={ ad:ad, firma:d('g_firma'), telefon:tel,
+    var veri={ ad:ad, firma:d('g_firma'), telefon:tel, eposta:d('g_eposta'),
                zaman:d('g_zaman'), not:d('g_not') };
     if(FORMSPREE){
       durum.hidden=false; durum.textContent='Gönderiliyor…';
@@ -1801,7 +1803,9 @@ if ('serviceWorker' in navigator) {
     } else {
       var m='Görüşme talebi\n\nAd: '+veri.ad
           +(veri.firma?'\nFirma: '+veri.firma:'')
-          +'\nTelefon: '+veri.telefon+'\nUygun zaman: '+veri.zaman
+          +'\nTelefon: '+veri.telefon
+          +(veri.eposta?'\nE-posta: '+veri.eposta:'')
+          +'\nUygun zaman: '+veri.zaman
           +(veri.not?'\nKonu: '+veri.not:'');
       window.open('https://wa.me/905337619443?text='+encodeURIComponent(m),'_blank','noopener');
       durum.hidden=false; durum.textContent='WhatsApp açıldı — mesajı göndermeniz yeterli.';
@@ -1968,7 +1972,12 @@ if ('serviceWorker' in navigator) {
       var a = e.target && e.target.closest && e.target.closest('.altm a');
       if (a) kapat(m);
     });
-    m.addEventListener('mouseleave', function(){ m.classList.remove('kapandi'); });
+    /* Yeniden acilis mouseleave'den mouseenter'e tasindi (olculdu 11.09.2026):
+       mouseleave tiklamadan hemen sonra atesleniyor, `kapandi` kalkiyor ve menu
+       yine CSS :hover'in insafina kaliyordu. Artik menu ancak ziyaretci
+       basligin uzerine GERI DONDUGUNDE acilir. */
+    var tetik = m.querySelector('a');
+    if (tetik) tetik.addEventListener('mouseenter', function(){ m.classList.remove('kapandi'); });
     m.addEventListener('focusin',    function(){ m.classList.remove('kapandi'); });
   })(g[i]);
   document.addEventListener('keydown', function(e){

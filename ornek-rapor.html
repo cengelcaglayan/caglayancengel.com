@@ -1170,7 +1170,12 @@ if ('serviceWorker' in navigator) {
       var a = e.target && e.target.closest && e.target.closest('.altm a');
       if (a) kapat(m);
     });
-    m.addEventListener('mouseleave', function(){ m.classList.remove('kapandi'); });
+    /* Yeniden acilis mouseleave'den mouseenter'e tasindi (olculdu 11.09.2026):
+       mouseleave tiklamadan hemen sonra atesleniyor, `kapandi` kalkiyor ve menu
+       yine CSS :hover'in insafina kaliyordu. Artik menu ancak ziyaretci
+       basligin uzerine GERI DONDUGUNDE acilir. */
+    var tetik = m.querySelector('a');
+    if (tetik) tetik.addEventListener('mouseenter', function(){ m.classList.remove('kapandi'); });
     m.addEventListener('focusin',    function(){ m.classList.remove('kapandi'); });
   })(g[i]);
   document.addEventListener('keydown', function(e){

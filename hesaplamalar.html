@@ -2406,6 +2406,10 @@ function iskontoPlani(){
   }
   addEventListener('scroll',guncelle,{passive:true});
   addEventListener('resize',function(){ olc(); sonAkt=-1; guncelle(); },{passive:true});
+  /* Atlama sirasinda scroll olayi kacabiliyor: olculdu 11.09.2026, POS -> Leasing
+     -> POS dizisinde isaret dort gecis boyunca eski aracta kaldi. Capa degisince
+     `sonAkt` onbellegi sifirlanir ve olcum yeniden yapilir. */
+  addEventListener('hashchange',function(){ sonAkt=-1; setTimeout(guncelle,60); },false);
   olc(); guncelle();
 })();
 
@@ -3229,7 +3233,12 @@ if ('serviceWorker' in navigator) {
       var a = e.target && e.target.closest && e.target.closest('.altm a');
       if (a) kapat(m);
     });
-    m.addEventListener('mouseleave', function(){ m.classList.remove('kapandi'); });
+    /* Yeniden acilis mouseleave'den mouseenter'e tasindi (olculdu 11.09.2026):
+       mouseleave tiklamadan hemen sonra atesleniyor, `kapandi` kalkiyor ve menu
+       yine CSS :hover'in insafina kaliyordu. Artik menu ancak ziyaretci
+       basligin uzerine GERI DONDUGUNDE acilir. */
+    var tetik = m.querySelector('a');
+    if (tetik) tetik.addEventListener('mouseenter', function(){ m.classList.remove('kapandi'); });
     m.addEventListener('focusin',    function(){ m.classList.remove('kapandi'); });
   })(g[i]);
   document.addEventListener('keydown', function(e){
