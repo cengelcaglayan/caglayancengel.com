@@ -511,8 +511,6 @@ body.kilit{overflow:hidden}
    okutabilir. Kutu yatay duzene gecer. */
 @media(max-width:900px){
   .hero .wrap.hero-iki{grid-template-columns:1fr;gap:0}
-  /* Dar ekranda uc sutun girdi okunmaz — ikiye doner */
-  .mini-g{grid-template-columns:1fr 1fr}
   .hero-qr{margin-top:0;display:grid;
     grid-template-columns:96px minmax(0,1fr);grid-template-rows:auto auto auto;
     gap:5px 16px;align-items:start;padding:15px}
@@ -602,18 +600,21 @@ footer img{filter:none}
   color:var(--goldink);font-weight:600;margin-bottom:5px}
 .mini>b{display:block;font-size:13.5px;line-height:1.35;color:var(--navy);margin-bottom:11px}
 /* 7 girdi uc sutunda uc satira siger — iki sutunda dort satirdi (224 -> 167 px) */
-.mini-g{display:grid;grid-template-columns:repeat(3,1fr);gap:6px 9px}
+.mini-g{display:grid;grid-template-columns:repeat(3,1fr);gap:5px 9px}
 .mini-g label{display:flex;flex-direction:column;font-size:10.5px;color:var(--soft);gap:2px}
 .mini-g input{font:inherit;font-size:12.5px;color:var(--navy);padding:4px 7px;
   border:1px solid var(--rule);border-radius:2px;background:var(--paper);width:100%;
   box-sizing:border-box;min-width:0}
 .mini-g input:focus{outline:none;border-color:var(--gold);background:var(--white)}
+/* Dar ekranda uc sutun okunmaz: alan 91 px'e dusuyor, '2.175.234' sigmiyor
+   (olculdu 375x812). Bu kural .mini-g'den SONRA durmak zorunda. */
+@media(max-width:900px){.mini-g{grid-template-columns:1fr 1fr}}
 .mini-son{margin-top:8px;padding-top:11px;border-top:1px solid var(--rule)}
 .mini-lb{display:block;font-size:10.5px;letter-spacing:1.4px;text-transform:uppercase;color:var(--soft)}
 .mini-son strong{display:block;font-family:'Playfair Display',serif;font-size:27px;
-  color:var(--navy);line-height:1.1;margin:2px 0 4px}
+  color:var(--navy);line-height:1.1;margin:0 0 2px}
 .mini-son strong small{font-size:15px;font-weight:400}
-.mini-tab{width:100%;border-collapse:collapse;margin-top:7px;font-size:11.5px}
+.mini-tab{width:100%;border-collapse:collapse;margin-top:5px;font-size:11.5px}
 .mini-tab td{padding:3px 0;border-bottom:1px solid var(--rule);color:var(--soft)}
 .mini-tab td:last-child{text-align:right;color:var(--navy);font-variant-numeric:tabular-nums}
 .mini-ip,#m_adet{display:block;font-size:10px;opacity:.75;font-weight:400}
@@ -623,9 +624,11 @@ footer img{filter:none}
 .mini-tk input{font:inherit;font-size:12.5px;color:var(--navy);padding:4px 7px;
   border:1px solid var(--rule);border-radius:2px;background:var(--paper);width:100%;box-sizing:border-box}
 .mini-tk input:focus{outline:none;border-color:var(--gold);background:var(--white)}
-.mini-not{margin:10px 0 0;font-size:11.5px;line-height:1.5;color:var(--soft)}
+/* Kart tek ekrana 8 px payla siğar (olculdu 11.09.2026: 679 px'e 671 px) —
+   asagidaki dort deger o paydan sorumlu, buyutulurse kart tasar. */
+.mini-not{margin:6px 0 0;font-size:11.5px;line-height:1.5;color:var(--soft)}
 .mini-not b{color:var(--body)}
-.mini-lnk{display:block;margin-top:11px;padding:9px 12px;font-size:13px;font-weight:600;
+.mini-lnk{display:block;margin-top:8px;padding:9px 12px;font-size:13px;font-weight:600;
   color:var(--navy);text-align:center;text-decoration:none;background:var(--band);
   border:1px solid var(--rule);border-radius:3px}
 .mini-lnk:hover{border-color:var(--gold)}
@@ -848,7 +851,8 @@ section[id],header[id],div[id]{scroll-margin-top:calc(var(--ust,80px) + 14px)}
            104 -> 35 px). Kalan cumle tabloda olmayan sey soyluyor: faizin hangi
            tutar uzerinden islediigi. -->
       <p class="mini-not">Banka 25.124 ₺ masrafı baştan keser — hesabınıza 2.150.110 ₺ girer,
-      ama faiz <b>2.175.234 ₺</b> üzerinden işler. Fark buradan doğar.</p>
+      ama faiz <b>2.175.234 ₺</b> üzerinden işler. Aylık taksit 139.623 ₺; gerçekte
+      ödediğiniz <b>aylık %3,90</b>.</p>
       <a class="mini-lnk" href="hesaplamalar.html">Diğer 10 hesaplama aracı &rarr;</a>
     </div>
     </div>
