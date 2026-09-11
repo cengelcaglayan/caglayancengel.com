@@ -139,6 +139,17 @@ select{appearance:none;-webkit-appearance:none;cursor:pointer;padding-right:34px
 #a9 .skor.alt table,#a1 .skor.alt table,#a8 .skor.alt table{font-size:12.5px}
 #a9 .skor.alt th,#a9 .skor.alt td,#a1 .skor.alt th,#a1 .skor.alt td,
 #a8 .skor.alt th,#a8 .skor.alt td{padding:3px 7px}
+/* --- SON PAY (olculdu 11.09.2026, butce 614 px) -----------------------
+   Kart ust/alt bosluklari ve iki uzun dokumun satir dolgusu. Bu degerler
+   13/13'u tutan son 20-30 px'tir; buyutulurse a1 ve a9 tasar. */
+.arac-bas{padding:12px 28px 10px}
+.arac-ic.ust .cikti{padding:8px 26px 10px}
+.arac-ic.ust .girdiler{padding:12px 24px}
+#a9 .skor.alt table,#a1 .skor.alt table{font-size:12px}
+#a9 .skor.alt th,#a9 .skor.alt td{padding:2px 7px}
+#a1 .arac-bas{padding:6px 28px 6px}
+#a1 .arac-ic.ust .skor.alt{padding:8px 18px 10px}
+#a1 .skor.alt th,#a1 .skor.alt td{padding:1px 7px;line-height:1.4}
 /* a9: 9 girdi iki sutunda 445 px tutuyordu, uc sutunda 294 (olculdu) */
 #a9 .arac-ic.ust{grid-template-columns:1fr 400px}
 #a9 .arac-ic.ust .gg{grid-template-columns:1fr 1fr 1fr}
@@ -1165,6 +1176,7 @@ footer img{filter:none}
         <div class="skor alt"><table><thead><tr><th>Kalem</th><th>Değer</th></tr></thead>
         <tbody id="gt_tablo"><tr><td class="d-bos" colspan="2">Rakam bekleniyor…</td></tr></tbody></table></div>
       </div>
+    </div>
       <div class="saha">
         <strong>Nasıl okunur.</strong> &ldquo;Denk kredi faizi&rdquo;, bankanın size ilan ettiği faizle aynı
         dildedir — BSMV dahil hesaplanır, o yüzden doğrudan karşılaştırılır. Kendi kredi faiziniz
@@ -1172,7 +1184,6 @@ footer img{filter:none}
         çek kırdırmak limit kullanmaz, faktoring rücusuzsa tahsilat riskini de devreder. Kredide
         ikisi de sizde kalır.
       </div>
-    </div>
   </div>
 
     <div class="ornek"><span class="et">Örnek hesap</span><b>100.000 ₺</b> nominal çek, <b>92 gün</b> vade ve “hesabınıza <b>87.000 ₺</b> geçer” teklifi ile: kesinti <b>13.000 ₺</b>, 92 günün maliyeti <b>%14,94</b>, denk kredi faizi yıllık <b>%55,7</b> (BSMV dahil çözülmüş). Yani bu işlem, %55,7 faizli bir krediye eşdeğerdir. Karşı taraf oran söylemez, tek rakam söyler; o rakamın hangi faize denk düştüğü ancak geriye hesaplayınca görünür.<span class="eylem"><b>Ne sorulur:</b> Karşı tarafa sorun: “Bu %55,7 faizli krediye denk geliyor — bankamdaki oranım kaç?” İki rakamı yan yana koymadan hangisinin ucuz olduğu bilinemez.</span></div>
