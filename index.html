@@ -708,6 +708,10 @@ footer img{filter:none}
 .menu-kutu>a,.topnav>a:hover,.menu-kutu .mgrup>a:hover,
 .menu-kutu>a,.topnav>a:focus,.menu-kutu .mgrup>a:focus,
 .menu-kutu>a,.topnav>a:active,.menu-kutu .mgrup>a:active{border-bottom-color:var(--gold);background:none}
+/* BULUNULAN BOLUM — sayfa kaydirilirken ust menude o bolumun basligi
+   altin serit alir (olculdu 11.09.2026, Caglayan). Hover ve odakla ayni
+   gorunum: ucu de ziyaretci icin "buradasin" demek. */
+.topnav>a.act,.menu-kutu .mgrup>a.act{border-bottom-color:var(--gold);color:var(--navy)}
 .marka .nm{white-space:nowrap}
 @media(max-width:1200px){.menu-kutu{gap:4px}
   .menu-kutu>a,.topnav>a,.menu-kutu .mgrup>a{font-size:13.5px;padding:6px 9px}}
@@ -2106,6 +2110,101 @@ if ('serviceWorker' in navigator) {
     if (e.key !== 'Escape' && e.keyCode !== 27) return;
     for (var i = 0; i < g.length; i++) kapat(g[i]);
   });
+})();
+</script>
+<script>
+/* ==== UST MENU KLAVYE GEZINMESI ==== olculdu 11.09.2026 canli, Caglayan:
+   "diger sitelerde nasil imleci goturunce altin sari renk geliyor, sonra sag
+    klavyeye bastigimda 'Ne yapiyorum?'a gitmesi gerekmez mi"
+   Menude ok tuslari hicbir sey yapmiyordu. Artik ok secimi komsu baslikta
+   gezdirir, altin serit odakla birlikte gelir (:focus kurali zaten yaziliydi),
+   Enter o sayfayi/bolumu acar.
+   ENTER ICIN AYRI KOD YOK — odakli <a> uzerinde tarayici zaten tiklar.
+   Baslangic noktasi farenin EN SON degdigi basliktir: ziyaretcinin tarif
+   ettigi sira bu — once imlecle uzerine goturuyor, sonra ok'a basiyor.
+   Fare menu disina cikinca baglanti kopar; ok tuslari menuyu kendiliginden
+   ELE GECIRMEZ (hesaplamalar sayfasinda arac cubugunun okunu calmasin). */
+(function(){
+  var kutu=document.querySelector('.menu-kutu');
+  if(!kutu) return;
+  /* Acilir alt menu (.altm) disarida: ok yalniz UST seviye basliklarda gezer. */
+  var bag=[].slice.call(kutu.querySelectorAll('a')).filter(function(a){
+    return !a.closest('.altm');
+  });
+  if(!bag.length) return;
+  var sonDegen=-1;
+  document.addEventListener('mouseover',function(e){
+    var h=e.target&&e.target.closest;
+    var a=h?e.target.closest('.menu-kutu a'):null;
+    var i=a?bag.indexOf(a):-1;
+    if(i>=0) sonDegen=i;
+    else if(!(h&&e.target.closest('.menu-kutu'))) sonDegen=-1;
+  },{passive:true});
+  /* CAPTURE fazi SART: hesaplamalar sayfasindaki arac cubugu dinleyicisi de
+     ayni tusu bekliyor. Menu isi yaptiysa `stopPropagation` ile bubble fazini
+     kapatir, iki gezinme ayni basista birden kosmaz. */
+  document.addEventListener('keydown',function(e){
+    if(e.metaKey||e.ctrlKey||e.altKey) return;
+    if(e.key!=='ArrowRight'&&e.key!=='ArrowLeft'&&e.key!=='Enter') return;
+    var o=document.activeElement;
+    if(o&&(/^(INPUT|SELECT|TEXTAREA)$/.test(o.tagName)||o.isContentEditable)) return;
+    var i=bag.indexOf(o);
+    /* ENTER — odakli <a> uzerinde acilis tarayicinin VARSAYILAN eylemidir ve
+       yalniz gercek tusta kosar; olcumde hic calismiyordu (11.09.2026).
+       Acik dal garanti eder: odak bir menu basligindaysa o baslik acilir. */
+    if(e.key==='Enter'){
+      if(i<0) return;
+      o.click(); e.preventDefault(); e.stopPropagation(); return;
+    }
+    if(i<0){
+      if(sonDegen<0) return;      /* fare menuye hic degmedi -> karisma */
+      i=sonDegen;                 /* ilk basis ATLAMAZ: imlecin durdugu basliga oturur */
+    } else {
+      i=i+(e.key==='ArrowRight'?1:-1);
+    }
+    i=Math.max(0,Math.min(i,bag.length-1));
+    bag[i].focus();
+    sonDegen=i;
+    e.preventDefault(); e.stopPropagation();
+  },true);
+})();
+</script>
+<script>
+/* ==== UST MENUDE BULUNULAN BOLUM ==== olculdu 11.09.2026, Caglayan:
+   "ana sayfada asagi klavye tusuna bastigimda ust barda hangi alana
+    gidiyorsak o menu basliginin altina sari renk gelmesi gerekmez mi"
+   Gelmiyordu: bolum takibi yalniz HESAPLAMALAR sayfasinin arac cubugunda
+   vardi, ust menude hic yoktu. */
+(function(){
+  var kutu=document.querySelector('.menu-kutu');
+  if(!kutu) return;
+  var cift=[].slice.call(kutu.querySelectorAll('a')).filter(function(a){
+    return !a.closest('.altm');
+  }).map(function(a){
+    var h=a.getAttribute('href')||'';
+    h=h.replace(/^\//,'');                    /* "/#olcut" -> "#olcut" */
+    var b=(h.charAt(0)==='#'&&h.length>1)?document.querySelector(h):null;
+    return {a:a,b:b};
+  }).filter(function(x){ return x.b; });
+  if(cift.length<2) return;
+  /* MENU SIRASI != SAYFA SIRASI: menude Hakkimda 3. sirada ama govdede 2.
+     "esigin ustunde kalan SON bolum" hesabi DOM sirasi ister, yoksa isaret
+     yanlis baslikta yanar. */
+  cift.sort(function(p,q){
+    return (p.b.compareDocumentPosition(q.b)&Node.DOCUMENT_POSITION_FOLLOWING)?-1:1;
+  });
+  var ust=document.querySelector('.top'), son=-2;
+  function guncelle(){
+    var esik=(ust?ust.getBoundingClientRect().height:80)+16;
+    var akt=-1;
+    cift.forEach(function(x,i){ if(x.b.getBoundingClientRect().top<=esik) akt=i; });
+    if(akt===son) return;
+    son=akt;
+    cift.forEach(function(x,i){ x.a.classList.toggle('act',i===akt); });
+  }
+  addEventListener('scroll',guncelle,{passive:true});
+  addEventListener('resize',function(){ son=-2; guncelle(); },{passive:true});
+  guncelle();
 })();
 </script>
 </body>

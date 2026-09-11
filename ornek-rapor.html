@@ -1184,5 +1184,62 @@ if ('serviceWorker' in navigator) {
   });
 })();
 </script>
+<script>
+/* ==== UST MENU KLAVYE GEZINMESI ==== olculdu 11.09.2026 canli, Caglayan:
+   "diger sitelerde nasil imleci goturunce altin sari renk geliyor, sonra sag
+    klavyeye bastigimda 'Ne yapiyorum?'a gitmesi gerekmez mi"
+   Menude ok tuslari hicbir sey yapmiyordu. Artik ok secimi komsu baslikta
+   gezdirir, altin serit odakla birlikte gelir (:focus kurali zaten yaziliydi),
+   Enter o sayfayi/bolumu acar.
+   ENTER ICIN AYRI KOD YOK — odakli <a> uzerinde tarayici zaten tiklar.
+   Baslangic noktasi farenin EN SON degdigi basliktir: ziyaretcinin tarif
+   ettigi sira bu — once imlecle uzerine goturuyor, sonra ok'a basiyor.
+   Fare menu disina cikinca baglanti kopar; ok tuslari menuyu kendiliginden
+   ELE GECIRMEZ (hesaplamalar sayfasinda arac cubugunun okunu calmasin). */
+(function(){
+  var kutu=document.querySelector('.menu-kutu');
+  if(!kutu) return;
+  /* Acilir alt menu (.altm) disarida: ok yalniz UST seviye basliklarda gezer. */
+  var bag=[].slice.call(kutu.querySelectorAll('a')).filter(function(a){
+    return !a.closest('.altm');
+  });
+  if(!bag.length) return;
+  var sonDegen=-1;
+  document.addEventListener('mouseover',function(e){
+    var h=e.target&&e.target.closest;
+    var a=h?e.target.closest('.menu-kutu a'):null;
+    var i=a?bag.indexOf(a):-1;
+    if(i>=0) sonDegen=i;
+    else if(!(h&&e.target.closest('.menu-kutu'))) sonDegen=-1;
+  },{passive:true});
+  /* CAPTURE fazi SART: hesaplamalar sayfasindaki arac cubugu dinleyicisi de
+     ayni tusu bekliyor. Menu isi yaptiysa `stopPropagation` ile bubble fazini
+     kapatir, iki gezinme ayni basista birden kosmaz. */
+  document.addEventListener('keydown',function(e){
+    if(e.metaKey||e.ctrlKey||e.altKey) return;
+    if(e.key!=='ArrowRight'&&e.key!=='ArrowLeft'&&e.key!=='Enter') return;
+    var o=document.activeElement;
+    if(o&&(/^(INPUT|SELECT|TEXTAREA)$/.test(o.tagName)||o.isContentEditable)) return;
+    var i=bag.indexOf(o);
+    /* ENTER — odakli <a> uzerinde acilis tarayicinin VARSAYILAN eylemidir ve
+       yalniz gercek tusta kosar; olcumde hic calismiyordu (11.09.2026).
+       Acik dal garanti eder: odak bir menu basligindaysa o baslik acilir. */
+    if(e.key==='Enter'){
+      if(i<0) return;
+      o.click(); e.preventDefault(); e.stopPropagation(); return;
+    }
+    if(i<0){
+      if(sonDegen<0) return;      /* fare menuye hic degmedi -> karisma */
+      i=sonDegen;                 /* ilk basis ATLAMAZ: imlecin durdugu basliga oturur */
+    } else {
+      i=i+(e.key==='ArrowRight'?1:-1);
+    }
+    i=Math.max(0,Math.min(i,bag.length-1));
+    bag[i].focus();
+    sonDegen=i;
+    e.preventDefault(); e.stopPropagation();
+  },true);
+})();
+</script>
 </body>
 </html>

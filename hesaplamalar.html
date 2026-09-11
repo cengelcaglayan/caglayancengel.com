@@ -275,6 +275,16 @@ footer{background:var(--navy);border-top:2px solid var(--gold);padding:30px 0 24
 .aracbar .ok.g{left:6px}.aracbar .ok.i{right:6px}
 .aracbar.sol .ok.g,.aracbar.sag .ok.i{display:flex}
 .aracbar a.act{color:var(--navy);border-bottom-color:var(--gold);font-weight:600}
+/* KLAVYE SECIMI — olculdu 11.09.2026, Caglayan: ok tuslari cubugu
+   kaydiriyordu ama hicbir seyi SECMIYORDU; altin isaret yerinde kaliyor,
+   Enter'a basacak odakli baglanti bulunmuyordu. Iki isaret ayri sey:
+     .act = sayfada BULUNULAN arac (dikey kaydirmayla degisir)
+     .sec = klavyenin o an DURDUGU arac (henuz acilmadi)
+   Ayirt edilsin diye .sec hafif altin zemin tasir. */
+.aracbar a.sec{color:var(--navy);border-bottom-color:var(--gold);font-weight:600;
+  background:rgba(200,169,81,.14)}
+.aracbar a:focus{outline:none}
+.aracbar a:focus-visible{outline:none}
 .aracbar b{flex:0 0 auto;padding:14px 12px 12px;font-size:11.5px;letter-spacing:1.4px;
   text-transform:uppercase;color:var(--goldink);white-space:nowrap}
 section[id]{scroll-margin-top:calc(var(--yapiskan,130px) + 14px)}
@@ -2489,15 +2499,59 @@ function iskontoPlani(){
      gelmiyor. "Fare cubukta VEYA odak cubukta" sarti cogu zaman tutmuyordu.
      Sayfada yatay kaydirma zaten yok; sol/sag ok tuslari BOS duruyordu.
      Tek istisna: yazi yazilan alanlar. Yukari/asagi/PageUp/PageDown serbest. */
+  /* ---- OK TUSU = SECIM, KAYDIRMA DEGIL ---- olculdu 11.09.2026 canli.
+     Eskiden ok tusu yalniz `kaydirYon` cagiriyordu: cubuk kayiyor, ama hangi
+     arac uzerinde olundugu gorunmuyor ve Enter'a basacak odakli bir baglanti
+     bulunmuyordu (odak `.in` kabindaydi). Artik sekme seridi gibi davranir:
+     ok secimi komsu araca tasir, `.sec` altin isareti onu takip eder.
+     ENTER ICIN AYRI KOD YOK — odakli <a> uzerinde tarayici zaten tiklama
+     uretir; tek gereken dogru baglantiya odaklanmakti. */
+  const baglar=[].slice.call(kayd.querySelectorAll('a'));
+  function secIndeks(){
+    const i=baglar.indexOf(document.activeElement);
+    if(i>=0) return i;
+    /* Odak cubukta degilse baslangic noktasi BULUNULAN aractir — ziyaretci
+       nerede oldugunu gorerek baslar, secim rastgele bir yere dusmez. */
+    const j=baglar.findIndex(function(a){ return a.classList.contains('act'); });
+    return j>=0?j:0;
+  }
+  function sec(i){
+    i=Math.max(0,Math.min(i,baglar.length-1));
+    const a=baglar[i];
+    baglar.forEach(function(x){ x.classList.remove('sec'); });
+    a.classList.add('sec');
+    gorunurYap(a,false);
+    /* preventScroll SART: odaklanma sayfayi DIKEY oynatmasin, yalniz cubuk
+       kaysin — yoksa her ok basisinda sayfa capaya ziplar. */
+    a.focus({preventScroll:true});
+  }
+  /* Odak cubuktan cikinca secim isareti kalkar; geride iki altin isaret
+     birden durmasin (`.act` zaten bulunulan araci gosteriyor). */
+  kayd.addEventListener('focusout',function(e){
+    if(!kayd.contains(e.relatedTarget))
+      baglar.forEach(function(x){ x.classList.remove('sec'); });
+  });
   document.addEventListener('keydown',function(e){
     if(e.metaKey||e.ctrlKey||e.altKey) return;
     const o=document.activeElement;
     if(o&&(/^(INPUT|SELECT|TEXTAREA)$/.test(o.tagName)||o.isContentEditable)) return;
+    /* Odak UST MENUDEYSE orasi kendi gezinmesini yapar — iki dinleyici ayni
+       tusu paylasmaz. */
+    if(o&&o.closest&&o.closest('.menu-kutu')) return;
+    /* Ilk basis ATLAMAZ: odak cubukta degilken ok once bulunulan araca oturur
+       (ziyaretci nerede oldugunu gorur), sonraki basista ilerler. */
+    const odakta=baglar.indexOf(o)>=0;
     let tutuldu=true;
-    if(e.key==='ArrowRight')      kaydirYon(1);
-    else if(e.key==='ArrowLeft')  kaydirYon(-1);
-    else if(e.key==='Home')       kayd.scrollLeft=0;
-    else if(e.key==='End')        kayd.scrollLeft=kayd.scrollWidth;
+    if(e.key==='ArrowRight')      sec(odakta?secIndeks()+1:secIndeks());
+    else if(e.key==='ArrowLeft')  sec(odakta?secIndeks()-1:secIndeks());
+    else if(e.key==='Home')       sec(0);
+    else if(e.key==='End')        sec(baglar.length-1);
+    /* ENTER — odakli <a> uzerinde acilis tarayicinin VARSAYILAN eylemidir ve
+       o eylem yalniz gercek (isTrusted) tusta kosar: otomasyonla olculunce
+       hicbir sey olmuyordu (olculdu 11.09.2026, yerel sunucu — odak #a6'da,
+       hash #a4'te kaldi). Acik dal hem garanti eder hem olculebilir kilar.
+       preventDefault varsayilani kapatir, click() tek gezinmeyi yapar. */
+    else if(e.key==='Enter'&&odakta){ o.click(); }
     else tutuldu=false;
     if(tutuldu) e.preventDefault();
   });
@@ -3377,6 +3431,63 @@ if ('serviceWorker' in navigator) {
     if (e.key !== 'Escape' && e.keyCode !== 27) return;
     for (var i = 0; i < g.length; i++) kapat(g[i]);
   });
+})();
+</script>
+<script>
+/* ==== UST MENU KLAVYE GEZINMESI ==== olculdu 11.09.2026 canli, Caglayan:
+   "diger sitelerde nasil imleci goturunce altin sari renk geliyor, sonra sag
+    klavyeye bastigimda 'Ne yapiyorum?'a gitmesi gerekmez mi"
+   Menude ok tuslari hicbir sey yapmiyordu. Artik ok secimi komsu baslikta
+   gezdirir, altin serit odakla birlikte gelir (:focus kurali zaten yaziliydi),
+   Enter o sayfayi/bolumu acar.
+   ENTER ICIN AYRI KOD YOK — odakli <a> uzerinde tarayici zaten tiklar.
+   Baslangic noktasi farenin EN SON degdigi basliktir: ziyaretcinin tarif
+   ettigi sira bu — once imlecle uzerine goturuyor, sonra ok'a basiyor.
+   Fare menu disina cikinca baglanti kopar; ok tuslari menuyu kendiliginden
+   ELE GECIRMEZ (hesaplamalar sayfasinda arac cubugunun okunu calmasin). */
+(function(){
+  var kutu=document.querySelector('.menu-kutu');
+  if(!kutu) return;
+  /* Acilir alt menu (.altm) disarida: ok yalniz UST seviye basliklarda gezer. */
+  var bag=[].slice.call(kutu.querySelectorAll('a')).filter(function(a){
+    return !a.closest('.altm');
+  });
+  if(!bag.length) return;
+  var sonDegen=-1;
+  document.addEventListener('mouseover',function(e){
+    var h=e.target&&e.target.closest;
+    var a=h?e.target.closest('.menu-kutu a'):null;
+    var i=a?bag.indexOf(a):-1;
+    if(i>=0) sonDegen=i;
+    else if(!(h&&e.target.closest('.menu-kutu'))) sonDegen=-1;
+  },{passive:true});
+  /* CAPTURE fazi SART: hesaplamalar sayfasindaki arac cubugu dinleyicisi de
+     ayni tusu bekliyor. Menu isi yaptiysa `stopPropagation` ile bubble fazini
+     kapatir, iki gezinme ayni basista birden kosmaz. */
+  document.addEventListener('keydown',function(e){
+    if(e.metaKey||e.ctrlKey||e.altKey) return;
+    if(e.key!=='ArrowRight'&&e.key!=='ArrowLeft'&&e.key!=='Enter') return;
+    var o=document.activeElement;
+    if(o&&(/^(INPUT|SELECT|TEXTAREA)$/.test(o.tagName)||o.isContentEditable)) return;
+    var i=bag.indexOf(o);
+    /* ENTER — odakli <a> uzerinde acilis tarayicinin VARSAYILAN eylemidir ve
+       yalniz gercek tusta kosar; olcumde hic calismiyordu (11.09.2026).
+       Acik dal garanti eder: odak bir menu basligindaysa o baslik acilir. */
+    if(e.key==='Enter'){
+      if(i<0) return;
+      o.click(); e.preventDefault(); e.stopPropagation(); return;
+    }
+    if(i<0){
+      if(sonDegen<0) return;      /* fare menuye hic degmedi -> karisma */
+      i=sonDegen;                 /* ilk basis ATLAMAZ: imlecin durdugu basliga oturur */
+    } else {
+      i=i+(e.key==='ArrowRight'?1:-1);
+    }
+    i=Math.max(0,Math.min(i,bag.length-1));
+    bag[i].focus();
+    sonDegen=i;
+    e.preventDefault(); e.stopPropagation();
+  },true);
 })();
 </script>
 </body>
