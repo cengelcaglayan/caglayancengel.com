@@ -411,6 +411,7 @@ footer{background:var(--navy);border-top:2px solid var(--gold);padding:30px 0 24
 
 
 @media(max-width:560px){.olc{grid-template-columns:1fr;gap:0}}
+.olc-giris{max-width:64ch}
 /* --- TEK EKRAN: kutular + skor bandi birlikte gorunsun (olculdu 11.09.2026,
    1440x760: band+izgara 807 px, kullanilabilir 671 px — 136 px tasiyordu).
    Alinan sey yalniz bos dikey bosluk; yazi boyutu ayni kalir. */
@@ -435,7 +436,9 @@ footer{background:var(--navy);border-top:2px solid var(--gold);padding:30px 0 24
   /* Giris paragrafi 64ch'te uc satir tutuyordu; genisleyince iki satira
      duser — 31 px. Okuma genisligi olarak hala makul. */
   /* 92ch bu fontta 691 px cikti, hala uc satirdi (olculdu). Piksel ile. */
-  #olcut .rule + p{max-width:1100px}
+  #olcut .olc-giris{max-width:1100px}
+  /* Sagdaki ozet de tek satir kalir: sarmasi bandi 66 -> 101 px yapiyordu. */
+  .olc-band-sag{flex-wrap:nowrap}
   /* Dugme gorununce band 66 -> 102 px'e cikiyordu (satir sarmasi). Genis
      ekranda band tek satir kalir; yorum metni sigmazsa kisalir. */
   .olc-sonuc{flex-wrap:nowrap}
@@ -1166,7 +1169,9 @@ section[id],header[id],div[id]{scroll-margin-top:calc(var(--ust,80px) + 14px)}
     <p class="kicker">Finans sadece kredi değildir</p>
     <h2>Bu sistemin ne kadarı sizde var?</h2>
     <div class="rule"></div>
-    <p style="max-width:64ch">
+    <!-- Satir ici 64ch = 691 px idi ve giris uc satir tutuyordu; genis
+         ekranda iki satira dussun diye kaldirildi, genislik CSS'e birakildi. -->
+    <p class="olc-giris">
       Finans, kredi almaktan ibaret değildir. Aşağıdakiler bir firmanın finans düzenini
       oluşturan temel parçalardır. İşaretleyin — kaçı sizde çalışıyor?
       <strong>Cevaplarınız tarayıcınızdan çıkmaz</strong> — siz göndermeyi seçmedikçe.
