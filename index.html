@@ -407,6 +407,15 @@ footer{background:var(--navy);border-top:2px solid var(--gold);padding:30px 0 24
 
 
 @media(max-width:560px){.olc{grid-template-columns:1fr;gap:0}}
+/* --- TEK EKRAN: kutular + skor bandi birlikte gorunsun (olculdu 11.09.2026,
+   1440x760: band+izgara 807 px, kullanilabilir 671 px — 136 px tasiyordu).
+   Alinan sey yalniz bos dikey bosluk; yazi boyutu ayni kalir. */
+@media(min-width:1000px){
+  .olc{margin-top:14px}
+  .olc label{padding:7px 0;line-height:1.4}
+  .olc-blok{margin:14px 0 2px;padding-bottom:5px}
+  .olc-blok:first-child{margin-top:2px}
+}
 
 .basa{
   position:fixed;right:22px;bottom:22px;z-index:60;width:46px;height:46px;
@@ -1171,8 +1180,8 @@ section[id],header[id],div[id]{scroll-margin-top:calc(var(--ust,80px) + 14px)}
     <div class="olc-eksik" id="olc_eksik" hidden>
       <b id="olc_eksik_bas"></b>
       <ul id="olc_eksik_liste"></ul>
-      <a class="btn btn-fill olc-btn" id="olc_wa" href="#" target="_blank" rel="noopener">Sonucu göndererek yazın</a>
-      <span class="olc-btn-alt">Mesaj hazır gelir; göndermeden önce değiştirebilirsiniz.</span>
+      <a class="btn btn-fill olc-btn" id="olc_wa" href="#" target="_blank" rel="noopener">Sonucu WhatsApp’tan gönderin</a>
+      <span class="olc-btn-alt">WhatsApp yeni sekmede açılır; mesaj hazır gelir, göndermeden önce değiştirebilirsiniz.</span>
     </div>
 
     <p style="margin-top:26px;max-width:64ch">
@@ -1955,7 +1964,10 @@ if ('serviceWorker' in navigator) {
     var hep = document.querySelectorAll('section[id],header[id],div[id]');
     for (var i = 0; i < hep.length; i++) {
       var s  = hep[i];
-      var ic = s.querySelector ? s.querySelector('.arac-ic') : null;
+      /* #olcut'ta hedef skor bandidir: capa bolum basina inince kicker +
+         baslik + giris (340 px) ekranin ustunu yiyor, kutu izgarasinin alt
+         yarisi hic gorunmuyordu (olculdu 11.09.2026). */
+      var ic = s.querySelector ? (s.querySelector('.arac-ic') || s.querySelector('.olc-sonuc')) : null;
       if (!ic) {
         /* Bolumun kendi ust dolgusu ekranin basinda bos band olarak duruyordu
            (olculdu 11.09.2026: 80-110 px). 18 px'i disinda hedefe katilmaz. */
@@ -1966,7 +1978,9 @@ if ('serviceWorker' in navigator) {
       var off = yer(ic) - yer(s);
       /* Ustte birakilacak pay: kutu siginca baslik da gorunsun, sigmayinca
          payi kis ve hesabin kendisine yer ac. */
-      var pay = Math.max(0, Math.min(120,
+      /* #olcut'ta pay sabit 8 px — band dogrudan ust cubugun altinda bassin,
+         arkasindaki izgaraya azami yer kalsin. */
+      var pay = (s.id === 'olcut') ? 8 : Math.max(0, Math.min(120,
                 Math.round(window.innerHeight - yap - ic.offsetHeight - 8)));
       s.style.scrollMarginTop = Math.round(yap + pay - off) + 'px';
     }

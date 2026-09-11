@@ -2416,7 +2416,11 @@ function iskontoPlani(){
      Ortalama da birakildi — oge yalnizca gorunur olacak EN AZ kadar kayar;
      ortalama kenardaki ogeyi ekranin ortasina tasidigi icin hareket
      buyuyordu. PAY = solma bandi (54) + 6 px nefes. */
-  const PAY=60;
+  /* 60 -> 12: hareketi mumkun oldugunca kucuk tut. 60 px, kenardaki ogeyi
+     solma bandinin disina tasimak icindi ama tiklama aninda 80 px'lik bir
+     kayma demekti — tiklanan sey imlecin altindan cikiyordu. 12 px'te oge
+     yalnizca tam gorunur olur. */
+  const PAY=12;
   /* `mouseenter` DEGIL: o olay dokunmatikte hic atesleneemez ve sentetik
      tiklamada da yoktur — bayrak tam kacmayi onlemesi gereken durumda
      false kalirdi (olculdu 11.09.2026, canli). Bayrak artik tiklamanin
@@ -2438,11 +2442,20 @@ function iskontoPlani(){
     kayd.scrollLeft=en;
   }
   function toparla(){ if(sonAkt>=0&&cift[sonAkt]) gorunurYap(cift[sonAkt].a); }
+  /* TIKLAMADA HIZALA — olculdu 11.09.2026, IMG_5730.MOV 96-114 sn.
+     `mouseleave` yetmiyordu: ziyaretci fareyi cubugun ICINDE gezdirince o
+     olay hic atesleneemez, yarim gorunen baglanti ("Leasin") yarim kaliyordu.
+     Ziyaretci en sonunda sagdaki > okuna basmak zorunda kaldi. */
   bar.addEventListener('click',function(e){
-    if(e.target&&e.target.closest&&e.target.closest('a')) sonCubukTik=Date.now();
+    var a = e.target && e.target.closest && e.target.closest('a');
+    if(!a) return;
+    sonCubukTik=Date.now();
+    gorunurYap(a);
   },true);
   /* Hizalama yalniz isaretci cubuktan ayrilinca: masaustunde fare cekilince,
      dokunmatikte parmak kalkinca. Iki durumda da altindan kacacak bir sey yok. */
+  /* Ayrilma hala ikinci agizdir: kaydirarak (tiklamadan) aktif arac
+     degistiginde isaret cubukta gorunur kalsin diye. */
   bar.addEventListener('mouseleave',function(){ toparla(); });
   bar.addEventListener('touchend',function(){ setTimeout(toparla,400); },{passive:true});
   /* Atlama sirasinda scroll olayi kacabiliyor: olculdu 11.09.2026, POS -> Leasing
@@ -3226,9 +3239,18 @@ if ('serviceWorker' in navigator) {
   }, true);
   addEventListener('resize', payla, { passive: true });
 
+  /* OLC, AC, SONRA HEMEN HIZALA. Eskiden burada yalniz `payla(); ac();`
+     vardi; hizalama `load`a birakilmisti ve `load` butun gorseller inene
+     kadar beklediginden ziyaretci once sayfa basini, sonra karti goruyordu —
+     iki adim (olculdu 11.09.2026, IMG_5730.MOV 44-58 sn). */
+  function baslat(){
+    payla(); ac();
+    var h = location.hash;
+    if (h && h.length > 1) hizala(h);
+  }
   if (document.readyState === 'loading')
-    document.addEventListener('DOMContentLoaded', function(){ payla(); ac(); });
-  else { payla(); ac(); }
+    document.addEventListener('DOMContentLoaded', baslat);
+  else baslat();
   addEventListener('load', tazele);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(tazele);
 })();
