@@ -1785,11 +1785,46 @@ if ('serviceWorker' in navigator) {
   var f=document.getElementById('gform'); if(!f) return;
   var durum=document.getElementById('g_durum');
   function d(id){ return (document.getElementById(id).value||'').trim(); }
+  /* E-POSTA DENETIMI — olculdu 11.09.2026: form `novalidate` oldugu icin
+     `type="email"`in tarayici denetimi HIC kosmuyordu, "abc" bile geciyordu.
+     Alan istege baglidir: BOS gecerlidir. Dolu ise iki sey bakilir —
+     bicim (@ + alan adi + en az iki harfli uzanti) ve yaygin yazim hatasi.
+     Alan adinin gercekten posta alip almadigi SORULMAZ: bunun tek yolu
+     tarayicidan ucuncu tarafa DNS sorgusu atmaktir, formun altindaki
+     "ucuncu kisilerle paylasilmaz" cumlesi bunu disliyor. */
+  var EP_BICIM = /^[^\s@]+@[^\s@.]+(\.[^\s@.]+)*\.[A-Za-z]{2,}$/;
+  var EP_YAKIN = {'gmial.com':'gmail.com','gmai.com':'gmail.com','gmil.com':'gmail.com',
+    'gamil.com':'gmail.com','gmail.co':'gmail.com','gmail.con':'gmail.com',
+    'gmaill.com':'gmail.com','hotmial.com':'hotmail.com','hotmil.com':'hotmail.com',
+    'hotmail.con':'hotmail.com','hotmai.com':'hotmail.com','outlok.com':'outlook.com',
+    'outlook.con':'outlook.com','outlook.co':'outlook.com','yaho.com':'yahoo.com',
+    'yahho.com':'yahoo.com','yahoo.con':'yahoo.com','iclod.com':'icloud.com',
+    'icoud.com':'icloud.com','icloud.con':'icloud.com','windowslive.com':'hotmail.com'};
+  function epKusur(e){
+    if(!EP_BICIM.test(e)){
+      if(e.indexOf('@')<0) return 'E-posta adresinde @ işareti yok. Boş da bırakabilirsiniz.';
+      return 'E-posta adresi eksik görünüyor — örnek: ad@firma.com. Boş da bırakabilirsiniz.';
+    }
+    var alan = e.split('@').pop().toLowerCase();
+    if(EP_YAKIN[alan]) return '@' + alan + ' yerine @' + EP_YAKIN[alan] +
+      ' demek istemiş olabilirsiniz. Düzeltin ya da aynı bırakıp tekrar gönderin.';
+    return '';
+  }
+  var epSonUyarilan = null;
   f.addEventListener('submit', function(e){
     e.preventDefault();
     var ad=d('g_ad'), tel=d('g_tel');
     if(!ad || !tel){
       durum.hidden=false; durum.textContent='Ad ve telefon gerekli.'; return; }
+    /* Uyari BIR KEZ gosterilir; ziyaretci ayni adresle tekrar gonderirse
+       israr etmis sayilir ve gonderi gecer — dogru adresi biz bilemeyiz. */
+    var ep=d('g_eposta'), epK = ep ? epKusur(ep) : '';
+    if(epK && epSonUyarilan !== ep){
+      epSonUyarilan = ep;
+      durum.hidden=false; durum.textContent=epK;
+      try{ document.getElementById('g_eposta').focus(); }catch(x){}
+      return;
+    }
     var veri={ ad:ad, firma:d('g_firma'), telefon:tel, eposta:d('g_eposta'),
                zaman:d('g_zaman'), not:d('g_not') };
     if(FORMSPREE){
@@ -1808,7 +1843,10 @@ if ('serviceWorker' in navigator) {
       for(var i=0;i<alan.length;i++) if(alan[i][1]) g[alan[i][0]]=alan[i][1];
       /* Alt cizgili alanlar postada gorunmez. _replyto: postaya "Yanitla"
          dendiginde ziyaretciye gitsin. _subject: posta basligi. */
-      if(veri.eposta) g._replyto=veri.eposta;
+      /* `_replyto` yalniz BICIMI gecerli adrese konur: gecersiz yanit
+         adresi Formspree'de gonderinin tamamini dusurebilir. Adres yine de
+         postada "E-posta" satiri olarak gorunur, bilgi kaybolmaz. */
+      if(veri.eposta && EP_BICIM.test(veri.eposta)) g._replyto=veri.eposta;
       g._subject='Görüşme talebi — '+veri.ad;
       fetch(FORMSPREE,{method:'POST',headers:{'Accept':'application/json',
         'Content-Type':'application/json'},body:JSON.stringify(g)})
