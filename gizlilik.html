@@ -1019,8 +1019,9 @@ if ('serviceWorker' in navigator) {
    ENTER ICIN AYRI KOD YOK — odakli <a> uzerinde tarayici zaten tiklar.
    Baslangic noktasi farenin EN SON degdigi basliktir: ziyaretcinin tarif
    ettigi sira bu — once imlecle uzerine goturuyor, sonra ok'a basiyor.
-   Fare menu disina cikinca baglanti kopar; ok tuslari menuyu kendiliginden
-   ELE GECIRMEZ (hesaplamalar sayfasinda arac cubugunun okunu calmasin). */
+   Fare menuye bir kez degdiyse baglanti KOPMAZ (faz35: kopuyordu, ozellik
+   pratikte hic kosmuyordu). Fare hic degmediyse: arac cubugu olan sayfada
+   ok cubugundur, olmayan sayfada menuyu acar. */
 (function(){
   var kutu=document.querySelector('.menu-kutu');
   if(!kutu) return;
@@ -1030,12 +1031,18 @@ if ('serviceWorker' in navigator) {
   });
   if(!bag.length) return;
   var sonDegen=-1;
+  /* Ok tusunun sahibi: sayfada arac cubugu varsa ok onundur. */
+  var cubukVar=!!document.querySelector('.aracbar');
   document.addEventListener('mouseover',function(e){
     var h=e.target&&e.target.closest;
     var a=h?e.target.closest('.menu-kutu a'):null;
     var i=a?bag.indexOf(a):-1;
     if(i>=0) sonDegen=i;
-    else if(!(h&&e.target.closest('.menu-kutu'))) sonDegen=-1;
+    /* Hafiza arac cubugu YOKSA yapiskandir (fare cikinca unutulmaz —
+       eski hali burada -1'e cekiyordu, ok tusu bir daha tutmuyordu).
+       Cubuk VARSA gecicidir: ok cubugun, menuye giris fare durdugu
+       surece acik kalir. */
+    else if(cubukVar&&!(h&&e.target.closest('.menu-kutu'))) sonDegen=-1;
   },{passive:true});
   /* CAPTURE fazi SART: hesaplamalar sayfasindaki arac cubugu dinleyicisi de
      ayni tusu bekliyor. Menu isi yaptiysa `stopPropagation` ile bubble fazini
@@ -1054,8 +1061,13 @@ if ('serviceWorker' in navigator) {
       o.click(); e.preventDefault(); e.stopPropagation(); return;
     }
     if(i<0){
-      if(sonDegen<0) return;      /* fare menuye hic degmedi -> karisma */
-      i=sonDegen;                 /* ilk basis ATLAMAZ: imlecin durdugu basliga oturur */
+      if(sonDegen>=0) i=sonDegen;   /* imlecin en son degdigi baslik */
+      else if(cubukVar) return;     /* hesaplamalar: ok arac cubugunun */
+      else {                        /* ok menuyu acar, ATLAMAZ */
+        var s=-1;
+        bag.forEach(function(a,n){ if(a.classList.contains('act')) s=n; });
+        i=s>=0?s:(e.key==='ArrowRight'?0:bag.length-1);
+      }
     } else {
       i=i+(e.key==='ArrowRight'?1:-1);
     }
