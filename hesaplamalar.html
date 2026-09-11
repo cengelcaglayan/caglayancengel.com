@@ -2450,26 +2450,21 @@ function iskontoPlani(){
        gelince kesilmesi riski de kalkiyor. */
     kayd.scrollLeft=en;
   }
-  /* Ogeyi SAG kenara yaslar — sola giderken kullanilir. */
-  function sagaAl(a){
-    const b=a.getBoundingClientRect(), k=kayd.getBoundingClientRect();
-    const en=Math.max(0,Math.min(kayd.scrollLeft+(b.right-(k.right-SOL_PAY)),
-                                 kayd.scrollWidth-kayd.clientWidth));
-    if(Math.abs(en-kayd.scrollLeft)<=2) return false;
-    kayd.scrollLeft=en; return true;
-  }
   /* KADEMELI KAYDIRMA — bir tiklamada/tusta BIR sonraki gizli arac ortaya cikar.
      Eskiden ok dugmesi scrollBy(clientWidth*0.7)=700 px atiyordu; tasma 593 px
      oldugu icin tek tiklamada sona gidiyor, ara duraklar hic gorunmuyordu
      (olculdu 11.09.2026, IMG_5731.MOV 210-230 sn). */
   function kaydirYon(yon){
     const k=kayd.getBoundingClientRect(), a=kayd.querySelectorAll('a');
+    /* `false` SART: `true` (tiklama mantigi) ogeyi kabin SOL kenarina ceker ve
+       hedef max'a kirpilip cubuk sona atlar — olculdu canli, 0 -> 593 tek
+       basista. `false` yalnizca gorunur olacak KADAR kaydirir. */
     if(yon>0){
       for(let i=0;i<a.length;i++)
-        if(a[i].getBoundingClientRect().right>k.right-PAY-1){ gorunurYap(a[i],true); return true; }
+        if(a[i].getBoundingClientRect().right>k.right-PAY-1){ gorunurYap(a[i],false); return true; }
     }else{
       for(let i=a.length-1;i>=0;i--)
-        if(a[i].getBoundingClientRect().left<k.left+PAY-1) return sagaAl(a[i]);
+        if(a[i].getBoundingClientRect().left<k.left+PAY-1){ gorunurYap(a[i],false); return true; }
     }
     return false;
   }
