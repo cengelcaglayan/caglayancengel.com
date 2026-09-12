@@ -419,7 +419,9 @@ KFR = [
 # Besinci cipa TERS yonlu: bu kalip GERI GELMEMELI. `:focus-within` ile
 # `kapandi` ayni ogede cekisiyor, bir menuden otekine gecilince eskisi acik
 # kaliyordu (Caglayan 12.09.2026, ekran goruntusu: iki kutu ust uste).
-KFR_TERS = (".mgrup:focus-within .altm",
+# Cipa `{` ile biter: YORUM metninde de gecen bir dizgiyi aramak yanlis
+# pozitif veriyordu (faz54i yorumu kaldirilan kurali adiyla aniyor).
+KFR_TERS = (".mgrup:focus-within .altm{",
             "`:focus-within` kurali geri gelmis — menuden menuye gecince eskisi acik kalir")
 for _y in SAYFA:
     _g = govde.get(_y, "")
