@@ -1229,15 +1229,18 @@ section[id],header[id],div[id]{scroll-margin-top:calc(var(--ust,80px) + 14px)}
       <div class="ri var"><div class="rn">3</div><div><span class="rr">Tahsilat</span><span class="rd">Alacak yaşlandırma raporu</span><span class="rt rt-v">Üretiliyor</span></div></div>
       <div class="ri var"><div class="rn">4</div><div><span class="rr">Borç ve faiz</span><span class="rd">Kredi ve borç ödeme raporu</span><span class="rt rt-v">Üretiliyor</span></div></div>
       <div class="ri var"><div class="rn">5</div><div><span class="rr">Kredi limiti</span><span class="rd">Limit kullanım raporu</span><span class="rt rt-v">Üretiliyor</span></div></div>
-      <div class="ri"><div class="rn">6</div><div><span class="rr">Kârlılık kaybı</span><span class="rd">Ürün ve müşteri kârlılık raporu</span><span class="rt rt-h">Hazırlanıyor</span></div></div>
-      <div class="ri"><div class="rn">7</div><div><span class="rr">Bütçe aşımı</span><span class="rd">Bütçe–gerçekleşen raporu</span><span class="rt rt-h">Yıllık üretiliyor</span></div></div>
+      <div class="ri"><div class="rn">6</div><div><span class="rr">Kârlılık kaybı</span><span class="rd">Ürün ve müşteri kârlılık raporu</span><span class="rt rt-h">Karar öncesi ölçülür</span></div></div>
+      <div class="ri"><div class="rn">7</div><div><span class="rr">Bütçe aşımı</span><span class="rd">Bütçe–gerçekleşen raporu</span><span class="rt rt-h">Yıllık kurulur, ay ay izlenir</span></div></div>
       <div class="ri var"><div class="rn">8</div><div><span class="rr">Stokta para kaybetme</span><span class="rd">Stok yaşlandırma raporu</span><span class="rt rt-v">Üretiliyor</span></div></div>
       <div class="ri"><div class="rn">9</div><div><span class="rr">Kur</span><span class="rd">Döviz pozisyonu raporu</span><span class="rt rt-h">Kapsam dışı</span></div></div>
       <div class="ri var"><div class="rn">10</div><div><span class="rr">Yetkisiz ödeme</span><span class="rd">Ödeme istisna raporu</span><span class="rt rt-v">Üretiliyor</span></div></div>
     </div>
     <p class="rmap-not">
       Raporların hepsi aynı anda kurulmaz. Firmanın sıkıştığı yerden başlanır; hangi raporun
-      önce geleceği ilk görüşmede belli olur.
+      önce geleceği ilk görüşmede belli olur. İki üretim biçimi ayrıdır:
+      <strong>Üretiliyor</strong> düzenli aralıklarla yinelenen raporu,
+      <strong>karar öncesi ölçülür</strong> ise yalnız o karar için yapılan tek seferlik
+      hesaplamayı gösterir.
     </p>
   </div>
 </section>
@@ -1443,16 +1446,18 @@ section[id],header[id],div[id]{scroll-margin-top:calc(var(--ust,80px) + 14px)}
           başka firmayla karşılaştırılmaz, danışmanlık dışı üçüncü kişiyle paylaşılmaz.
           <strong>Bankalar bunun istisnasıdır:</strong> kredi ve limit süreçleri için gereken belgeler,
           sözleşmedeki açık rızaya dayanarak yalnızca o talep kapsamında ilgili bankayla paylaşılır
-          (<a href="gizlilik.html#banka">ayrıntı gizlilik metninde</a>). Çalışma tamamlandığında rapor ve
-          kurulan düzen firmada kalır; ölçüm modeli devredilmez.</p>
+          (<a href="gizlilik.html#banka">ayrıntı gizlilik metninde</a>). Çalışma tamamlandığında firmanın kendi takip ve ön muhasebe düzeni firmada kalır
+          ve firma ekibi yürütür. Ölçüm tabloları ile analiz modeli danışmanlık kapsamında
+          işletilir; firmaya rapor ve bulgular teslim edilir.</p>
       </details>
       <details>
         <summary>Belgelerim yapay zekâ ile mi işleniyor?</summary>
         <p>Evet. Bunun peşinen bilinmesi gerekir. Hesaplama ve tutarsızlık taraması
           <strong>yapay zekâ destekli araçlarla</strong> yapılır; değerlendirme, yorum ve rapor
           danışmana aittir. Bu araçların sunucuları <strong>yurt dışındadır</strong> — Anthropic,
-          OpenAI, Google ve WhatsApp; hepsi ABD merkezli ve bu ülke için Kişisel Verileri Koruma
-          Kurulu'nun yeterlilik kararı <strong>yok</strong>.</p>
+          OpenAI, Google ve WhatsApp; hepsi ABD merkezlidir. Yurt dışına veri
+          aktarımına ilişkin Kişisel Verileri Koruma Kanunu kapsamındaki koşullar ve
+          kullanılacak yöntem, çalışma başlamadan önce ayrıca değerlendirilir.</p>
         <p>Bu yüzden sıra şudur: önce <strong>kimlik bilgileri belgeden çıkarılır</strong>
           (ad, T.C. no, telefon, adres), çözümleme rakamlar üzerinden yürür. Sağlık ve benzeri
           özel nitelikli veriler hiçbir koşulda bu araçlara girmez. Maskelemenin mümkün olmadığı
