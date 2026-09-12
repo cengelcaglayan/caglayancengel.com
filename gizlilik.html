@@ -109,6 +109,13 @@ footer{background:var(--navy);border-top:2px solid var(--gold);padding:30px 0 24
    ortuyordu (olculdu 11.09.2026, ekran kaydi — 13 aracin hepsinde).
    Ozgulluk :hover kuraliyla esit (0,3,0); bu yuzden ONDAN SONRA durur. */
 .mgrup.kapandi .altm{opacity:0;visibility:hidden;transform:translateX(-50%) translateY(-6px)}
+/* Klavyeyle acilan menu — olculdu 12.09.2026: `visibility:hidden` tasiyan
+   ogeye focus() GECMEZ. :hover ve :focus-within yokken asagi ok alt menuye
+   inemiyordu; `acik` o yolu acar. Kural `kapandi`dan SONRA durur (esit
+   ozgulluk, kaynak sirasi kazanir). */
+.mgrup.acik .altm{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0);
+  transition:none}   /* gecis YOK: `visibility` gecisin ortasinda degisir,
+     o ~90 ms boyunca oge gizli sayilir ve focus() gecmez (olculdu 12.09.2026) */
 .altm a{
   display:block;padding:9px 18px;font-size:14.5px;color:var(--body);text-decoration:none;
   border:0;white-space:nowrap;transition:.12s
@@ -1006,22 +1013,45 @@ if ('serviceWorker' in navigator) {
    donulunce kalkar. blur() :focus-within yolunu da kapatir. */
 (function(){
   var g = document.querySelectorAll('.mgrup');
-  function kapat(m){
+  function kapat(m, hedef){
     m.classList.add('kapandi');
+    m.classList.remove('acik');
+    m.setAttribute('data-tik', Date.now());
+    /* blur() odagi BODY'ye dusuruyordu (olculdu 12.09.2026: secim sonrasi
+       document.activeElement = BODY). Ziyaretci aracin icine giremiyor,
+       asagi ok sayfayi kaydiriyordu — sesli is emri, konusma 81-89 sn:
+       "alt tusuna bastigimda bak sayfa boyle kayiyor... ben burada su
+       taksitli krediye girmem gerekmiyor mu?" */
+    if (hedef && hedef.focus) { hedef.focus({preventScroll:true}); return; }
     if (document.activeElement && document.activeElement.blur)
       document.activeElement.blur();
   }
   for (var i = 0; i < g.length; i++) (function(m){
     m.addEventListener('click', function(e){
       var a = e.target && e.target.closest && e.target.closest('.altm a');
-      if (a) kapat(m);
+      if (!a) return;
+      var pr = (a.getAttribute('href')||'').split('#');
+      var hd = pr.length > 1 ? document.getElementById(pr[1]) : null;
+      if (hd && !hd.hasAttribute('tabindex')) hd.setAttribute('tabindex','-1');
+      kapat(m, hd);
     });
     /* Yeniden acilis mouseleave'den mouseenter'e tasindi (olculdu 11.09.2026):
        mouseleave tiklamadan hemen sonra atesleniyor, `kapandi` kalkiyor ve menu
        yine CSS :hover'in insafina kaliyordu. Artik menu ancak ziyaretci
        basligin uzerine GERI DONDUGUNDE acilir. */
     var tetik = m.querySelector('a');
-    if (tetik) tetik.addEventListener('mouseenter', function(){ m.classList.remove('kapandi'); });
+    if (tetik) tetik.addEventListener('mouseenter', function(){
+      /* Arka arkaya tiklamada menu "kafayi bozuyordu" (Caglayan, 12.09.2026):
+         secimden hemen sonraki mouseenter `kapandi`yi kaldirip kutuyu geri
+         aciyordu. 600 ms kilit — ziyaretci gercekten geri donerse acilir. */
+      var t = +(m.getAttribute('data-tik')||0);
+      if (Date.now() - t < 600) return;
+      m.classList.remove('kapandi');
+    });
+    /* Odak menuden cikinca klavye acikligi da kalkar. */
+    m.addEventListener('focusout', function(e){
+      if (!m.contains(e.relatedTarget)) m.classList.remove('acik');
+    });
     m.addEventListener('focusin',    function(){ m.classList.remove('kapandi'); });
   })(g[i]);
   document.addEventListener('keydown', function(e){
@@ -1069,15 +1099,62 @@ if ('serviceWorker' in navigator) {
      kapatir, iki gezinme ayni basista birden kosmaz. */
   document.addEventListener('keydown',function(e){
     if(e.metaKey||e.ctrlKey||e.altKey) return;
-    if(e.key!=='ArrowRight'&&e.key!=='ArrowLeft'&&e.key!=='Enter') return;
+    if(e.key!=='ArrowRight'&&e.key!=='ArrowLeft'&&e.key!=='Enter'
+       &&e.key!=='ArrowDown'&&e.key!=='ArrowUp') return;
     var o=document.activeElement;
     if(o&&(/^(INPUT|SELECT|TEXTAREA)$/.test(o.tagName)||o.isContentEditable)) return;
     var i=bag.indexOf(o);
+    /* ==== DIKEY GEZINME ==== sesli is emri (Caglayan 12.09.2026, 81-115 sn).
+       Asagi ok acilir menuye INER, yukari ok seritten menuye CIKAR; ikisinde
+       de sayfa oynamaz (preventScroll + preventDefault). Onceki halde her iki
+       tus da yalnizca sayfayi kaydiriyordu: "yukariya bastim, sayfa kayiyor,
+       hala asagiya". */
+    if(e.key==='ArrowDown'||e.key==='ArrowUp'){
+      var alt=o&&o.closest?o.closest('.altm'):null;
+      if(alt){                                   /* odak acilir menunun icinde */
+        var oge=[].slice.call(alt.querySelectorAll('a'));
+        var n=oge.indexOf(o);
+        if(e.key==='ArrowDown'){ if(n<oge.length-1) oge[n+1].focus({preventScroll:true}); }
+        else if(n>0){ oge[n-1].focus({preventScroll:true}); }
+        else { var bas=alt.parentNode.querySelector('a');
+               if(bas) bas.focus({preventScroll:true}); }
+        e.preventDefault(); e.stopPropagation(); return;
+      }
+      if(i>=0&&e.key==='ArrowDown'){             /* odak ust baslikta */
+        var gr=o.closest('.mgrup');
+        var ilk=gr?gr.querySelector('.altm a'):null;
+        if(ilk){
+          gr.classList.remove('kapandi'); gr.classList.add('acik');
+          /* Stil YENIDEN HESAPLANMALI: `visibility:hidden` sayilan ogeye
+             focus() gecmez. Olculdu 12.09.2026 — bu satir yokken taze
+             yuklenmis sayfada odak 8 denemenin 8'inde baslikta kaliyordu. */
+          void gr.offsetHeight;
+          ilk.focus({preventScroll:true});
+          if(document.activeElement!==ilk)
+            requestAnimationFrame(function(){ ilk.focus({preventScroll:true}); });
+          e.preventDefault(); e.stopPropagation();
+        }
+        return;                                  /* alt menusu yoksa sayfa kaysin */
+      }
+      if(e.key==='ArrowUp'&&i<0&&o&&o.closest&&o.closest('.aracbar')){
+        var h=-1;                                /* serit -> ust menu */
+        bag.forEach(function(a,n2){
+          if(a.getAttribute('aria-current')==='page'||a.classList.contains('act')) h=n2;
+        });
+        if(h<0) h=sonDegen>=0?sonDegen:0;
+        bag[h].focus({preventScroll:true}); sonDegen=h;
+        e.preventDefault(); e.stopPropagation();
+      }
+      return;
+    }
     /* ENTER — odakli <a> uzerinde acilis tarayicinin VARSAYILAN eylemidir ve
        yalniz gercek tusta kosar; olcumde hic calismiyordu (11.09.2026).
        Acik dal garanti eder: odak bir menu basligindaysa o baslik acilir. */
     if(e.key==='Enter'){
-      if(i<0) return;
+      /* Acilir menu ogesi de acilir: `bag` onlari dislar, i<0 cikar ve
+         Enter duserdi (olculdu 12.09.2026 — asagi okla inilen arac hic
+         acilmiyordu). Tiklama kapat()'i kosturur, odak da karta gecer. */
+      if(i<0&&!(o&&o.closest&&o.closest('.altm'))) return;
       o.click(); e.preventDefault(); e.stopPropagation(); return;
     }
     if(i<0){

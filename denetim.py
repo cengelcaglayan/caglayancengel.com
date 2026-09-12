@@ -376,12 +376,56 @@ else:
          "clearTimeout(zamanlar[z])" in gh and "zamanlar.push(setTimeout(" in gh,
          "hizala() eski zamanlayicilari iptal etmiyor — sayfa eski hedefe geri atar (faz53)"),
     ]
+    # d) AYNI FREN HER SAYFADA — faz53 yalniz hesaplamalar.html'e uygulanmisti,
+    #    ust menude hizli ardisik tiklamada ana sayfa geri atiyordu (olculdu
+    #    12.09.2026: scrollY 2809 -> 4393 -> 2809 -> 4393). Fren artik
+    #    hizala() tasiyan HER sayfaya bakar.
+    for _y in SAYFA:
+        _g = govde.get(_y, "")
+        if "function hizala(" not in _g:
+            continue
+        _t = "clearTimeout(zamanlar[z])" in _g and "zamanlar.push(setTimeout(" in _g
+        if _t:
+            print("  %-40s tamam" % ("hizala freni · " + _y))
+        else:
+            hata.append("%s · hizala() zamanlayicilari iptal etmiyor — hizli tiklamada"
+                        " sayfa geri atar (faz54e)" % _y)
+            print("  %-40s SORUN" % ("hizala freni · " + _y))
     for ad, gecti, mesaj in TFR:
         if gecti:
             print("  %-40s tamam" % ad)
         else:
             hata.append("/hesaplamalar.html · " + mesaj)
             print("  %-40s SORUN" % ad)
+
+# ---------------------------------------------------------------------------
+# 14 · KLAVYE FRENI — sesli is emri (Caglayan 12.09.2026, konusma.txt 81-115 sn)
+# ---------------------------------------------------------------------------
+# "Alt tusuna bastigimda bak sayfa boyle kayiyor. Neden? Ben burada su taksitli
+# krediye girmem gerekmiyor mu?" ve "Ana menuye gecmek istiyorum, yukariya
+# bastim, sayfa kayiyor, hala asagiya."  Dort cipa da OLCULMUS kok nedendir.
+print()
+print("14 · KLAVYE FRENI")
+KFR = [
+    ("acilir menu klavyeye acik (.mgrup.acik)", ".mgrup.acik .altm",
+     "klavyeyle acilan menu kurali silinmis — asagi ok alt menuye inemez"),
+    ("gecis yok: focus() gizli ogeye gecmez", "transition:none",
+     "`transition:none` kalkmis — visibility ~90 ms gecikir, focus() reddedilir"),
+    ("dikey gezinme dali duruyor", "e.key==='ArrowDown'||e.key==='ArrowUp'",
+     "dikey ok dali silinmis — asagi/yukari ok yine sayfayi kaydirir"),
+    ("secimde odak karta gecer (blur degil)", "if (hedef && hedef.focus)",
+     "kapat() yine blur() yapiyor — odak BODY'ye duser, arac icine girilemez"),
+]
+for _y in SAYFA:
+    _g = govde.get(_y, "")
+    if ".menu-kutu" not in _g or "UST MENU KLAVYE GEZINMESI" not in _g:
+        continue
+    for _ad, _iz, _mesaj in KFR:
+        if _iz in _g:
+            print("  %-46s tamam" % (_y + " · " + _ad))
+        else:
+            hata.append("%s · %s (faz54)" % (_y, _mesaj))
+            print("  %-46s SORUN" % (_y + " · " + _ad))
 
 print("\n" + "=" * 66)
 for u in uyari: print("  UYARI  ·", u)
