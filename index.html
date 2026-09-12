@@ -4,6 +4,28 @@
 <meta charset="UTF-8">
 
 <meta name="viewport" content="width=device-width,initial-scale=1">
+
+<!-- Icerik Guvenligi Politikasi · 13.09.2026
+     GitHub Pages HTTP basligi eklettirmiyor, bu yuzden meta ile konuyor.
+     Site tamamen kendi kendine yeter: tek bir dis <script src> yok, butun JS
+     ve CSS sayfanin icinde. Politika bunu MUHURLER — sayfaya bir sekilde
+     yabanci kod sokulsa bile:
+       default-src 'none'  : hicbir sey varsayilan olarak yuklenemez
+       script-src 'self'   : disaridan betik CEKILEMEZ ('unsafe-inline' sayfanin
+                             kendi gomulu betikleri icin zorunlu)
+       connect-src         : veri yalnizca gorusme formunun ucuna ve ziyaret
+                             sayacina gidebilir; baska bir adrese fetch/XHR
+                             ATILAMAZ (sizinti freni)
+       form-action         : form baska bir yere gonderilemez
+       base-uri 'none'     : goreli adresler kacirilamaz
+     Sayac kendi sunucumuzda duruyor (sayac.js), yani 'self' ile yukleniyor;
+     sayimi sendBeacon ile goatcounter.com'a gonderdigi icin o adres
+     connect-src'de acik tutuluyor — baska hicbir adres degil. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://formspree.io https://caglayancengel.goatcounter.com; form-action 'self' https://formspree.io; manifest-src 'self'">
+
+<!-- Paylas baglantisinda firmanin rakamlari adresin icinde tasiniyor. Referrer
+     kapatilmazsa disari tiklandiginda o adres karsi siteye gider. -->
+<meta name="referrer" content="no-referrer">
 <title>Çağlayan Çengel — Finansal Yönetim Danışmanı</title>
 <meta name="description" content="KOBİ ve aile şirketleri için finansal yönetim danışmanlığı — finansal kontrol, iç kontrol ve risk yönetimi. Mali tablo, banka ekstresi, Findeks kaydı ve POS verisi tek tabloda birleştirilir. Muğla ve çevre iller.">
 <meta name="author" content="Çağlayan Çengel">

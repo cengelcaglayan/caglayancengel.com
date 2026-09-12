@@ -439,6 +439,47 @@ for _y in SAYFA:
     else:
         print("  %-46s tamam" % (_y + " · focus-within geri gelmemis"))
 
+# ---------------------------------------------------------------- §15
+# GUVENLIK FRENI — 13.09.2026
+# Iki sey olculuyor:
+#   1) Alan adi hala GitHub Pages'e mi bakiyor. DNS paneli ele gecirilirse
+#      dosyalara hic dokunulmadan ziyaretci baska bir siteye goturulur; bu,
+#      simule edilen senaryolarin en sinsisiydi (kayit §24). Sabah 07:00
+#      denetimi bunu yakalar.
+#   2) Icerik guvenligi politikasi sayfalarda duruyor mu. Politika yeni bir
+#      yayinda sessizce dusesse siteye disaridan betik cekilebilir hale gelir.
+print("\n--- 15 · GUVENLIK ---")
+
+PAGES_IP = {"185.199.108.153", "185.199.109.153", "185.199.110.153", "185.199.111.153"}
+try:
+    import socket
+    _bulunan = {a[4][0] for a in socket.getaddrinfo("caglayancengel.com", 443,
+                                                    socket.AF_INET, socket.SOCK_STREAM)}
+    _yabanci = _bulunan - PAGES_IP
+    if _yabanci:
+        hata.append("ALAN ADI BASKA SUNUCUYA BAKIYOR: %s — DNS panelini kontrol et"
+                    % ", ".join(sorted(_yabanci)))
+        print("  %-46s SORUN" % "alan adi GitHub Pages'e bakiyor")
+    elif not _bulunan:
+        uyari.append("DNS cevabi bos dondu — olculemedi")
+        print("  %-46s olculemedi" % "alan adi GitHub Pages'e bakiyor")
+    else:
+        print("  %-46s tamam" % "alan adi GitHub Pages'e bakiyor")
+except Exception as _e:
+    uyari.append("DNS olcumu yapilamadi: %s" % _e)
+    print("  %-46s olculemedi" % "alan adi GitHub Pages'e bakiyor")
+
+_CSP_IZ = "default-src 'none'"
+for _y in SAYFA:
+    _g = govde.get(_y, "")
+    if not _g:
+        continue
+    if _CSP_IZ in _g:
+        print("  %-46s tamam" % (_y + " · icerik guvenligi politikasi"))
+    else:
+        hata.append("%s · icerik guvenligi politikasi dusmus — disaridan betik cekilebilir" % _y)
+        print("  %-46s SORUN" % (_y + " · icerik guvenligi politikasi"))
+
 print("\n" + "=" * 66)
 for u in uyari: print("  UYARI  ·", u)
 if hata:
