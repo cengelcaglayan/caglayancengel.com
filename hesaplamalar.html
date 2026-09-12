@@ -597,6 +597,15 @@ footer img{filter:none}
   transition:opacity .7s cubic-bezier(.22,.61,.36,1),transform .7s cubic-bezier(.22,.61,.36,1)}
 .js-anim .rv-ic.gor{opacity:1;transform:none}
 
+/* Sonuc bandi: ic ogeler KAYMAZ, sadece soner-acilir.
+   Hareket katmani cocuklari translateY(24px) ile asagi iterken bandin lacivert
+   zemini yerinde kalir; alt dolgu 10 px oldugu icin (SON PAY, 11.09.2026) yazi
+   bandin 14 px disina, beyaz zemine tasiyordu — acik gri #C7CFDA okunmuyordu.
+   Denklem: tasma = 24 px kayma - alt dolgu; dolgusu 24 px kalan 4 bantta 0 idi.
+   transform yerlesime girmez: tek px yer kazandirmaz/kaybettirmez.
+   Olculdu 12.09.2026 canli 1440x860. Ozgulluk 0,3,0 > 0,2,0 — !important gereksiz. */
+.js-anim .cikti .rv-ic{transform:none}
+
 /* bolum cizgisi soldan acilir */
 .js-anim .rule{transform-origin:left center;transform:scaleX(0);
   transition:transform .85s cubic-bezier(.22,.61,.36,1)}
@@ -2003,7 +2012,10 @@ function faktoring(){
    +`<tr><td>1 TL nakit için devredilen alacak</td><td class="${carpan>1.5?'d-risk':''}">${carpan.toLocaleString('tr-TR',{minimumFractionDigits:2,maximumFractionDigits:2})} TL</td></tr>`
    +kSatir;
 
-  const b=basit*100, fark=b-fy;
+  /* Yorumdaki oran, bantta gosterilen oranin AYNISI olmali — ayrilirsa
+     ekranda iki farkli sayi cikar (Caglayan, video 12.09.2026: bant %75,6,
+     yorum "Efektif maliyet %60,4"). Iskonto aracindaki desenle ayni. */
+  const b=(asiri?basit:bilesik)*100, fark=b-fy;
   let rz,y;
   if(fark<8){rz='<span class="rozet r-iyi">Makul</span>';y='Efektif maliyet ilan edilen faize yakın. ';}
   else if(fark<20){rz='<span class="rozet r-dikkat">Masraf ağırlıklı</span>';y='Efektif maliyet %'+b.toLocaleString('tr-TR',{maximumFractionDigits:1})+' — ilan edilen %'+fy+' faizin '+fark.toLocaleString('tr-TR',{maximumFractionDigits:1})+' puan üstünde. ';}
