@@ -339,6 +339,50 @@ for y in SAYFA:
         print("  %-22s tamam (%d secici: %s)"
               % (y, len(renkler), ", ".join(sorted(set(renkler)))))
 
+# ---------------------------------------------------------------------------
+# 13 · TITREME FRENI — hesaplamalar.html arac seridi + capa hizalamasi
+# ---------------------------------------------------------------------------
+# Caglayan 12.09.2026: "2 gundur ugrasiyorsun, cozuyorsun sonra baska bir seyi
+# cozerken bu titreme sorununu geri getiriyorsun." Bu blok o donguyu kirar:
+# uc cipa da OLCULMUS kok nedendir, biri kalkarsa denetim kirmizi yanar.
+#
+#  a) tiklamada gorunurYap(a,true)  -> tiklanan sekmeyi her seferinde kabin sol
+#     kenarina ceker; serit her basista sicrar (olculdu canli: 103/257/375/593).
+#  b) PAY < 60  -> sekme, ustundeki 54 px'lik solma bandinin altinda kalip
+#     "gorunur" sayilir; adi yarim okunur ("Kr", "Bilan", "Leasin", "kredi").
+#  c) hizala() zamanlayicilarinin iptali  -> yoksa eski atlamanin 1200/2000 ms
+#     cagrilari yenisinin ustune biner ve sayfa eski hedefe geri atar
+#     (olculdu canli: 671 -> 9786 -> 671 -> 9786 -> 671 -> 9786).
+print()
+print("13 · TITREME FRENI")
+gh = govde.get("/hesaplamalar.html", "")
+if not gh:
+    uyari.append("hesaplamalar.html okunamadi — titreme freni KAPSAMADI")
+    print("  %-22s UYARI govde yok" % "/hesaplamalar.html")
+else:
+    import re as _re
+    _pay = _re.search(r"const PAY=(\d+);", gh)
+    _bant = _re.search(r"\.aracbar::before,\.aracbar::after\{[^}]*width:(\d+)px", gh)
+    _bantpx = int(_bant.group(1)) if _bant else 54
+    TFR = [
+        ("tiklamada sola cekme yok",
+         "gorunurYap(a,true)" not in gh,
+         "gorunurYap(a,true) geri gelmis — serit her tiklamada sicrar (faz52)"),
+        ("PAY >= solma bandi (%d)" % _bantpx,
+         bool(_pay) and int(_pay.group(1)) >= _bantpx,
+         "PAY=%s, solma bandi %d px — sekme gradyan altinda yarim okunur (faz52)"
+         % (_pay.group(1) if _pay else "?", _bantpx)),
+        ("hizala zamanlayicilari iptal ediliyor",
+         "clearTimeout(zamanlar[z])" in gh and "zamanlar.push(setTimeout(" in gh,
+         "hizala() eski zamanlayicilari iptal etmiyor — sayfa eski hedefe geri atar (faz53)"),
+    ]
+    for ad, gecti, mesaj in TFR:
+        if gecti:
+            print("  %-40s tamam" % ad)
+        else:
+            hata.append("/hesaplamalar.html · " + mesaj)
+            print("  %-40s SORUN" % ad)
+
 print("\n" + "=" * 66)
 for u in uyari: print("  UYARI  ·", u)
 if hata:

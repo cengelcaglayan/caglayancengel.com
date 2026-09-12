@@ -3313,7 +3313,25 @@ if ('serviceWorker' in navigator) {
      (olculdu 11.09.2026: 1100 ms'lik son hizalamadan sonra da 3 arac kaydi).
      Bu yuzden sure degil YERLESIM izlenir. */
   var izleyici = null, bitis = 0;
+  /* ZAMANLAYICI IPTALI — olculdu canli 12.09.2026, 1440x860.
+     `hizala` bes gecikmeli cagri kuruyordu (90/250/600/1200/2000 ms) ama yeni
+     bir atlama geldiginde ESKININ zamanlayicilari calismaya devam ediyordu.
+     Ustelik yeni cagri `oynadi`yi false'a, `bitis`i 2500 ms ileri cekiyor —
+     yani eski closure'in kosulu da gecerli kaliyor ve sayfayi ESKI hedefe
+     geri atiyordu. Olcum (a1 -> 900 ms sonra a8):
+       t=10   671  Taksitli ticari kredi
+       t=906  9786 POS
+       t=1204 671  <- eskinin 1200 ms'lik cagrisi, GERI ATTI
+       t=1521 9786
+       t=2004 671  <- eskinin 2000 ms'lik cagrisi, YINE ATTI
+       t=2122 9786
+     Caglayan 12.09.2026: "Bak titredi." · "Taksitli krediden POS'a geciyorum,
+     kendini sonra taksitli krediye atiyor." Yorumda "v4 yarismaz" yaziyordu;
+     yarisan sey hizalama degil, birakilan zamanlayicilardi. */
+  var zamanlar = [];
   function hizala(parca){
+    for (var z = 0; z < zamanlar.length; z++) clearTimeout(zamanlar[z]);
+    zamanlar = [];
     oynadi = false;
     bitis = Date.now() + 2500;
     function bir(){
@@ -3335,7 +3353,9 @@ if ('serviceWorker' in navigator) {
       izleyici.observe(document.body);
     }
     [90, 250, 600, 1200, 2000].forEach(function(ms){
-      setTimeout(function(){ if (!oynadi && Date.now() <= bitis) bir(); }, ms);
+      zamanlar.push(setTimeout(function(){
+        if (!oynadi && Date.now() <= bitis) bir();
+      }, ms));
     });
   }
 
