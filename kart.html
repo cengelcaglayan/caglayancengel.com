@@ -279,7 +279,16 @@ if ('serviceWorker' in navigator) {
      (olculdu 11.09.2026: 1100 ms'lik son hizalamadan sonra da 3 arac kaydi).
      Bu yuzden sure degil YERLESIM izlenir. */
   var izleyici = null, bitis = 0;
+  /* YARISAN ZAMANLAYICILAR — olculdu 12.09.2026 (yerel, ust menude hizli
+     ardisik tiklama): scrollY 2809 -> 4393 -> 2809 -> 4393, yani sayfa iki
+     kez eski hedefe geri atti. Yeni hizala() eskinin birakılmis
+     cagrilarini iptal etmiyordu; `oynadi=false` ve ileri alinan `bitis`
+     yuzunden eski closure'in kosulu da gecerli kaliyordu. (faz53'un
+     hesaplamalar.html'de kapattigi delik, burada aciktı.) */
+  var zamanlar = [];
   function hizala(parca){
+    for (var z = 0; z < zamanlar.length; z++) clearTimeout(zamanlar[z]);
+    zamanlar = [];
     oynadi = false;
     bitis = Date.now() + 2500;
     function bir(){
@@ -301,7 +310,9 @@ if ('serviceWorker' in navigator) {
       izleyici.observe(document.body);
     }
     [90, 250, 600, 1200, 2000].forEach(function(ms){
-      setTimeout(function(){ if (!oynadi && Date.now() <= bitis) bir(); }, ms);
+      zamanlar.push(setTimeout(function(){
+        if (!oynadi && Date.now() <= bitis) bir();
+      }, ms));
     });
   }
 

@@ -416,6 +416,11 @@ KFR = [
     ("secimde odak karta gecer (blur degil)", "if (hedef && hedef.focus)",
      "kapat() yine blur() yapiyor — odak BODY'ye duser, arac icine girilemez"),
 ]
+# Besinci cipa TERS yonlu: bu kalip GERI GELMEMELI. `:focus-within` ile
+# `kapandi` ayni ogede cekisiyor, bir menuden otekine gecilince eskisi acik
+# kaliyordu (Caglayan 12.09.2026, ekran goruntusu: iki kutu ust uste).
+KFR_TERS = (".mgrup:focus-within .altm",
+            "`:focus-within` kurali geri gelmis — menuden menuye gecince eskisi acik kalir")
 for _y in SAYFA:
     _g = govde.get(_y, "")
     if ".menu-kutu" not in _g or "UST MENU KLAVYE GEZINMESI" not in _g:
@@ -426,6 +431,11 @@ for _y in SAYFA:
         else:
             hata.append("%s · %s (faz54)" % (_y, _mesaj))
             print("  %-46s SORUN" % (_y + " · " + _ad))
+    if KFR_TERS[0] in _g:
+        hata.append("%s · %s (faz54i)" % (_y, KFR_TERS[1]))
+        print("  %-46s SORUN" % (_y + " · focus-within geri gelmemis"))
+    else:
+        print("  %-46s tamam" % (_y + " · focus-within geri gelmemis"))
 
 print("\n" + "=" * 66)
 for u in uyari: print("  UYARI  ·", u)

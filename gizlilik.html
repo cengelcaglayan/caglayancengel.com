@@ -102,13 +102,19 @@ footer{background:var(--navy);border-top:2px solid var(--gold);padding:30px 0 24
   opacity:0;visibility:hidden;transition:.18s
 }
 @media(hover:hover) and (pointer:fine){.mgrup:hover .altm{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}}
-.mgrup:focus-within .altm{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
+/* `:focus-within` KALDIRILDI (12.09.2026): `kapandi` ile ayni ogede
+   cekisiyor, bir menuden otekine gecilince eskisi acik kaliyordu.
+   Odak menuye girince JS `acik` koyar — ac/kapa tek yerden. */
 .altm::before{content:"";position:absolute;top:-10px;left:0;right:0;height:10px}
 /* Menuden arac secilince menu kendiliginden KAPANMIYORDU: imlec .altm'in
    uzerinde kaldigi icin :hover suruyor, acik kutu kartin sonuc tablosunu
    ortuyordu (olculdu 11.09.2026, ekran kaydi — 13 aracin hepsinde).
    Ozgulluk :hover kuraliyla esit (0,3,0); bu yuzden ONDAN SONRA durur. */
-.mgrup.kapandi .altm{opacity:0;visibility:hidden;transform:translateX(-50%) translateY(-6px)}
+.mgrup.kapandi.kapandi .altm{opacity:0;visibility:hidden;transform:translateX(-50%) translateY(-6px)}
+/* Sinif iki kez YAZILI: odak alt menu ogesinde kalinca
+   `.mgrup:focus-within .altm` kutuyu acik tutuyordu, esit ozgullukte
+   `kapandi` onu ezemiyordu — bir menuden otekine gecilince eskisi
+   acik kaliyordu (olculdu 12.09.2026, Caglayan'in ekran goruntusu). */
 /* Klavyeyle acilan menu — olculdu 12.09.2026: `visibility:hidden` tasiyan
    ogeye focus() GECMEZ. :hover ve :focus-within yokken asagi ok alt menuye
    inemiyordu; `acik` o yolu acar. Kural `kapandi`dan SONRA durur (esit
@@ -919,7 +925,16 @@ if ('serviceWorker' in navigator) {
      (olculdu 11.09.2026: 1100 ms'lik son hizalamadan sonra da 3 arac kaydi).
      Bu yuzden sure degil YERLESIM izlenir. */
   var izleyici = null, bitis = 0;
+  /* YARISAN ZAMANLAYICILAR — olculdu 12.09.2026 (yerel, ust menude hizli
+     ardisik tiklama): scrollY 2809 -> 4393 -> 2809 -> 4393, yani sayfa iki
+     kez eski hedefe geri atti. Yeni hizala() eskinin birakılmis
+     cagrilarini iptal etmiyordu; `oynadi=false` ve ileri alinan `bitis`
+     yuzunden eski closure'in kosulu da gecerli kaliyordu. (faz53'un
+     hesaplamalar.html'de kapattigi delik, burada aciktı.) */
+  var zamanlar = [];
   function hizala(parca){
+    for (var z = 0; z < zamanlar.length; z++) clearTimeout(zamanlar[z]);
+    zamanlar = [];
     oynadi = false;
     bitis = Date.now() + 2500;
     function bir(){
@@ -941,7 +956,9 @@ if ('serviceWorker' in navigator) {
       izleyici.observe(document.body);
     }
     [90, 250, 600, 1200, 2000].forEach(function(ms){
-      setTimeout(function(){ if (!oynadi && Date.now() <= bitis) bir(); }, ms);
+      zamanlar.push(setTimeout(function(){
+        if (!oynadi && Date.now() <= bitis) bir();
+      }, ms));
     });
   }
 
@@ -1044,6 +1061,9 @@ if ('serviceWorker' in navigator) {
       /* Arka arkaya tiklamada menu "kafayi bozuyordu" (Caglayan, 12.09.2026):
          secimden hemen sonraki mouseenter `kapandi`yi kaldirip kutuyu geri
          aciyordu. 600 ms kilit — ziyaretci gercekten geri donerse acilir. */
+      [].slice.call(document.querySelectorAll('.mgrup')).forEach(function(q){
+        if(q!==m){ q.classList.remove('acik'); q.classList.add('kapandi'); }
+      });
       var t = +(m.getAttribute('data-tik')||0);
       if (Date.now() - t < 600) return;
       m.classList.remove('kapandi');
@@ -1052,7 +1072,17 @@ if ('serviceWorker' in navigator) {
     m.addEventListener('focusout', function(e){
       if (!m.contains(e.relatedTarget)) m.classList.remove('acik');
     });
-    m.addEventListener('focusin',    function(){ m.classList.remove('kapandi'); });
+    /* Fare kutudan cikinca da kalkar: odak degismedigi icin focusout
+       atesleneemiyor, kutu acik kaliyordu (olculdu 12.09.2026 — ekran
+       goruntusunde Hesaplamalar ve Iletisim ayni anda acikti). */
+    m.addEventListener('mouseleave', function(){
+      m.classList.remove('acik'); m.classList.add('kapandi'); });
+    m.addEventListener('focusin', function(){
+      [].slice.call(document.querySelectorAll('.mgrup')).forEach(function(q){
+        if(q!==m){ q.classList.remove('acik'); q.classList.add('kapandi'); }
+      });
+      m.classList.remove('kapandi'); m.classList.add('acik');
+    });
   })(g[i]);
   document.addEventListener('keydown', function(e){
     if (e.key !== 'Escape' && e.keyCode !== 27) return;
@@ -1124,6 +1154,9 @@ if ('serviceWorker' in navigator) {
         var gr=o.closest('.mgrup');
         var ilk=gr?gr.querySelector('.altm a'):null;
         if(ilk){
+          /* Tek kutu acik kalir: oteki .mgrup'larin acikligi silinir. */
+          [].slice.call(document.querySelectorAll('.mgrup.acik')).forEach(
+            function(q){ if(q!==gr) q.classList.remove('acik'); });
           gr.classList.remove('kapandi'); gr.classList.add('acik');
           /* Stil YENIDEN HESAPLANMALI: `visibility:hidden` sayilan ogeye
              focus() gecmez. Olculdu 12.09.2026 — bu satir yokken taze

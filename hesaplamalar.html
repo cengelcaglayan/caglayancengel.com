@@ -283,6 +283,13 @@ footer{background:var(--navy);border-top:2px solid var(--gold);padding:30px 0 24
    Ayirt edilsin diye .sec hafif altin zemin tasir. */
 .aracbar a.sec{color:var(--navy);border-bottom-color:var(--gold);font-weight:600;
   background:rgba(200,169,81,.14)}
+/* Serit numarasi — kart basligindaki "Arac 01..13" ile ayni sira.
+   Kucuk ve soluk: etiketin onunde durur, okumayi bolmez. Olculdu
+   12.09.2026 — numara + bes kisaltma ile tasma 593 -> 585 px, yani
+   serit sismedi. */
+.aracbar a .no{font-size:10px;color:var(--soft);margin-right:5px;
+  font-weight:600;letter-spacing:.3px;vertical-align:1px}
+.aracbar a.act .no,.aracbar a.sec .no{color:var(--goldink)}
 .aracbar a:focus{outline:none}
 .aracbar a:focus-visible{outline:none}
 .aracbar b{flex:0 0 auto;padding:14px 12px 12px;font-size:11.5px;letter-spacing:1.4px;
@@ -309,13 +316,19 @@ section[id]{scroll-margin-top:calc(var(--yapiskan,130px) + 14px)}
   opacity:0;visibility:hidden;transition:.18s
 }
 @media(hover:hover) and (pointer:fine){.mgrup:hover .altm{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}}
-.mgrup:focus-within .altm{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
+/* `:focus-within` KALDIRILDI (12.09.2026): `kapandi` ile ayni ogede
+   cekisiyor, bir menuden otekine gecilince eskisi acik kaliyordu.
+   Odak menuye girince JS `acik` koyar — ac/kapa tek yerden. */
 .altm::before{content:"";position:absolute;top:-10px;left:0;right:0;height:10px}
 /* Menuden arac secilince menu kendiliginden KAPANMIYORDU: imlec .altm'in
    uzerinde kaldigi icin :hover suruyor, acik kutu kartin sonuc tablosunu
    ortuyordu (olculdu 11.09.2026, ekran kaydi — 13 aracin hepsinde).
    Ozgulluk :hover kuraliyla esit (0,3,0); bu yuzden ONDAN SONRA durur. */
-.mgrup.kapandi .altm{opacity:0;visibility:hidden;transform:translateX(-50%) translateY(-6px)}
+.mgrup.kapandi.kapandi .altm{opacity:0;visibility:hidden;transform:translateX(-50%) translateY(-6px)}
+/* Sinif iki kez YAZILI: odak alt menu ogesinde kalinca
+   `.mgrup:focus-within .altm` kutuyu acik tutuyordu, esit ozgullukte
+   `kapandi` onu ezemiyordu — bir menuden otekine gecilince eskisi
+   acik kaliyordu (olculdu 12.09.2026, Caglayan'in ekran goruntusu). */
 /* Klavyeyle acilan menu — olculdu 12.09.2026: `visibility:hidden` tasiyan
    ogeye focus() GECMEZ. :hover ve :focus-within yokken asagi ok alt menuye
    inemiyordu; `acik` o yolu acar. Kural `kapandi`dan SONRA durur (esit
@@ -769,7 +782,7 @@ footer img{filter:none}
 
 <nav class="aracbar" aria-label="Hesaplama araçları">
   <div class="in">
-    <b>Araçlar</b><a href="#a4">Taksitli ticari kredi</a><a href="#a5">Rotatif (BCH)</a><a href="#a6">Spot kredi</a><a href="#a7">Çek/senet iskonto</a><a href="#a11">Ticari KMH</a><a href="#a9">Faktoring</a><a href="#a10">Eline geçen ne kadar</a><a href="#a8">POS</a><a href="#a12">Leasing / kredi</a><a href="#a13">Kredi kapasitesi</a><a href="#a1">Bilanço teşhisi</a><a href="#a2">Borç servisi</a><a href="#a3">Nakit döngüsü</a></div>
+    <b>Araçlar</b><a href="#a4"><span class="no">01</span>Taksitli kredi</a><a href="#a5"><span class="no">02</span>Rotatif (BCH)</a><a href="#a6"><span class="no">03</span>Spot kredi</a><a href="#a7"><span class="no">04</span>Çek/senet</a><a href="#a11"><span class="no">05</span>Ticari KMH</a><a href="#a9"><span class="no">06</span>Faktoring</a><a href="#a10"><span class="no">07</span>Eline geçen</a><a href="#a8"><span class="no">08</span>POS</a><a href="#a12"><span class="no">09</span>Leasing</a><a href="#a13"><span class="no">10</span>Kredi kapasitesi</a><a href="#a1"><span class="no">11</span>Bilanço</a><a href="#a2"><span class="no">12</span>Borç servisi</a><a href="#a3"><span class="no">13</span>Nakit döngüsü</a></div>
 </nav>
 
 <!-- ============ ARAÇ 1 — HIZLI TEŞHİS ============ -->
@@ -3512,6 +3525,9 @@ if ('serviceWorker' in navigator) {
       /* Arka arkaya tiklamada menu "kafayi bozuyordu" (Caglayan, 12.09.2026):
          secimden hemen sonraki mouseenter `kapandi`yi kaldirip kutuyu geri
          aciyordu. 600 ms kilit — ziyaretci gercekten geri donerse acilir. */
+      [].slice.call(document.querySelectorAll('.mgrup')).forEach(function(q){
+        if(q!==m){ q.classList.remove('acik'); q.classList.add('kapandi'); }
+      });
       var t = +(m.getAttribute('data-tik')||0);
       if (Date.now() - t < 600) return;
       m.classList.remove('kapandi');
@@ -3520,7 +3536,17 @@ if ('serviceWorker' in navigator) {
     m.addEventListener('focusout', function(e){
       if (!m.contains(e.relatedTarget)) m.classList.remove('acik');
     });
-    m.addEventListener('focusin',    function(){ m.classList.remove('kapandi'); });
+    /* Fare kutudan cikinca da kalkar: odak degismedigi icin focusout
+       atesleneemiyor, kutu acik kaliyordu (olculdu 12.09.2026 — ekran
+       goruntusunde Hesaplamalar ve Iletisim ayni anda acikti). */
+    m.addEventListener('mouseleave', function(){
+      m.classList.remove('acik'); m.classList.add('kapandi'); });
+    m.addEventListener('focusin', function(){
+      [].slice.call(document.querySelectorAll('.mgrup')).forEach(function(q){
+        if(q!==m){ q.classList.remove('acik'); q.classList.add('kapandi'); }
+      });
+      m.classList.remove('kapandi'); m.classList.add('acik');
+    });
   })(g[i]);
   document.addEventListener('keydown', function(e){
     if (e.key !== 'Escape' && e.keyCode !== 27) return;
@@ -3592,6 +3618,9 @@ if ('serviceWorker' in navigator) {
         var gr=o.closest('.mgrup');
         var ilk=gr?gr.querySelector('.altm a'):null;
         if(ilk){
+          /* Tek kutu acik kalir: oteki .mgrup'larin acikligi silinir. */
+          [].slice.call(document.querySelectorAll('.mgrup.acik')).forEach(
+            function(q){ if(q!==gr) q.classList.remove('acik'); });
           gr.classList.remove('kapandi'); gr.classList.add('acik');
           /* Stil YENIDEN HESAPLANMALI: `visibility:hidden` sayilan ogeye
              focus() gecmez. Olculdu 12.09.2026 — bu satir yokken taze
