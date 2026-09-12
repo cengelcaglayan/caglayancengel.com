@@ -275,7 +275,7 @@ footer{background:var(--navy);border-top:2px solid var(--gold);padding:30px 0 24
 .aracbar .ok.g{left:6px}.aracbar .ok.i{right:6px}
 .aracbar.sol .ok.g,.aracbar.sag .ok.i{display:flex}
 .aracbar a.act{color:var(--navy);border-bottom-color:var(--gold);font-weight:600}
-/* KLAVYE SECIMI — olculdu 11.09.2026, Caglayan: ok tuslari cubugu
+/* KLAVYE SECIMI — olculdu 11.09.2026: ok tuslari cubugu
    kaydiriyordu ama hicbir seyi SECMIYORDU; altin isaret yerinde kaliyor,
    Enter'a basacak odakli baglanti bulunmuyordu. Iki isaret ayri sey:
      .act = sayfada BULUNULAN arac (dikey kaydirmayla degisir)
@@ -321,7 +321,7 @@ section[id]{scroll-margin-top:calc(var(--yapiskan,130px) + 14px)}
   border:0;white-space:nowrap;transition:.12s
 }
 .altm a:hover{background:var(--band);color:var(--navy)}
-/* KLAVYE ODAGI — tarayicinin MAVI dikdortgeni cikiyordu (Caglayan,
+/* KLAVYE ODAGI — tarayicinin MAVI dikdortgeni cikiyordu (kullanici,
    11.09.2026 canli, ok tusuyla gezerken). Odak GIZLENMIYOR, yalniz
    gorunumu markanin kendi isaretine birakiliyor:
      ust basliklar -> altin alt serit (`:focus` kurali zaten yaziliydi)
@@ -435,19 +435,19 @@ footer img{filter:none}
 /* Marka da ayni davranir — tiklanabilir oldugu gorunsun (ana sayfaya doner). */
 .marka .nm{border-bottom:2px solid transparent;padding-bottom:2px;transition:border-color .18s}
 .marka:hover .nm,.marka:focus .nm,.marka:active .nm{border-bottom-color:var(--gold)}
-/* Her baslik kendi kutusunda (Caglayan 02.09.2026) — tek blok zemin degil. */
+/* Her baslik kendi kutusunda (kullanici 02.09.2026) — tek blok zemin degil. */
 .menu-kutu{display:flex;align-items:center;gap:4px;padding:0;background:none;white-space:nowrap}
-/* Zemin cok kalindi ve yalniz bir baslikta gorunuyordu (Caglayan 02.09.2026):
+/* Zemin cok kalindi ve yalniz bir baslikta gorunuyordu (kullanici 02.09.2026):
    normalde zemin yok, hover ve bulunulan sayfada hafif altin tonu. */
 .menu-kutu>a,.menu-kutu .mgrup>a{white-space:nowrap;
   background:none;padding:6px 8px 4px;border-radius:0}
-/* Altin alt cizgi geri geldi (Caglayan 02.09.2026) — markada da gecerli.
+/* Altin alt cizgi geri geldi (kullanici 02.09.2026) — markada da gecerli.
    hover:hover sorgusuna kapatilmadi: dokunmatik cihazda dokununca da gorunur. */
 .menu-kutu>a,.menu-kutu .mgrup>a{border-bottom:2px solid transparent;transition:border-color .18s}
 .menu-kutu>a:hover,.menu-kutu .mgrup>a:hover,
 .menu-kutu>a:active,.menu-kutu .mgrup>a:active{border-bottom-color:var(--gold);background:none}
-/* KLAVYE ODAGI ile BULUNULAN BOLUM ayri gorunur — Caglayan 11.09.2026:
-   "ust barda klavyeden gezerken 2 sari cizgi oluyor". Ikisi de altin alt
+/* KLAVYE ODAGI ile BULUNULAN BOLUM ayri gorunur — kullanici 11.09.2026:
+   [geri bildirim]. Ikisi de altin alt
    serit tasiyordu; hangisi "sayfada buradasin", hangisi "klavye burada"
    ayirt edilemiyordu. Arac cubugundaki emsal (.sec) uygulandi:
      alt serit   = sayfada BULUNULAN bolum (.act) — tek cizgi
@@ -550,7 +550,7 @@ footer img{filter:none}
   .yazilan-arac>.wrap>*:not(.arac){display:none!important}
   .yazilan-arac .arac{border:0;padding:0}
   .yazilan-arac .arac-cta,.yazilan-arac .ornek{display:none!important}
-  /* Kagitta okunurluk — Caglayan 02.09.2026, basili cikti:
+  /* Kagitta okunurluk — kullanici 02.09.2026, basili cikti:
      marka lacivertiyle basilan govde metni soluk ve mavi cikiyor. */
   .plan-cikti,.plan-ozet,.plan-tablo td,.plan-tablo th,.plan-not{color:#111!important}
   /* Arka plan dolgular (vurgulu satirlar, bantlar) tarayici varsayilaninda
@@ -1742,7 +1742,7 @@ function ccc(){
 function taksit(){
   const A=N(k_ana.value), f=N(k_faiz.value), n=N(k_vade.value);
   if(A===null||f===null||n===null||n<=0) return;
-  /* KKDF kaldirildi 01.09.2026 (Caglayan): ticari kredide KKDF %0'dir,
+  /* KKDF kaldirildi 01.09.2026 (kullanici): ticari kredide KKDF %0'dir,
      girdi olarak durmasi bireysel urun izlenimi veriyordu. */
   const fa=f/100, bsmv=(N(k_bsmv.value)||0)/100;
   const kulO=(N(k_kul.value)||0)/100, kom=N(k_kom.value)||0, sig=N(k_sig.value)||0;
@@ -1842,7 +1842,7 @@ function rotatif(){
   const A=N(r_ana.value), fy=N(r_faiz.value), g=N(r_gun.value);
   if(A===null||fy===null||g===null||g<=0) return;
   /* KKDF kaldirildi (ticari urunde yok). Kapanis masrafi girdisi 01.09.2026'da
-     sokuldu (Caglayan karari): kredi hesaplama araclarinda kapanan krediden
+     sokuldu (karar): kredi hesaplama araclarinda kapanan krediden
      alinan masraf yer almaz. Kullandirim masrafi ve tahsis komisyonu kalir —
      ikisi de kullandirim aninda bilinen kalemlerdir. */
   const f=fy/100, bsmv=(N(r_bsmv.value)||0)/100, komO=(N(r_kom.value)||0)/100;
@@ -1891,7 +1891,7 @@ function spot(){
   const A=N(s_ana.value), fy=N(s_faiz.value), g=N(s_gun.value);
   if(A===null||fy===null||g===null||g<=0) return;
   /* KKDF kaldirildi (ticari urunde yok). Kapanis masrafi girdisi 01.09.2026'da
-     sokuldu — Caglayan karari, kredi hesabinda kapanis masrafi yer almaz. */
+     sokuldu — kullanici karari, kredi hesabinda kapanis masrafi yer almaz. */
   const f=fy/100,bsmv=(N(s_bsmv.value)||0)/100,kulO=(N(s_kul.value)||0)/100;
   const faiz=A*f*g/360, fBsmv=faiz*bsmv, fKkdf=0;
   const kul=A*kulO, kBsmv=kul*bsmv;
@@ -2417,12 +2417,8 @@ function iskontoPlani(){
   function olc(){ kok.style.setProperty('--yapiskan',Math.round(yigin())+'px'); }
 
   /* CUBUK KENDILIGINDEN HIC OYNAMAZ — kaynak silindi 11.09.2026.
-     Kanit: Caglayan'in ekran kaydi (IMG_5729.MOV, 0,25 sn araliklarla 239
-     kare). 45,0-53,0 sn arasi bar kimildamiyor; 53,0'da imlec "Leasing"
-     uzerinde tikliyor; 53,5'te bar SAGA FIRLIYOR ve tikladigi baglanti
-     imlecin altindan kaciyor (imlec "Nakit dongusu"nde kaliyor).
-     Sebep: aktif baglantiyi ORTALAYAN `gorunurYap`. Ziyaretcinin tikladigi
-     sey parmaginin altindan kayiyordu — tarif edilen "geri ileri kendi
+     Kanit: kullanici ekran kaydi (IMG_5729.MOV, 0,25 sn araliklarla 239
+     kare). 45,0-53,0 sn arasi bar kimildamiyor; 53,0'da imlec "Leasing[geri bildirim]Nakit dongusu[geri bildirim]geri ileri kendi
      kendine gitme" buydu, kaydirma titremesi degil.
      Once ortalama her aktif degisiminde kosuyordu, sonra 180 ms gecikmeye
      alindi, sonra yalniz capaya birakildi; ucu de cubugu ziyaretcinin eli
@@ -3020,7 +3016,7 @@ hepsiniHesapla();
 })();
 </script>
 <script>
-/* Site artik cihaza kurulmuyor (Caglayan karari 02.09.2026): hicbir kopya
+/* Site artik cihaza kurulmuyor (karar 02.09.2026): hicbir kopya
    inmez. Once kurulmus olan service worker'i ve onbellegini temizler.
    Yayildiktan sonra bu blok ve /sw.js kaldirilabilir. */
 if ('serviceWorker' in navigator) {
@@ -3333,7 +3329,7 @@ if ('serviceWorker' in navigator) {
       /* Ustte birakilan pay 10 px. Eskiden 120 px'e kadar cikiyordu (bolum
          basligi da gorunsun diye) ama pay kart boyuna bagliydi: kisa kartta
          ustte giris metni kaliyor, uzun kartta kalmiyordu — ayni tiklama
-         araca gore farkli davraniyordu. Caglayan 11.09.2026: kart dogrudan
+         araca gore farkli davraniyordu. kullanici 11.09.2026: kart dogrudan
          cubugun altinda bassin. Baslik ve giris paragrafi kartin ustunde
          durmaya devam eder, yukari kaydirinca okunur. */
       var pay = 10;
@@ -3451,9 +3447,8 @@ if ('serviceWorker' in navigator) {
 })();
 </script>
 <script>
-/* ==== UST MENU KLAVYE GEZINMESI ==== olculdu 11.09.2026 canli, Caglayan:
-   "diger sitelerde nasil imleci goturunce altin sari renk geliyor, sonra sag
-    klavyeye bastigimda 'Ne yapiyorum?'a gitmesi gerekmez mi"
+/* ==== UST MENU KLAVYE GEZINMESI ==== olculdu 11.09.2026 canli:
+   [geri bildirim]
    Menude ok tuslari hicbir sey yapmiyordu. Artik ok secimi komsu baslikta
    gezdirir, altin serit odakla birlikte gelir (:focus kurali zaten yaziliydi),
    Enter o sayfayi/bolumu acar.

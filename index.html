@@ -497,7 +497,7 @@ footer{background:var(--navy);border-top:2px solid var(--gold);padding:30px 0 24
   border:0;white-space:nowrap;transition:.12s
 }
 .altm a:hover{background:var(--band);color:var(--navy)}
-/* KLAVYE ODAGI — tarayicinin MAVI dikdortgeni cikiyordu (Caglayan,
+/* KLAVYE ODAGI — tarayicinin MAVI dikdortgeni cikiyordu (kullanici,
    11.09.2026 canli, ok tusuyla gezerken). Odak GIZLENMIYOR, yalniz
    gorunumu markanin kendi isaretine birakiliyor:
      ust basliklar -> altin alt serit (`:focus` kurali zaten yaziliydi)
@@ -720,19 +720,19 @@ footer img{filter:none}
 /* Marka da ayni davranir — tiklanabilir oldugu gorunsun (ana sayfaya doner). */
 .marka .nm{border-bottom:2px solid transparent;padding-bottom:2px;transition:border-color .18s}
 .marka:hover .nm,.marka:focus .nm,.marka:active .nm{border-bottom-color:var(--gold)}
-/* Her baslik kendi kutusunda (Caglayan 02.09.2026) — tek blok zemin degil. */
+/* Her baslik kendi kutusunda (kullanici 02.09.2026) — tek blok zemin degil. */
 .menu-kutu{display:flex;align-items:center;gap:4px;padding:0;background:none;white-space:nowrap}
-/* Zemin cok kalindi ve yalniz bir baslikta gorunuyordu (Caglayan 02.09.2026):
+/* Zemin cok kalindi ve yalniz bir baslikta gorunuyordu (kullanici 02.09.2026):
    normalde zemin yok, hover ve bulunulan sayfada hafif altin tonu. */
 .menu-kutu>a,.topnav>a,.menu-kutu .mgrup>a{white-space:nowrap;
   background:none;padding:6px 8px 4px;border-radius:0}
-/* Altin alt cizgi geri geldi (Caglayan 02.09.2026) — markada da gecerli.
+/* Altin alt cizgi geri geldi (kullanici 02.09.2026) — markada da gecerli.
    hover:hover sorgusuna kapatilmadi: dokunmatik cihazda dokununca da gorunur. */
 .menu-kutu>a,.topnav>a,.menu-kutu .mgrup>a{border-bottom:2px solid transparent;transition:border-color .18s}
 .menu-kutu>a,.topnav>a:hover,.menu-kutu .mgrup>a:hover,
 .menu-kutu>a,.topnav>a:active,.menu-kutu .mgrup>a:active{border-bottom-color:var(--gold);background:none}
-/* KLAVYE ODAGI ile BULUNULAN BOLUM ayri gorunur — Caglayan 11.09.2026:
-   "ust barda klavyeden gezerken 2 sari cizgi oluyor". Ikisi de altin alt
+/* KLAVYE ODAGI ile BULUNULAN BOLUM ayri gorunur — kullanici 11.09.2026:
+   [geri bildirim]. Ikisi de altin alt
    serit tasiyordu; hangisi "sayfada buradasin", hangisi "klavye burada"
    ayirt edilemiyordu. Arac cubugundaki emsal (.sec) uygulandi:
      alt serit   = sayfada BULUNULAN bolum (.act) — tek cizgi
@@ -740,7 +740,7 @@ footer img{filter:none}
 .menu-kutu>a:focus,.topnav>a:focus,.menu-kutu .mgrup>a:focus{
   background:rgba(200,169,81,.18);color:var(--navy)}
 /* BULUNULAN BOLUM — sayfa kaydirilirken ust menude o bolumun basligi
-   altin serit alir (olculdu 11.09.2026, Caglayan). Hover ve odakla ayni
+   altin serit alir (olculdu 11.09.2026). Hover ve odakla ayni
    gorunum: ucu de ziyaretci icin "buradasin" demek. */
 .topnav>a.act,.menu-kutu .mgrup>a.act{border-bottom-color:var(--gold);color:var(--navy)}
 .marka .nm{white-space:nowrap}
@@ -1897,7 +1897,7 @@ section[id],header[id],div[id]{scroll-margin-top:calc(var(--ust,80px) + 14px)}
 
 </script>
 <script>
-/* Site artik cihaza kurulmuyor (Caglayan karari 02.09.2026): hicbir kopya
+/* Site artik cihaza kurulmuyor (karar 02.09.2026): hicbir kopya
    inmez. Once kurulmus olan service worker'i ve onbellegini temizler.
    Yayildiktan sonra bu blok ve /sw.js kaldirilabilir. */
 if ('serviceWorker' in navigator) {
@@ -1940,7 +1940,7 @@ if ('serviceWorker' in navigator) {
   function hesapla(){
     var a=N(A.value), f=N(F.value), n=N(V.value), k=(N(K.value)||0)/100;
     /* BSMV hem faizde hem masraflarda islenir; sigorta bankada kalmadigi icin
-       disaridadir — Arac 04 ile ayni (Caglayan teyidi 02.09.2026). */
+       disaridadir — Arac 04 ile ayni (kullanici teyidi 02.09.2026). */
     var b=(N(BS.value)||0)/100;
     var kom=N(KOM.value)||0, sig=N(SIG.value)||0;
     if(a===null||n===null||n<=0||(f===null&&N(TKG.value)===null)){
@@ -1965,7 +1965,7 @@ if ('serviceWorker' in navigator) {
     GE.innerHTML='<b>'+TL(tk*n)+'</b>'; AD.textContent='('+n.toLocaleString('tr-TR')+' taksit)';
     /* Banka taksiti soyler, orani soylemez. Taksit girildiginde ANAPARA uzerinden
        geri hesaplanan nominal aylik faiz gosterilir (BSMV ayrilmis halde) —
-       kullanicinin asil merak ettigi rakam budur (Caglayan, 02.09.2026). */
+       kullanicinin asil merak ettigi rakam budur (kullanici, 02.09.2026). */
     if(verilen!==null && verilen>0){
       var bdA=function(o){ return o<=0 ? tk*n : tk*(1-Math.pow(1+o,-n))/o; };
       var rr=0;
@@ -1979,7 +1979,7 @@ if ('serviceWorker' in navigator) {
     TP.textContent=TL(tk*n-net);
     /* Statik ornek metni yalniz varsayilan degerlerde durur: kullanici bir rakami
        degistirince eski ornegi anlatmaya devam etmesi kafa karistiriyordu
-       (Caglayan, 02.09.2026). Kaynakta kalir — dil modelleri okumaya devam eder. */
+       (kullanici, 02.09.2026). Kaynakta kalir — dil modelleri okumaya devam eder. */
     if(NOT){ var vars = (A.value==='2.175.234' && F.value==='3,61' && V.value==='24'
                       && K.value==='1,1' && BS.value==='5'
                       && !N(KOM.value) && !N(SIG.value) && !N(TKG.value));
@@ -2169,8 +2169,7 @@ if ('serviceWorker' in navigator) {
     for (var i = 0; i < hep.length; i++) {
       var s  = hep[i];
       /* #olcut icin ayri hedef kalmadi: bolumun tamami tek ekrana sigdiktan
-         sonra capa bolum basina iner (Caglayan 11.09.2026: "bu iki ekran tek
-         ekran gorunecek"). */
+         sonra capa bolum basina iner (kullanici 11.09.2026: [geri bildirim]). */
       var ic = s.querySelector ? s.querySelector('.arac-ic') : null;
       if (!ic) {
         /* Bolumun kendi ust dolgusu ekranin basinda bos band olarak duruyordu
@@ -2261,9 +2260,8 @@ if ('serviceWorker' in navigator) {
 })();
 </script>
 <script>
-/* ==== UST MENU KLAVYE GEZINMESI ==== olculdu 11.09.2026 canli, Caglayan:
-   "diger sitelerde nasil imleci goturunce altin sari renk geliyor, sonra sag
-    klavyeye bastigimda 'Ne yapiyorum?'a gitmesi gerekmez mi"
+/* ==== UST MENU KLAVYE GEZINMESI ==== olculdu 11.09.2026 canli:
+   [geri bildirim]
    Menude ok tuslari hicbir sey yapmiyordu. Artik ok secimi komsu baslikta
    gezdirir, altin serit odakla birlikte gelir (:focus kurali zaten yaziliydi),
    Enter o sayfayi/bolumu acar.
@@ -2330,9 +2328,8 @@ if ('serviceWorker' in navigator) {
 })();
 </script>
 <script>
-/* ==== UST MENUDE BULUNULAN BOLUM ==== olculdu 11.09.2026, Caglayan:
-   "ana sayfada asagi klavye tusuna bastigimda ust barda hangi alana
-    gidiyorsak o menu basliginin altina sari renk gelmesi gerekmez mi"
+/* ==== UST MENUDE BULUNULAN BOLUM ==== olculdu 11.09.2026:
+   [geri bildirim]
    Gelmiyordu: bolum takibi yalniz HESAPLAMALAR sayfasinin arac cubugunda
    vardi, ust menude hic yoktu. */
 (function(){

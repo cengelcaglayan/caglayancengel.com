@@ -183,7 +183,7 @@ footer{background:var(--navy);border-top:2px solid var(--gold);padding:30px 0 24
 .mgrup.kapandi .altm{opacity:0;visibility:hidden;transform:translateX(-50%) translateY(-6px)}
 .altm a{display:block;padding:9px 18px;font-size:14.5px;color:var(--body);text-decoration:none;border:0;white-space:nowrap;transition:.12s}
 .altm a:hover{background:var(--band);color:var(--navy)}
-/* KLAVYE ODAGI — tarayicinin MAVI dikdortgeni cikiyordu (Caglayan,
+/* KLAVYE ODAGI — tarayicinin MAVI dikdortgeni cikiyordu (kullanici,
    11.09.2026 canli, ok tusuyla gezerken). Odak GIZLENMIYOR, yalniz
    gorunumu markanin kendi isaretine birakiliyor:
      ust basliklar -> altin alt serit (`:focus` kurali zaten yaziliydi)
@@ -256,19 +256,19 @@ footer img{filter:none}
 /* Marka da ayni davranir — tiklanabilir oldugu gorunsun (ana sayfaya doner). */
 .marka .nm{border-bottom:2px solid transparent;padding-bottom:2px;transition:border-color .18s}
 .marka:hover .nm,.marka:focus .nm,.marka:active .nm{border-bottom-color:var(--gold)}
-/* Her baslik kendi kutusunda (Caglayan 02.09.2026) — tek blok zemin degil. */
+/* Her baslik kendi kutusunda (kullanici 02.09.2026) — tek blok zemin degil. */
 .menu-kutu{display:flex;align-items:center;gap:4px;padding:0;background:none;white-space:nowrap}
-/* Zemin cok kalindi ve yalniz bir baslikta gorunuyordu (Caglayan 02.09.2026):
+/* Zemin cok kalindi ve yalniz bir baslikta gorunuyordu (kullanici 02.09.2026):
    normalde zemin yok, hover ve bulunulan sayfada hafif altin tonu. */
 .menu-kutu>a,.menu-kutu .mgrup>a{white-space:nowrap;
   background:none;padding:6px 8px 4px;border-radius:0}
-/* Altin alt cizgi geri geldi (Caglayan 02.09.2026) — markada da gecerli.
+/* Altin alt cizgi geri geldi (kullanici 02.09.2026) — markada da gecerli.
    hover:hover sorgusuna kapatilmadi: dokunmatik cihazda dokununca da gorunur. */
 .menu-kutu>a,.menu-kutu .mgrup>a{border-bottom:2px solid transparent;transition:border-color .18s}
 .menu-kutu>a:hover,.menu-kutu .mgrup>a:hover,
 .menu-kutu>a:active,.menu-kutu .mgrup>a:active{border-bottom-color:var(--gold);background:none}
-/* KLAVYE ODAGI ile BULUNULAN BOLUM ayri gorunur — Caglayan 11.09.2026:
-   "ust barda klavyeden gezerken 2 sari cizgi oluyor". Ikisi de altin alt
+/* KLAVYE ODAGI ile BULUNULAN BOLUM ayri gorunur — kullanici 11.09.2026:
+   [geri bildirim]. Ikisi de altin alt
    serit tasiyordu; hangisi "sayfada buradasin", hangisi "klavye burada"
    ayirt edilemiyordu. Arac cubugundaki emsal (.sec) uygulandi:
      alt serit   = sayfada BULUNULAN bolum (.act) — tek cizgi
@@ -385,7 +385,7 @@ section[id],header[id],div[id]{scroll-margin-top:calc(var(--ust,80px) + 14px)}
 
   /* --- kagitta okunurluk ---
      Marka lacivertinin (#0F1C2E) govde metni olarak basimi soluk ve mavi
-     cikiyor (Caglayan 02.09.2026, EPSON ciktisi). Kagitta govde siyaha
+     cikiyor (kullanici 02.09.2026, EPSON ciktisi). Kagitta govde siyaha
      yakin olur; lacivert baslik ve vurguda kalir. */
   body,p,li,td,th,.sub,.uyari{color:#111!important}
 
@@ -990,7 +990,7 @@ section[id],header[id],div[id]{scroll-margin-top:calc(var(--ust,80px) + 14px)}
 
 </script>
 <script>
-/* Site artik cihaza kurulmuyor (Caglayan karari 02.09.2026): hicbir kopya
+/* Site artik cihaza kurulmuyor (karar 02.09.2026): hicbir kopya
    inmez. Once kurulmus olan service worker'i ve onbellegini temizler.
    Yayildiktan sonra bu blok ve /sw.js kaldirilabilir. */
 if ('serviceWorker' in navigator) {
@@ -1205,9 +1205,8 @@ if ('serviceWorker' in navigator) {
 })();
 </script>
 <script>
-/* ==== UST MENU KLAVYE GEZINMESI ==== olculdu 11.09.2026 canli, Caglayan:
-   "diger sitelerde nasil imleci goturunce altin sari renk geliyor, sonra sag
-    klavyeye bastigimda 'Ne yapiyorum?'a gitmesi gerekmez mi"
+/* ==== UST MENU KLAVYE GEZINMESI ==== olculdu 11.09.2026 canli:
+   [geri bildirim]
    Menude ok tuslari hicbir sey yapmiyordu. Artik ok secimi komsu baslikta
    gezdirir, altin serit odakla birlikte gelir (:focus kurali zaten yaziliydi),
    Enter o sayfayi/bolumu acar.
