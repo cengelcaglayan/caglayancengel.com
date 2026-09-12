@@ -81,8 +81,16 @@ const TESTLER = [
 
   { ad: 'a06 spot · sade', fn: 'spot',
     gir: { s_ana:'1.000.000', s_faiz:'45', s_gun:'90', s_kul:'1', s_bsmv:'5' },
-    olc: [ { id:'s_yil', bek:51.4, tol:0.1, not:'yillik maliyet' },
-           { id:'s_alt', ara:'1.128.625', not:'vade sonu odeme' } ] },
+    olc: [ { id:'s_yil', bek:52.0, tol:0.1, not:'yillik maliyet (net kullandirim uzerinden)' },
+           { id:'s_alt', ara:'1.118.125', not:'vade sonu odeme (pesin masraf haric)' } ] },
+
+  /* 12.09.2026 dis denetimi: 92 gunluk kullanimda kart 1 komisyon sayiyor,
+     odeme plani 2 uretiyordu — 10.500 TL ayrisma. Kart artik gecilen donem
+     sonlarini sayiyor; bu fren geri kaymayi yakalar. */
+  { ad: 'a05 rotatif · iki donem sonu', fn: 'rotatif',
+    gir: { r_ana:'1.000.000', r_faiz:'55', r_gun:'92', r_kom:'1', r_komay:'3',
+           r_bsmv:'5', r_kul:'0', r_tahsis:'0' },
+    olc: [ { id:'r_alt', ara:'168.583', not:'donem maliyeti — plan ile ayni' } ] },
 
   { ad: 'a07 cek/senet iskontosu', fn: 'iskonto',
     gir: { i_nom:'1.000.000', i_faiz:'45', i_gun:'90', i_kul:'1,1', i_bsmv:'5', i_esas:'360' },
@@ -104,7 +112,7 @@ const TESTLER = [
 
   { ad: 'a08 POS blokeli/ertesi gun', fn: 'pos',
     gir: { p_ciro:'500.000', p_k1:'2,5', p_k2:'2', p_gun:'30', p_maliyet:'4', p_bsmv:'5' },
-    olc: [ { id:'p_fark',  bek:17375, tol:1, not:'toplam fark' },
+    olc: [ { id:'p_fark',  bek:16302, tol:1, not:'toplam fark (net tutar, gun-1)' },
            { id:'p_tablo', ara:'13.125', not:'kesilen toplam (1. secenek)' },
            { id:'p_tablo', ara:'10.500', not:'kesilen toplam (2. secenek)' } ] },
 

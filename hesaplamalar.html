@@ -1791,6 +1791,16 @@ function taksit(){
     ? tk*n
     : tk*(1-Math.pow(1+oran,-n))/oran;
   let i=0;
+  /* Pesin kesilen masraf anaparayi asarsa (absurt girdi) ikiye bolme tavana
+     carpip %500/ay yaziyordu. Olcelemeyen durumda sayi gosterilmez. */
+  if(net<=0){
+    document.getElementById('k_efektif').innerHTML='—';
+    document.getElementById('k_alt').textContent='Peşin kesilen masraflar anaparayı aşıyor — girdileri kontrol edin.';
+    document.getElementById('k_tablo').innerHTML='';
+    document.getElementById('k_rozet').innerHTML='<span class="rozet r-risk">Girdi hatalı</span>';
+    document.getElementById('k_yorum').textContent='Masraf toplamı kredi tutarından büyük olamaz.';
+    return;
+  }
   if(bugunkuDeger(1e-9) >= net){
     let alt=1e-9, ust=5;
     for(let k=0;k<300;k++){
@@ -1811,7 +1821,11 @@ function taksit(){
   let rz,y;
   if(fark<0.1){ rz='<span class="rozet r-iyi">Şeffaf</span>'; y='Teklifteki oranla gerçek maliyet birbirine yakın. Masraf yükü düşük.'; }
   else if(fark<0.6){ rz='<span class="rozet r-dikkat">Masraf yükü var</span>';
-    y='Gerçek maliyet, teklifteki orandan ' + fark.toLocaleString('tr-TR',{maximumFractionDigits:2}) + ' puan yüksek. Masraflar pazarlık konusudur.'; }
+    /* Farkin bir kismi BSMV'dir ve pazarliga kapalidir: masrafsiz halde
+       efektif oran tam olarak f*(1+bsmv) cikar. Eski metin farkin tamamini
+       masrafa yaziyordu (12.09.2026 dis denetimi). */
+    y='Gerçek maliyet, teklifteki orandan ' + fark.toLocaleString('tr-TR',{maximumFractionDigits:2}) + ' puan yüksek: '
+      + (f*bsmv).toLocaleString('tr-TR',{maximumFractionDigits:2}) + ' puanı BSMV (vergi, pazarlığa kapalı), kalanı masraf. Masraflar pazarlık konusudur.'; }
   else { rz='<span class="rozet r-risk">Masraf ağır</span>';
     y='Gerçek maliyet teklifteki orandan ' + fark.toLocaleString('tr-TR',{maximumFractionDigits:2}) + ' puan yüksek. ' + TL(pesin) + ' peşin kesiliyor; bu tutar üzerinden de faiz ödüyorsunuz.'; }
   document.getElementById('k_rozet').innerHTML=rz;
@@ -1843,7 +1857,11 @@ function pos(){
   const komHam1=c*k1/100, komHam2=c*k2/100;
   const kom1=komHam1*(1+pbs), kom2=komHam2*(1+pbs);
   const komFark=kom1-kom2;                    /* blokelinin komisyon avantaji */
-  const paraMaliyeti=c*ay*(gun/30);           /* blokede bekleyen paranin maliyeti */
+  /* Bekleyen para brut ciro degil, komisyonu kesilmis NET tutardir; ve
+     alternatif "ertesi gun" oldugu icin gercek bekleme farki gun-1'dir.
+     Eski satir maliyeti ~%5 sisiriyordu (12.09.2026 dis denetimi). */
+  const bekleyen=c-kom2;
+  const paraMaliyeti=bekleyen*ay*(Math.max(0,gun-1)/30);
   const net=komFark-paraMaliyeti;             /* + ise blokeli avantajli */
   document.getElementById('p_fark').innerHTML = TL(Math.abs(net));
   document.getElementById('p_alt').textContent = 'Yıllık etki: ' + TL(Math.abs(net)*12)
@@ -1880,7 +1898,14 @@ function rotatif(){
   const f=fy/100, bsmv=(N(r_bsmv.value)||0)/100, komO=(N(r_kom.value)||0)/100;
   const kulO=(N(r_kul.value)||0)/100, tahsis=N(r_tahsis.value)||0;
   const faiz=A*f*g/360, fBsmv=faiz*bsmv, fKkdf=0;
-  const kom=A*komO, kBsmv=kom*bsmv;
+  /* Komisyon donem SONUNDA alinir; g gun icinde kac donem sonu gecildiyse o
+     kadar kez. 92 gunluk kullanimda (3 aylik periyot) odeme plani iki komisyon
+     uretirken kart bir tane sayiyordu — 10.500 TL ayrisma (12.09.2026 dis
+     denetimi). Plan hakli: kredi acikken gecilen her donem sonu komisyon dogurur. */
+  const komAy=Math.max(1, N(r_komay.value)||3);
+  const komAdet=Math.max(1, Math.ceil(g/(komAy*30)));
+  const komBir=A*komO;
+  const kom=komBir*komAdet, kBsmv=kom*bsmv;
   const kul=A*kulO, kulBsmv=kul*bsmv;
   const tahsisBsmv=tahsis*bsmv;
   const toplam=faiz+fBsmv+kom+kBsmv+kul+kulBsmv;
@@ -1888,9 +1913,10 @@ function rotatif(){
      g=30 girildiginde 12 kez sayiliyordu. Faiz gun bazli (360/g), komisyon ise
      kendi periyoduna gore (12/ay) yilliklandirilir. Bankalar bu komisyonu
      tipik olarak uc ayda bir alir — varsayilan 3. */
-  const komAy=Math.max(1, N(r_komay.value)||3);
   const yillikFaiz=(faiz+fBsmv)*360/g;
-  const yillikKom=(kom+kBsmv)*(12/komAy);
+  /* Yillik komisyon TEK komisyon uzerinden yilliklandirilir (12/komAy) —
+     donem adedi burada tekrar carpilmaz. */
+  const yillikKom=(komBir*(1+bsmv))*(12/komAy);
   /* Kullandirim masrafi her kullanimda alinir — faizle ayni periyotta
      yilliklandirilir. Tahsis komisyonu limit uzerinden yilda bir kez;
      yilda bir kez alinir. */
@@ -1902,7 +1928,7 @@ function rotatif(){
   document.getElementById('r_tablo').innerHTML=
     `<tr><td>Faiz (${g} gün)</td><td>${TL(faiz)}</td></tr>`
    +`<tr><td>Faiz üzerinden BSMV${fKkdf?' + KKDF':''}</td><td>${TL(fBsmv+fKkdf)}</td></tr>`
-   +`<tr><td>Dönem sonu komisyon + BSMV (${komAy} ayda bir)</td><td class="d-risk">${TL(kom+kBsmv)}</td></tr>`
+   +`<tr><td>Dönem sonu komisyon + BSMV (${komAy} ayda bir${komAdet>1?', bu dönemde '+komAdet+' kez':''})</td><td class="d-risk">${TL(kom+kBsmv)}</td></tr>`
    +(kul?`<tr><td>Kullandırım masrafı + BSMV</td><td class="d-risk">${TL(kul+kulBsmv)}</td></tr>`:'')
    +`<tr><td><strong>Dönem toplam ödeme</strong></td><td><strong>${TL(toplam)}</strong></td></tr>`
    +(tahsis?`<tr><td>Limit tahsis komisyonu + BSMV (yılda bir)</td><td class="d-risk">${TL(tahsis+tahsisBsmv)}</td></tr>`:'')
@@ -1928,16 +1954,26 @@ function spot(){
   const faiz=A*f*g/360, fBsmv=faiz*bsmv, fKkdf=0;
   const kul=A*kulO, kBsmv=kul*bsmv;
   const toplam=faiz+fBsmv+kul+kBsmv;
+  /* Kullandirim ucreti PESIN kesilir: musteriye A degil A-(kul+BSMV) gecer ve
+     vade sonunda yalnizca anapara+faiz odenir. Eski kod ikisini de brut A
+     uzerinden sayiyordu (12.09.2026 dis denetimi). */
+  const netKul = A-(kul+kBsmv);
+  const vadeSonu = A+faiz+fBsmv;
   /* g>=360'ta bolme atlaniyordu: 540 gunluk maliyet yillik gibi gosteriliyor,
      maliyet sisik cikiyordu. Her durumda yilliga cevrilir. */
   const yillik = toplam*360/g;
-  const oran=A?yillik/A:0;
+  /* Efektif oran NET kullandirim uzerinden olculur — 01 Taksitli kredide IRR
+     zaten net uzerinden cozuluyor, iki arac ayni tanimi kullanir. Brut
+     anaparaya bolununce oran 1,5 puan dusuk cikiyordu. */
+  const oran = netKul>0 ? yillik/netKul : 0;
   document.getElementById('s_yil').innerHTML='%'+(oran*100).toLocaleString('tr-TR',{maximumFractionDigits:1});
-  document.getElementById('s_alt').textContent='Vade sonunda ödenecek: '+TL(A+toplam)+' (anapara + '+TL(toplam)+')';
+  document.getElementById('s_alt').textContent='Vade sonunda ödenecek: '+TL(vadeSonu)+' (anapara + faiz '+TL(faiz+fBsmv)+')';
   document.getElementById('s_tablo').innerHTML=
     `<tr><td>Faiz (${g} gün)</td><td>${TL(faiz)}</td></tr>`
    +`<tr><td>Faiz üzerinden BSMV${fKkdf?' + KKDF':''}</td><td>${TL(fBsmv+fKkdf)}</td></tr>`
-   +`<tr><td>Kullandırım ücreti + BSMV</td><td class="d-risk">${TL(kul+kBsmv)}</td></tr>`
+   +`<tr><td>Kullandırım ücreti + BSMV <small>(peşin kesilir)</small></td><td class="d-risk">${TL(kul+kBsmv)}</td></tr>`
+   +(kul?`<tr><td>Hesabınıza geçen para</td><td>${TL(netKul)}</td></tr>`:'')
+   +`<tr><td>Vade sonunda ödenecek</td><td>${TL(vadeSonu)}</td></tr>`
    +`<tr><td><strong>Toplam bankaya ödeme</strong></td><td><strong>${TL(toplam)}</strong></td></tr>`;
   const fark=oran*100-fy;
   let rz,y;
@@ -2712,13 +2748,25 @@ function leasingKarsilastir(){
   if (oransal < 0.01){ rz = '<span class="rozet r-dikkat">Başa baş</span>';
     y = 'İki yol arasındaki fark yatırımın %1’inin altında. Bu bantta karar maliyetle değil, teminatla ve mülkiyetle verilir.'; }
   else if (fark > 0){ rz = '<span class="rozet r-iyi">Leasing</span>';
-    y = 'Leasing bu koşullarda ' + TL(fark) + ' daha ucuz. Faiz farkına rağmen öne geçmesinin sebebi KDV: kredide ' + TL(kKdv) + ' ilk gün çıkar, leasingde kiralara yayılır.'; }
+    /* Eski metin sebebi HER ZAMAN KDV'ye baglıyordu; oysa KDV indirilebilirken
+       hesaba hic girmiyor ve fark tamamen oran/masraf farkindan doguyor.
+       Metin kendi matematigiyle celisiyordu (12.09.2026 dis denetimi). */
+    var sebep;
+    if (!indirilebilir)
+      sebep = 'devreden KDV: kredide ' + TL(kKdv) + ' ilk gün çıkıp bekliyor, leasingde kiralara yayılıyor';
+    else if (lr < kr)
+      sebep = 'oran farkı: leasing aylık %' + lf.toLocaleString('tr-TR',{maximumFractionDigits:2})
+            + ', kredi BSMV ile %' + (kr*100).toLocaleString('tr-TR',{maximumFractionDigits:2});
+    else
+      sebep = 'masraf farkı';
+    y = 'Leasing bu koşullarda ' + TL(fark) + ' daha ucuz. Sebebi ' + sebep + '.'; }
   else { rz = '<span class="rozet r-iyi">Kredi</span>';
     y = 'Kredi bu koşullarda ' + TL(-fark) + ' daha ucuz. Leasingin KDV avantajı, aradaki oran farkını kapatmaya yetmiyor.'; }
   if (!indirilebilir)
     y += ' Devreden KDV biriktiği için KDV burada maliyet sayıldı — indirim yoluyla geri alınabiliyorsa sadece nakit zamanlaması sorunudur.';
   else
     y += ' KDV indirilebildiği için maliyete değil, yalnızca nakit akışına yazıldı.';
+  y += ' Karşılaştırma iskonto edilmemiş nominal toplam üzerinden yapıldı; paranın zaman değeri hesaba katılırsa aradaki fark daralır.';
   y += ' Leasingde mülkiyet vade sonuna kadar kiralayanda kalır; makine teminat olarak ikinci kez kullanılamaz.';
   document.getElementById('l_rozet').innerHTML = rz;
   document.getElementById('l_yorum').textContent = y;
