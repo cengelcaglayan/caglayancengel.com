@@ -2460,17 +2460,25 @@ function iskontoPlani(){
      Ortalama da birakildi — oge yalnizca gorunur olacak EN AZ kadar kayar;
      ortalama kenardaki ogeyi ekranin ortasina tasidigi icin hareket
      buyuyordu. PAY = solma bandi (54) + 6 px nefes. */
-  /* 60 -> 12: hareketi mumkun oldugunca kucuk tut. 60 px, kenardaki ogeyi
-     solma bandinin disina tasimak icindi ama tiklama aninda 80 px'lik bir
-     kayma demekti — tiklanan sey imlecin altindan cikiyordu. 12 px'te oge
-     yalnizca tam gorunur olur. */
-  const PAY=12;
+  /* 12 -> 60 GERI ALINDI — olculdu 12.09.2026, canli 1440x860.
+     12 px'in gerekcesi "tiklama aninda oge imlecin altindan cikmasin" idi;
+     ama o kayma PAY'dan degil, tiklamanin `solaAl=true` dalindan geliyordu
+     (asagida kaldirildi). PAY tek basina hicbir sey kaydirmaz — yalnizca bir
+     ogenin "gorunur" SAYILDIGI esigi belirler.
+     12 px esikte oge, ustundeki 54 px'lik solma bandinin ALTINDA kaliyor ve
+     gorunur sayiliyordu: sekme adi yarim okunuyordu ("Kr", "Bilan", "Leasin",
+     "kredi"). Esik solma bandina esitlendi: 54 + 6 px nefes.
+     Kaynak: IMG_5741.MOV 114-126 sn (klavyeyle sekme turu) ve 12.09 canli
+     olcum — serit 1120 px kap / 1713 px icerik / 13 sekme. */
+  const PAY=60;
   /* `mouseenter` DEGIL: o olay dokunmatikte hic atesleneemez ve sentetik
      tiklamada da yoktur — bayrak tam kacmayi onlemesi gereken durumda
      false kalirdi (olculdu 11.09.2026, canli). Bayrak artik tiklamanin
      kendisinden turetiliyor. */
   let sonCubukTik=0;
-  /* SOL_PAY: tiklanan oge kabin sol kenarindan bu kadar iceride durur. */
+  /* SOL_PAY: OLU — tek kullanicisi tiklamaydi, 12.09.2026'da kaldirildi.
+     Sabit ve `solaAl` dali, gerekce yeniden dogarsa diye duruyor; hicbir
+     cagri `solaAl=true` gecmiyor. Silmeden once bu yorumu oku. */
   const SOL_PAY=16;
   /* solaAl=true (TIKLAMA): oge sola cekilir, ardindaki araclar saga acilir.
      solaAl=false (kaydirma): oge yalnizca gorunur olacak EN AZ kadar kayar. */
@@ -2592,7 +2600,16 @@ function iskontoPlani(){
     var a = e.target && e.target.closest && e.target.closest('a');
     if(!a) return;
     sonCubukTik=Date.now();
-    gorunurYap(a,true);
+    /* `true` -> `false` — olculdu 12.09.2026, canli 1440x860.
+       `true` tiklanan sekmeyi HER SEFERINDE kabin sol kenarina cekiyordu:
+       0->103, 1->257, 2->375, 5->593, 9->593, 12->593, 3->474, 0->103.
+       Ziyaretci zaten GORDUGU sekmeye basiyor; serit her basista sicriyor,
+       sagdan sola gidince geri donuyordu — "bir ileri bir geri" titremesi
+       buydu (Caglayan, 12.09.2026). 6..12 arasi her sekme 593'e, yani sona
+       yapisiyor; ilk sekme tumden disari cikiyordu (IMG_5741.MOV 123 sn).
+       `false` yalnizca GORUNUR OLACAK KADAR kaydirir: gorunen bir sekmeye
+       tiklandiginda fark 0 cikar ve serit HIC oynamaz. */
+    gorunurYap(a,false);
   },true);
   /* Hizalama yalniz isaretci cubuktan ayrilinca: masaustunde fare cekilince,
      dokunmatikte parmak kalkinca. Iki durumda da altindan kacacak bir sey yok. */
