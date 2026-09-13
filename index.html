@@ -210,6 +210,11 @@ h2{font-size:clamp(26px,2.9vw,34px);margin-bottom:14px}
 .svc-row:first-child{border-top:none;padding-top:8px}
 .svc-no{font-family:'Playfair Display',serif;font-size:34px;color:var(--gold);line-height:1}
 .svc-row h3{font-size:23px;margin-bottom:10px}
+/* Paragraf araligi YOKTU: `*{margin:0}` disinda .svc-row p'ye hicbir kural
+   deymiyordu, bes paragraf tek blok halinde akiyordu (olculdu 13.09.2026
+   canli, #ne-yaparim: 10 komsu p ciftinde toplam bosluk 0 px). */
+.svc-row p{margin-bottom:14px}
+.svc-row p:last-child{margin-bottom:0}
 .svc-row .tag{
   display:inline-block;background:var(--gold);color:var(--navy);font-size:11px;
   letter-spacing:1.6px;text-transform:uppercase;padding:4px 11px;margin-bottom:12px;font-weight:600
