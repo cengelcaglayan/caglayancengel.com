@@ -28,6 +28,16 @@
 .wa-top:hover{background:#075E54}
 .wa-top svg{opacity:.95}
 @media(max-width:520px){.wa-top span{display:none}.wa-top{padding:10px 12px}}
+
+/* Basa don oku — acik zemin, lacivert dugme. */
+.basa{position:fixed;right:22px;bottom:22px;z-index:60;width:46px;height:46px;
+display:flex;align-items:center;justify-content:center;background:#0F1C2E;color:#fff;
+border:0;border-radius:3px;cursor:pointer;opacity:0;visibility:hidden;
+transform:translateY(8px);transition:.22s;box-shadow:0 2px 10px rgba(15,28,46,.22)}
+.basa.gor{opacity:1;visibility:visible;transform:none}
+.basa:hover{background:#7A6220}
+.basa svg{width:17px;height:17px}
+@media(max-width:820px){.basa{bottom:16px;right:16px;width:42px;height:42px}}
 </style>  <link rel="apple-touch-icon" href="/logo.png">
   <meta name="theme-color" content="#0F1C2E">
 </head><body><img src="logo.png" alt=""><h1>Aradığınız sayfa yok</h1><p>Bağlantı eski olabilir. Ana sayfadan devam edebilirsiniz.</p><a href="/">Ana sayfa</a><script>
@@ -182,4 +192,24 @@ if ('serviceWorker' in navigator) {
 })();
 </script>
 <footer style="margin:52px auto 0;max-width:720px;padding:26px 22px 0;border-top:1px solid #E4DED0;font-family:'IBM Plex Sans',system-ui,sans-serif;font-size:13.5px;line-height:1.7;color:#5A6472;text-align:center"><div style="font-family:'Playfair Display',Georgia,serif;font-weight:700;letter-spacing:.6px;color:#7A6220;font-size:16px">ÇAĞLAYAN ÇENGEL</div><div>Finansal Yönetim Danışmanı</div><div style="font-style:italic;margin-bottom:8px">KOBİ'lere Güven Veren Finansal Rehberlik</div><div><a style="color:#5A6472" href="mailto:info&#64;caglayancengel&#46;com"><span>info</span><span style="display:none">nospam</span><span>&#64;caglayancengel&#46;com</span></a>&nbsp;·&nbsp;<a style="color:#5A6472" href="gizlilik.html">Gizlilik ve KVKK</a></div><p style="margin-top:10px;font-size:12px">© 2026 Çağlayan Çengel · Bu sitedeki içerik genel bilgilendirme amaçlıdır; yatırım danışmanlığı veya yatırım tavsiyesi niteliği taşımaz.</p></footer>
+<button class="basa" id="basaDon" aria-label="Sayfa başına dön" title="Başa dön">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+<script>
+/* Basa don oku. Uzun sayfalarda esik sabit 520px; bu sayfa kisa oldugu icin esik
+   kaydirilabilir yuksekligin %35'i, 120px'den az kayan sayfada hic gorunmez.
+   Olculdu 13.09.2026 (canli): kart.html 280px masaustu / 340px mobil, 404.html 48px. */
+(function(){
+  var b=document.getElementById('basaDon'); if(!b) return;
+  function esik(){
+    var k=document.documentElement.scrollHeight-window.innerHeight;
+    return k<120 ? Infinity : Math.min(520, k*0.35);
+  }
+  function g(){ b.classList.toggle('gor', window.scrollY>esik()); }
+  window.addEventListener('scroll',g,{passive:true});
+  window.addEventListener('resize',g,{passive:true});
+  g();
+  b.addEventListener('click',function(){ window.scrollTo({top:0,behavior:'smooth'}); });
+})();
+</script>
 </body></html>
