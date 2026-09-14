@@ -1309,12 +1309,13 @@ section[id],header[id],div[id]{scroll-margin-top:calc(var(--ust,80px) + 14px)}
 <section id="duzen">
   <div class="wrap">
     <p class="kicker">Çalışma biçimi</p>
-    <h2>Yılda bir örneklem değil, her gün kayıtların tamamı</h2>
+    <h2>Örneklem değil, her günün tamamı</h2>
     <div class="rule"></div>
     <p class="intro">
       Dönemsel denetim belirli aralıklarla örneklem üzerinden yürür; kayıtların bir bölümüne bakılır,
-      gerisi doğru varsayılır. Burada veri her gün aktığı için örneklemeye gerek kalmaz —
-      banka hareketi, POS hakedişi ve kredi ödemesi geldiği gün karşılaştırılır. Yapılan iş
+      gerisi doğru varsayılır. Burada örnek seçilmez: veri ne zaman ulaşırsa, dönem içindeki
+      günlerin tamamı gün bazında incelenir — banka hareketi, POS hakedişi ve kredi ödemesi
+      gün gün karşılaştırılır, kayıtların hepsi aynı kontrol kuralından geçer. Yapılan iş
       iki katmandır: yazılanın gerçek olduğunu doğrulayan <strong>iç kontrol</strong> düzeni
       kurulur — mutabakat, yetki, çift onay, sayım — ve bu düzenin çalışıp çalışmadığı, kaydı
       üreten elden bağımsız olarak izlenir; mesleki adı
@@ -1340,11 +1341,12 @@ section[id],header[id],div[id]{scroll-margin-top:calc(var(--ust,80px) + 14px)}
           limit, aksama çıkmadan önce görünür.</p>
       </div>
       <div class="step">
-        <b>Her gün</b>
+        <b>Gün bazında</b>
         <h3>POS ve tahsilat kontrolü</h3>
-        <p>Günün POS hakedişi ekstre üzerinden sözleşme oranıyla karşılaştırılır; blokaj
-          süresi ve valör farkı maliyete eklenir. Orandaki sapma aylık özet beklenmeden
-          yakalanır.</p>
+        <p>Ulaşan POS raporundaki günlerin tamamı banka hareketleriyle karşılaştırılır;
+          hakediş, tahsilat günü ve tutar bazında sapmalar ayrıştırılır. Sözleşme koşulu,
+          blokaj ve valör bilgisi elde olduğunda maliyet hesabına dâhil edilir. Amaç, aylık
+          özet beklemek yerine sapmanın hangi gün ve hangi işlemde doğduğunu görmektir.</p>
       </div>
       <div class="step">
         <b>Haftada üç gün</b>
