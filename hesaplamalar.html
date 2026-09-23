@@ -2187,6 +2187,17 @@ function geriye(){
 function kmh(){
   const L=N(kh_limit.value), B=N(kh_bakiye.value), g=N(kh_gun.value), fy=N(kh_faiz.value);
   if(B===null||g===null||g<=0||fy===null) return;
+  /* Bakiye 0 iken %0 + "Nominale yakin" basiliyordu — yanlis guvence
+     (Caglayan ekran goruntusu 23.09.2026). Bakiye istenir. */
+  if(B<=0){
+    document.getElementById('kh_yil').innerHTML='&mdash;';
+    document.getElementById('kh_alt').textContent='Ortalama kullanılan bakiyeyi girin.';
+    document.getElementById('kh_rozet').innerHTML='';
+    document.getElementById('kh_yorum').textContent='Faiz yalnız kullanılan bakiye üzerinden işler; bakiye 0 ise faiz de 0 olur. '
+      +'Dönemin ortalama bakiyesini hesap ekstresinden okuyun: her günün gün sonu eksi bakiyesini toplayıp gün sayısına bölün. Bankalar ekstrede çoğu zaman bu ortalamayı ayrıca yazar.';
+    document.getElementById('kh_tablo').innerHTML='<tr><td class="d-bos" colspan="2">Ortalama bakiye bekleniyor…</td></tr>';
+    return;
+  }
   const bs=(N(kh_bsmv.value)||0)/100, tahsis=N(kh_tahsis.value)||0;
   const faiz=B*(fy/100)*g/360, fBsmv=faiz*bs;
   const tahsisPay=tahsis*g/360, tahsisBsmv=tahsisPay*bs;
