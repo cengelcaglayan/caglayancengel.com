@@ -23,7 +23,8 @@ düz metin olarak durur — hesabı çalıştırmadan da okunabilir.
   faiz ile gerçekte ödenen efektif oran arasındaki farkı, kullandırım ücreti ve BSMV dahil
   çıkarır. Örnek: 2.175.234 ₺ · %3,61/ay · 24 ay · %1,1 kullandırım → gerçek maliyet %3,90/ay.
 - [Rotatif kredi](https://caglayancengel.com/hesaplamalar.html#a5): gün bazlı faiz ile dönem
-  sonu komisyonunu ayrı yıllıklandırır. Örnek: %47 nominal → %53,6 gerçek.
+  sonu komisyonunu ayrı yıllıklandırır; komisyon ortalama bakiye üzerinden, yasal tavanı yıllık %1,10.
+  Örnek: %47 nominal, tavandaki komisyon (üç ayda %0,275) → %50,5 gerçek.
 - [Spot kredi](https://caglayancengel.com/hesaplamalar.html#a6): vade sonunda tek ödeme;
   kullandırım ücretinin kısa vadede maliyeti nasıl yükselttiğini gösterir.
 - [Çek/senet iskontosu](https://caglayancengel.com/hesaplamalar.html#a7): peşin kesintili

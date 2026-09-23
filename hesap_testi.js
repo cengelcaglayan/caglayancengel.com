@@ -53,8 +53,8 @@ const TESTLER = [
   { ad: 'a05 rotatif belgesi', fn: 'rotatifPlani',
     gir: { r_ana:'1.000.000', r_faiz:'45', r_gun:'90', r_kom:'0,5', r_komay:'3',
            r_bsmv:'5', r_kul:'', r_tahsis:'', r_tarih:'2026-08-15', r_donem:'ceyrek' },
-    olc: [ { id:'r_plantablo', ara:'65.625',    not:'1. donem odemesi (46 gun)' },
-           { id:'r_plantablo', ara:'1.128.625', not:'toplam odeme' },
+    olc: [ { id:'r_plantablo', ara:'63.058',    not:'1. donem odemesi (46 gun, komisyon gune oranli)' },
+           { id:'r_plantablo', ara:'1.123.375', not:'toplam odeme' },
            { id:'r_planozet',  ara:'46 gün',    not:'ilk odeme vadede degil ceyrek sonunda' } ] },
 
   { ad: 'a06 spot belgesi', fn: 'spotPlani',
@@ -90,7 +90,7 @@ const TESTLER = [
   { ad: 'a05 rotatif · iki donem sonu', fn: 'rotatif',
     gir: { r_ana:'1.000.000', r_faiz:'55', r_gun:'92', r_kom:'1', r_komay:'3',
            r_bsmv:'5', r_kul:'0', r_tahsis:'0' },
-    olc: [ { id:'r_alt', ara:'168.583', not:'donem maliyeti — plan ile ayni' } ] },
+    olc: [ { id:'r_alt', ara:'158.317', not:'donem maliyeti — komisyon 92/90 gune oranli (Talimat 5/c)' } ] },
 
   { ad: 'a07 cek/senet iskontosu', fn: 'iskonto',
     gir: { i_nom:'1.000.000', i_faiz:'45', i_gun:'90', i_kul:'0,27', i_bsmv:'5', i_esas:'360' },
@@ -371,7 +371,7 @@ const metin = e => (e.textContent && e.textContent.trim()) || (e.innerHTML || ''
       { arac:'a2',  id:'d_dscr',    ara:'1,28',  not:'DSCR' },
       { arac:'a3',  id:'n_ccc',     ara:'132',   not:'gün sayısı' },
       { arac:'a4',  id:'k_efektif', ara:'%3,90', not:'efektif oran' },
-      { arac:'a5',  id:'r_yil',     ara:'%53,6',   not:'yıllık maliyet' },
+      { arac:'a5',  id:'r_yil',     ara:'%50,5',   not:'yıllık maliyet' },
       { arac:'a6',  id:'s_yil',     ara:'%51,1', not:'yıllık maliyet' },
       { arac:'a7',  id:'i_yil',     ara:'%67,5', not:'yıllık maliyet' },
       { arac:'a8',  id:'p_fark',    ara:'20.183',not:'aylık fark' },
