@@ -1172,8 +1172,10 @@ footer img{filter:none}
         <div class="girdiler"><div class="gg">
           <div><label for="kh_limit">Tahsis edilen limit (TL)</label><input id="kh_limit" type="text" inputmode="decimal" value="1.000.000"></div>
           <div><label for="kh_bakiye">Ortalama kullanılan bakiye (TL)<br><span class="ipucu">ekstredeki ortalama, anlık bakiye değil</span></label><input id="kh_bakiye" type="text" inputmode="decimal" value="400.000"></div>
-          <div><label for="kh_gun">Dönem (gün)</label><input id="kh_gun" type="text" inputmode="decimal" value="30"></div>
           <div><label for="kh_faiz">Yıllık faiz (%)</label><input id="kh_faiz" type="text" inputmode="decimal" value="55"></div>
+          <div><label for="kh_bas">Başlangıç tarihi</label><input id="kh_bas" type="date"></div>
+          <div><label for="kh_bit">Bitiş tarihi</label><input id="kh_bit" type="date"></div>
+          <div><label for="kh_gun">Dönem (gün)<br><span class="ipucu">tarih seçince kendiliğinden dolar</span></label><input id="kh_gun" type="text" inputmode="decimal" value="30"></div>
           <div><label for="kh_tahsis">Limit tahsis ücreti (TL/yıl)<br><span class="ipucu">limitin tamamı üzerinden, yılda bir</span></label><input id="kh_tahsis" type="text" inputmode="decimal" value="0"></div>
           <div><label for="kh_bsmv">BSMV (%)</label><input id="kh_bsmv" type="text" inputmode="decimal" value="5"></div>
         </div></div>
@@ -2179,11 +2181,15 @@ function kmh(){
   const toplam=faiz+fBsmv+tahsisPay+tahsisBsmv;
   const yillik=B?(toplam*360/g)/B:0;
   const kullanim=(L&&L>0)?B/L:null;
+  /* Tarih araligi yalniz gun sayisiyla tutarliysa yazilir — elle gun
+     girilip tarih bos/eski kaldiysa yanlis aralik basilmaz. */
+  const tb=khTarih(kh_bas.value), tt=khTarih(kh_bit.value);
+  const aralik=(tb&&tt&&gunFarki(tb,tt)===g)?trTarih(tb)+' – '+trTarih(tt)+' · ':'';
   document.getElementById('kh_yil').innerHTML='%'+(yillik*100).toLocaleString('tr-TR',{maximumFractionDigits:1});
-  document.getElementById('kh_alt').textContent=g+' günlük maliyet: '+TL(toplam)
+  document.getElementById('kh_alt').textContent=aralik+g+' günlük maliyet: '+TL(toplam)
     +(kullanim!==null?' · limit kullanımı '+YZ(kullanim):'');
   document.getElementById('kh_tablo').innerHTML=
-     `<tr><td>Faiz (${g} gün · ortalama bakiye)</td><td>${TL(faiz)}</td></tr>`
+     `<tr><td>Faiz (${aralik}${g} gün · ortalama bakiye)</td><td>${TL(faiz)}</td></tr>`
    + `<tr><td>Faiz üzerinden BSMV</td><td>${TL(fBsmv)}</td></tr>`
    + (tahsisPay?`<tr><td>Limit tahsis ücreti — dönem payı + BSMV</td><td class="d-risk">${TL(tahsisPay+tahsisBsmv)}</td></tr>`:'')
    + `<tr><td><strong>Dönem toplam maliyeti</strong></td><td><strong>${TL(toplam)}</strong></td></tr>`
@@ -2203,6 +2209,35 @@ function kmh(){
   document.getElementById('kh_rozet').innerHTML=rz;
   document.getElementById('kh_yorum').textContent=y;
 }
+/* KMH tarih secimi (23.09.2026) — "1 Temmuz'dan bugune ne kadar faiz isledi"
+   sorusu gun saymadan cevaplanabilsin. Gun = bitis - baslangic (bitis gunu
+   haric, fiili/360). Tarih degisince gun dolar; gun elle girilirse bitis kayar.
+   Dinleyiciler genel hepsiniHesapla dinleyicisinden ONCE kayitli olmali. */
+function khTarih(v){
+  const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(v||'');
+  return m?new Date(+m[1],+m[2]-1,+m[3]):null;
+}
+function khIso(d){
+  return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);
+}
+(function(){
+  const bas=document.getElementById('kh_bas'), bit=document.getElementById('kh_bit'),
+        gun=document.getElementById('kh_gun');
+  if(!bas||!bit||!gun) return;
+  const bugun=new Date(); bugun.setHours(0,0,0,0);
+  const g0=N(gun.value)||30, b0=new Date(bugun); b0.setDate(b0.getDate()-g0);
+  bit.value=khIso(bugun); bas.value=khIso(b0);
+  function tarihten(){
+    const tb=khTarih(bas.value), tt=khTarih(bit.value);
+    if(tb&&tt&&tt>tb) gun.value=String(gunFarki(tb,tt));
+  }
+  bas.addEventListener('input',tarihten); bit.addEventListener('input',tarihten);
+  bas.addEventListener('change',tarihten); bit.addEventListener('change',tarihten);
+  gun.addEventListener('input',function(){
+    const tb=khTarih(bas.value), g=N(gun.value);
+    if(tb&&g!==null&&g>0){ const t=new Date(tb); t.setDate(t.getDate()+Math.round(g)); bit.value=khIso(t); }
+  });
+})();
 
 /* ---------- ARAÇ 04 · ÖDEME PLANI (FAZ 6 · 02.09.2026) ----------
    Takvim uyumu: taksit tarihi hafta sonuna denk gelirse SONRAKİ iş gününe kayar.
