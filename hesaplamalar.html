@@ -1206,8 +1206,8 @@ footer img{filter:none}
         <h3>KMH maliyeti</h3></div>
       <div class="arac-ic ust">
         <div class="girdiler"><div class="gg">
-          <div><label for="kh_limit">Tahsis edilen limit (TL)</label><input id="kh_limit" type="text" inputmode="decimal" value="1.000.000"></div>
-          <div><label for="kh_bakiye">Ortalama kullanılan bakiye (TL)<br><span class="ipucu">ekstredeki ortalama, anlık bakiye değil</span></label><input id="kh_bakiye" type="text" inputmode="decimal" value="400.000"></div>
+          <div><label for="kh_bakiye">Kullanılan bakiye (TL)<br><span class="ipucu">faiz yalnız buna işler</span></label><input id="kh_bakiye" type="text" inputmode="decimal" value="400.000"></div>
+          <div><label for="kh_limit">Limit (TL) · isteğe bağlı<br><span class="ipucu">yalnız kullanım oranı ve tahsis ücreti için</span></label><input id="kh_limit" type="text" inputmode="decimal" value=""></div>
           <div><label for="kh_faiz">Yıllık faiz (%)</label><input id="kh_faiz" type="text" inputmode="decimal" value="51"></div>
           <div><label for="kh_aylik">Aylık faiz (%)<br><span class="ipucu">bankanın söylediği oran buysa buraya girin</span></label><input id="kh_aylik" type="text" inputmode="decimal" value="4,25"></div>
           <div><label for="kh_ekle">Faiz hesaba eklenir<br><span class="ipucu">eklenen faize de faiz işler</span></label><select id="kh_ekle"><option value="ay">Her ay</option><option value="ceyrek">3 ayda bir</option><option value="yok">Eklenmez (basit faiz)</option></select></div>
@@ -3006,6 +3006,30 @@ document.querySelectorAll('input,select').forEach(i =>
    sonucunu gosterir. Once bos gelip "—" gostermesi, kullanicinin alanlari dolu
    sanip hesabin bozuk oldugunu dusunmesine yol aciyordu. */
 hepsiniHesapla();
+
+/* BINLIK AYIRICI (Caglayan 23.09.2026): "500000" gibi bol sifirli girislerde
+   yanlis yazma riski — yazarken 500.000 olur. Ondalik virgul korunur (4,25).
+   Tek nokta + arkasinda 1-2 hane = ondalik nokta sayilir, dokunulmaz (3.61).
+   Silmede nokta her zaman binliktir. Imlec rakam sayisina gore yerinde kalir.
+   Deger N() ile ayni sayiya cozulur — hesap degismez. */
+function binlik(el, silme){
+  const v=el.value; if(!v) return;
+  const m=/^(-?)([\d.]*)(,\d*)?$/.exec(v); if(!m) return;
+  const tam=m[2], nokta=(tam.match(/\./g)||[]).length;
+  if(nokta===1 && !silme && !m[3] && tam.split('.')[1].length<3) return;
+  const rakam=tam.replace(/\./g,''); if(!rakam) return;
+  const yeni=m[1]+rakam.replace(/^0+(?=\d)/,'').replace(/\B(?=(\d{3})+(?!\d))/g,'.')+(m[3]||'');
+  if(yeni===v) return;
+  const im=el.selectionStart==null?v.length:el.selectionStart;
+  const sol=v.slice(0,im).replace(/\./g,'').length;
+  el.value=yeni;
+  let k=0,i=0; while(i<yeni.length&&k<sol){ if(yeni[i]!=='.') k++; i++; }
+  try{ if(document.activeElement===el) el.setSelectionRange(i,i); }catch(e){}
+}
+document.querySelectorAll('input[inputmode="decimal"]').forEach(function(el){
+  binlik(el,false);
+  el.addEventListener('input',function(e){ binlik(el,(e.inputType||'').indexOf('delete')===0); });
+});
 
 (function(){
   var b = document.getElementById('k_planbtn');
