@@ -1210,6 +1210,7 @@ footer img{filter:none}
           <div><label for="kh_bakiye">Ortalama kullanılan bakiye (TL)<br><span class="ipucu">ekstredeki ortalama, anlık bakiye değil</span></label><input id="kh_bakiye" type="text" inputmode="decimal" value="400.000"></div>
           <div><label for="kh_faiz">Yıllık faiz (%)</label><input id="kh_faiz" type="text" inputmode="decimal" value="51"></div>
           <div><label for="kh_aylik">Aylık faiz (%)<br><span class="ipucu">bankanın söylediği oran buysa buraya girin</span></label><input id="kh_aylik" type="text" inputmode="decimal" value="4,25"></div>
+          <div><label for="kh_ekle">Faiz hesaba eklenir<br><span class="ipucu">eklenen faize de faiz işler</span></label><select id="kh_ekle"><option value="ay">Her ay</option><option value="ceyrek">3 ayda bir</option><option value="yok">Eklenmez (basit faiz)</option></select></div>
           <div><label for="kh_bas">Başlangıç tarihi</label><input id="kh_bas" type="date"></div>
           <div><label for="kh_bit">Bitiş tarihi</label><input id="kh_bit" type="date"></div>
           <div><label for="kh_gun">Dönem (gün)<br><span class="ipucu">tarih seçince kendiliğinden dolar</span></label><input id="kh_gun" type="text" inputmode="decimal" value="30"></div>
@@ -1232,15 +1233,15 @@ footer img{filter:none}
     <div class="ornek"><span class="et">Örnek hesap · sabit rakamlarla — sizin sonucunuz yukarıdaki araçta</span>
       <b>1.000.000 ₺</b> limitin ortalama <b>400.000 ₺</b>'si kullanılıyor, dönem
       <b>30 gün</b>, aylık faiz <b>%4,25</b> (yıllık %51), BSMV <b>%5</b>: dönem faizi
-      <b>17.000 ₺</b>, BSMV <b>850 ₺</b>, toplam <b>17.850 ₺</b>. Yıllık gerçek maliyet
-      <b>%53,6</b> — kullanım oranı <b>%40</b>.
+      <b>17.000 ₺</b>, BSMV <b>850 ₺</b>, toplam <b>17.850 ₺</b>. Faiz her ay hesaba eklendiği için faizin de faizi işler; yıllık gerçek maliyet
+      <b>%68,9</b> — nominal %51'in 17,9 puan üstü. Kullanım oranı <b>%40</b>.
       Aynı hesapta yasal tavandaki <b>2.000 ₺</b> yıllık limit tahsis ücreti
       (limitin <b>%0,20</b>'si) varsa dönem payı BSMV'siyle <b>175 ₺</b> eklenir,
-      toplam <b>18.025 ₺</b> olur ve yıllık maliyet <b>%54,1</b>'e çıkar. Tahsis
+      toplam <b>18.025 ₺</b> olur ve yıllık maliyet <b>%69,4</b>'e çıkar. Tahsis
       ücreti limitin tamamı üzerinden alınır ama tavanı düşüktür: ilk tahsiste, limit
       artışında ve sizin istediğiniz yıllık yenilemede (revize) en çok %0,20.
       <span class="eylem"><b>Ne sorulur:</b> Bankaya sorun: “Tahsis ücreti limitin
-      yüzde kaçı, yenilemeyi ben mi talep ettim?” Talebiniz olmadan yapılan yenilemede
+      yüzde kaçı, yenilemeyi ben mi talep ettim, faiz hesaba ne sıklıkla ekleniyor?” Talebiniz olmadan yapılan yenilemede
       tahsis ücreti alınamaz; %0,20'nin üstü yasal tavanı aşar.</span>
     </div>
     <div class="arac-cta">
@@ -2236,10 +2237,23 @@ function kmh(){
     return;
   }
   const bs=(N(kh_bsmv.value)||0)/100, tahsis=N(kh_tahsis.value)||0;
-  const faiz=B*(fy/100)*g/360, fBsmv=faiz*bs;
+  /* Bilesik faiz (Caglayan 23.09.2026): banka KMH faizini + BSMV'sini donem
+     sonunda hesaba borc yazar, eksi bakiye buyur, sonraki donem faiz ona da
+     isler. Donem = 30 / 90 gun (sabit); kalan gunler buyumus bakiyeye basit.
+     [KONTROL ET] eklenme sikligi bankadan bankaya degisir — kullanici secer. */
+  const ekle=(document.getElementById('kh_ekle')||{}).value||'ay';
+  const p=ekle==='ay'?30:ekle==='ceyrek'?90:0;
+  const d=(fy/100)/360*(1+bs);                 /* gunluk faiz+BSMV yuku */
+  let yuk, yilFaiz;
+  if(p){ const f=1+d*p, k=Math.floor(g/p), r=g-k*p;
+         yuk=B*(Math.pow(f,k)*(1+d*r)-1); yilFaiz=Math.pow(f,360/p)-1; }
+  else { yuk=B*d*g; yilFaiz=d*360; }
+  const basitYuk=B*d*g, bilesik=yuk-basitYuk;
+  const faiz=yuk/(1+bs), fBsmv=yuk-faiz;
   const tahsisPay=tahsis*g/360, tahsisBsmv=tahsisPay*bs;
   const toplam=faiz+fBsmv+tahsisPay+tahsisBsmv;
-  const yillik=B?(toplam*360/g)/B:0;
+  const tahsisYil=B?tahsis*(1+bs)/B:0;
+  const yillik=yilFaiz+tahsisYil;
   const kullanim=(L&&L>0)?B/L:null;
   /* Tarih araligi yalniz gun sayisiyla tutarliysa yazilir — elle gun
      girilip tarih bos/eski kaldiysa yanlis aralik basilmaz. */
@@ -2252,20 +2266,23 @@ function kmh(){
      `<tr><td>Faiz oranı</td><td>aylık %${(fy/12).toLocaleString('tr-TR',{maximumFractionDigits:2})} · yıllık %${fy.toLocaleString('tr-TR',{maximumFractionDigits:2})}</td></tr>`
    + `<tr><td>Faiz (${aralik}${g} gün · ortalama bakiye)</td><td>${TL(faiz)}</td></tr>`
    + `<tr><td>Faiz üzerinden BSMV</td><td>${TL(fBsmv)}</td></tr>`
+   + (bilesik>0.5?`<tr><td>İçinde: faizin faizi (eklenen faize işleyen)</td><td class="d-risk">${TL(bilesik)}</td></tr>`:'')
    + (tahsisPay?`<tr><td>Limit tahsis ücreti — dönem payı + BSMV</td><td class="d-risk">${TL(tahsisPay+tahsisBsmv)}</td></tr>`:'')
    + `<tr><td><strong>Dönem toplam maliyeti</strong></td><td><strong>${TL(toplam)}</strong></td></tr>`
    + (kullanim!==null?`<tr><td>Limit kullanım oranı</td><td>${YZ(kullanim)}</td></tr>`:'')
-   + `<tr><td>Yıllığa çevrilmiş <strong>toplam</strong></td><td class="d-risk"><strong>${TL(toplam*360/g)}</strong></td></tr>`;
+   + `<tr><td>Yıllığa çevrilmiş <strong>toplam</strong></td><td class="d-risk"><strong>${TL(B*yillik)}</strong></td></tr>`;
   const fark=yillik*100-fy;
+  const pu=x=>(x*100).toLocaleString('tr-TR',{maximumFractionDigits:1});
+  const parca=['BSMV '+pu(fy/100*bs)];
+  if(p) parca.push('faizin faizi '+pu(yilFaiz-d*360));
+  if(tahsisYil) parca.push('tahsis ücreti '+pu(tahsisYil));
   let rz,y;
   if(fark<3){ rz='<span class="rozet r-iyi">Ek yük az</span>';
     y='Faizin üstüne binen vergi ve ücret yükü az.'; }
-  else if(fark<10){ rz='<span class="rozet r-dikkat">Yük var</span>';
+  else { rz=fark<10?'<span class="rozet r-dikkat">Yük var</span>':'<span class="rozet r-risk">Ağır</span>';
     y='Gerçek maliyet nominal faizin '+fark.toLocaleString('tr-TR',{maximumFractionDigits:1})
-      +' puan üstünde. Limit tahsis ücreti kullanmadığınız limitin de bedelidir.'; }
-  else { rz='<span class="rozet r-risk">Ağır</span>';
-    y='Gerçek maliyet nominal faizin '+fark.toLocaleString('tr-TR',{maximumFractionDigits:1})
-      +' puan üstünde. Limit kullanımınız düşükse tahsis ücreti maliyeti belirgin artırır.'; }
+      +' puan üstünde: '+parca.join(', ')+' puan.'
+      +(p?' Faiz '+(p===30?'her ay':'3 ayda bir')+' hesaba eklendiği için bir sonraki dönem ona da faiz işler.':''); }
   /* 2020/4 Teblig m.9 (2025/24, yururluk 01.11.2025): tahsis ucreti limitin
      yillik %0,20'sini gecemez. */
   /* Kullanicinin kendi rakamlariyla tek cumle — ornek kutusu sabit kaldigi icin

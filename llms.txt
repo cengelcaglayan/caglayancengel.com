@@ -31,8 +31,8 @@ düz metin olarak durur — hesabı çalıştırmadan da okunabilir.
 - [Ticari KMH](https://caglayancengel.com/hesaplamalar.html#a11): kredili mevduat
   hesabında faiz yalnız kullanılan bakiye üzerinden işler, limit tahsis ücreti ise
   limitin tamamı üzerinden alınır. Örnek: 1.000.000 ₺ limitin 400.000 ₺'si kullanılıyor,
-  30 gün, aylık %4,25 faiz (TCMB azamisi) → gerçek maliyet %53,6; yasal tavandaki 2.000 ₺ (%0,20) tahsis ücreti eklenince
-  %54,1.
+  30 gün, aylık %4,25 faiz (TCMB azamisi), faiz her ay hesaba eklenir (faizin faizi) → yıllık gerçek maliyet %68,9;
+  yasal tavandaki 2.000 ₺ (%0,20) tahsis ücreti eklenince %69,4.
 - [POS blokaj karşılaştırması](https://caglayancengel.com/hesaplamalar.html#a8): ertesi gün
   ödeme ile blokeli seçeneği, bekleyen paranın maliyetini hesaba katarak karşılaştırır.
 - [Faktoring maliyeti](https://caglayancengel.com/hesaplamalar.html#a9): avans oranının

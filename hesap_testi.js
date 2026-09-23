@@ -99,14 +99,24 @@ const TESTLER = [
 
   { ad: 'a11 ticari KMH · sade', fn: 'kmh',
     gir: { kh_limit:'1.000.000', kh_bakiye:'400.000', kh_gun:'30', kh_faiz:'55',
-           kh_tahsis:'0', kh_bsmv:'5' },
+           kh_tahsis:'0', kh_bsmv:'5', kh_ekle:'yok' },
     olc: [ { id:'kh_yil', bek:57.8, tol:0.1, not:'yillik maliyet' },
            { id:'kh_alt', ara:'19.250', not:'donem maliyeti' },
            { id:'kh_alt', ara:'%40',    not:'limit kullanimi' } ] },
 
+  /* Bilesik (23.09.2026): aylik eklenme, 84 gun = 2 tam ay + 24 gun.
+     El hesabi: f=1+0,51/360*30*1,05=1,044625; 400.000*(f^2*(1+0,51/360*24*1,05)-1)=52.079;
+     basit 49.980, fark 2.099; yillik f^12-1=%68,86. */
+  { ad: 'a11 ticari KMH · bilesik aylik', fn: 'kmh',
+    gir: { kh_limit:'1.000.000', kh_bakiye:'400.000', kh_gun:'84', kh_faiz:'51',
+           kh_tahsis:'0', kh_bsmv:'5', kh_ekle:'ay' },
+    olc: [ { id:'kh_yil', bek:68.9, tol:0.1, not:'yillik efektif' },
+           { id:'kh_alt', ara:'52.079', not:'84 gun maliyeti' },
+           { id:'kh_tablo', ara:'2.099', not:'faizin faizi' } ] },
+
   { ad: 'a11 ticari KMH · tahsisli', fn: 'kmh',
     gir: { kh_limit:'1.000.000', kh_bakiye:'400.000', kh_gun:'30', kh_faiz:'55',
-           kh_tahsis:'2.000', kh_bsmv:'5' },
+           kh_tahsis:'2.000', kh_bsmv:'5', kh_ekle:'yok' },
     olc: [ { id:'kh_yil', bek:58.3, tol:0.1, not:'yillik maliyet' },
            { id:'kh_alt', ara:'19.425', not:'donem maliyeti' } ] },
 
@@ -359,7 +369,7 @@ const metin = e => (e.textContent && e.textContent.trim()) || (e.innerHTML || ''
       { arac:'a8',  id:'p_fark',    ara:'20.183',not:'aylık fark' },
       { arac:'a9',  id:'fk_yil',    ara:'%75,6', not:'yıllık maliyet' },
       { arac:'a10', id:'gt_denk',   ara:'%55,7', not:'denk kredi faizi' },
-      { arac:'a11', id:'kh_yil',    ara:'%53,6', not:'yillik maliyet' },
+      { arac:'a11', id:'kh_yil',    ara:'%68,9', not:'yillik maliyet' },
       { arac:'a12', id:'l_fark',     ara:'291.141', not:'leasing lehine fark' },
       { arac:'a13', id:'g_ana',      ara:'2.339.440', not:'taksidin karsiligi' },
     ];
