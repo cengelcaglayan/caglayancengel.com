@@ -115,12 +115,12 @@ const TESTLER = [
            { id:'kh_tablo', ara:'2.099', not:'faizin faizi' } ] },
 
   /* Takvim (Caglayan elle kontrol 23.09.2026): 01.07-30.09, faiz ay sonunda eklenir.
-     Tem 31g 23.056 · Agu 31g 24.119 · Eyl 29g 23.604 = 70.779 */
+     Bitis gunu dahil: Tem 31g 23.056 · Agu 31g 24.119 · Eyl 30g 24.418 = 71.593 */
   { ad: 'a11 ticari KMH · takvim bilesik', fn: 'kmh',
-    gir: { kh_limit:'500.000', kh_bakiye:'500.000', kh_gun:'91', kh_faiz:'51',
+    gir: { kh_limit:'500.000', kh_bakiye:'500.000', kh_gun:'92', kh_faiz:'51',
            kh_bas:'2026-07-01', kh_bit:'2026-09-30',
            kh_tahsis:'0', kh_bsmv:'5', kh_ekle:'ay' },
-    olc: [ { id:'kh_alt', ara:'70.779', not:'91 gun takvim maliyeti' } ] },
+    olc: [ { id:'kh_alt', ara:'71.593', not:'92 gun takvim maliyeti' } ] },
 
   { ad: 'a11 ticari KMH · tahsisli', fn: 'kmh',
     gir: { kh_limit:'1.000.000', kh_bakiye:'400.000', kh_gun:'30', kh_faiz:'55',

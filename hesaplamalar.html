@@ -1212,7 +1212,7 @@ footer img{filter:none}
           <div><label for="kh_aylik">Aylık faiz (%)<br><span class="ipucu">bankanın söylediği oran buysa buraya girin</span></label><input id="kh_aylik" type="text" inputmode="decimal" value="4,25"></div>
           <div><label for="kh_ekle">Faiz hesaba eklenir<br><span class="ipucu">eklenen faize de faiz işler</span></label><select id="kh_ekle"><option value="ay">Her ay</option><option value="ceyrek">3 ayda bir</option><option value="yok">Eklenmez (basit faiz)</option></select></div>
           <div><label for="kh_bas">Başlangıç tarihi</label><input id="kh_bas" type="date"></div>
-          <div><label for="kh_bit">Bitiş tarihi</label><input id="kh_bit" type="date"></div>
+          <div><label for="kh_bit">Bitiş tarihi (dahil)</label><input id="kh_bit" type="date"></div>
           <div><label for="kh_gun">Dönem (gün)<br><span class="ipucu">tarih seçince kendiliğinden dolar</span></label><input id="kh_gun" type="text" inputmode="decimal" value="30"></div>
           <div><label for="kh_tahsis">Limit tahsis ücreti (TL/yıl)<br><span class="ipucu">limitin tamamı üzerinden, yılda bir</span></label><input id="kh_tahsis" type="text" inputmode="decimal" value="0"></div>
           <div><label for="kh_bsmv">BSMV (%)</label><input id="kh_bsmv" type="text" inputmode="decimal" value="5"></div>
@@ -2249,12 +2249,15 @@ function kmh(){
      bakiyeye eklenir — 01.07-30.09: 31+31+29 gun, 70.779 TL (Caglayan elle
      kontrol, 23.09.2026). 30 gunluk blok 70.817 veriyordu. Tarih yoksa blok. */
   const tb0=khTarih(kh_bas.value), tt0=khTarih(kh_bit.value);
-  const takvim=p&&tb0&&tt0&&gunFarki(tb0,tt0)===g;
+  /* Bitis gunu DAHIL (Caglayan 23.09.2026): 01.07-31.07 = 31 gun. Haric iken
+     aylari ayri ayri giren kullanici her ayin son gununu kaybediyordu. */
+  const tt1=tt0?new Date(tt0.getFullYear(),tt0.getMonth(),tt0.getDate()+1):null;
+  const takvim=p&&tb0&&tt0&&gunFarki(tb0,tt1)===g;
   if(takvim){ let bak=B, t=new Date(tb0);
-    while(t<tt0){
+    while(t<tt1){
       const n=new Date(t.getFullYear(),t.getMonth()+1,1);
       if(p===90) n.setMonth(Math.ceil(n.getMonth()/3)*3);   /* Oca/Nis/Tem/Eki 1'i */
-      const s=n<tt0?n:tt0;
+      const s=n<tt1?n:tt1;
       bak+=bak*d*gunFarki(t,s); t=s; }
     yuk=bak-B; yilFaiz=Math.pow(1+d*p,360/p)-1; }
   else if(p){ const f=1+d*p, k=Math.floor(g/p), r=g-k*p;
@@ -2270,7 +2273,7 @@ function kmh(){
   /* Tarih araligi yalniz gun sayisiyla tutarliysa yazilir — elle gun
      girilip tarih bos/eski kaldiysa yanlis aralik basilmaz. */
   const tb=khTarih(kh_bas.value), tt=khTarih(kh_bit.value);
-  const aralik=(tb&&tt&&gunFarki(tb,tt)===g)?trTarih(tb)+' – '+trTarih(tt)+' · ':'';
+  const aralik=(tb&&tt&&gunFarki(tb,tt)+1===g)?trTarih(tb)+' – '+trTarih(tt)+' · ':'';
   document.getElementById('kh_yil').innerHTML='%'+(yillik*100).toLocaleString('tr-TR',{maximumFractionDigits:1});
   document.getElementById('kh_alt').textContent=aralik+g+' günlük maliyet: '+TL(toplam)
     +(kullanim!==null?' · limit kullanımı '+YZ(kullanim):'');
@@ -2315,7 +2318,7 @@ function kmh(){
   document.getElementById('kh_yorum').textContent=y;
 }
 /* KMH tarih secimi (23.09.2026) — "1 Temmuz'dan bugune ne kadar faiz isledi"
-   sorusu gun saymadan cevaplanabilsin. Gun = bitis - baslangic (bitis gunu
+   sorusu gun saymadan cevaplanabilsin. Gun = bitis - baslangic + 1 (bitis gunu DAHIL, 23.09.2026; eski not:
    haric, fiili/360). Tarih degisince gun dolar; gun elle girilirse bitis kayar.
    Dinleyiciler genel hepsiniHesapla dinleyicisinden ONCE kayitli olmali. */
 function khTarih(v){
@@ -2330,17 +2333,17 @@ function khIso(d){
         gun=document.getElementById('kh_gun');
   if(!bas||!bit||!gun) return;
   const bugun=new Date(); bugun.setHours(0,0,0,0);
-  const g0=N(gun.value)||30, b0=new Date(bugun); b0.setDate(b0.getDate()-g0);
+  const g0=N(gun.value)||30, b0=new Date(bugun); b0.setDate(b0.getDate()-g0+1);
   bit.value=khIso(bugun); bas.value=khIso(b0);
   function tarihten(){
     const tb=khTarih(bas.value), tt=khTarih(bit.value);
-    if(tb&&tt&&tt>tb) gun.value=String(gunFarki(tb,tt));
+    if(tb&&tt&&tt>=tb) gun.value=String(gunFarki(tb,tt)+1);
   }
   bas.addEventListener('input',tarihten); bit.addEventListener('input',tarihten);
   bas.addEventListener('change',tarihten); bit.addEventListener('change',tarihten);
   gun.addEventListener('input',function(){
     const tb=khTarih(bas.value), g=N(gun.value);
-    if(tb&&g!==null&&g>0){ const t=new Date(tb); t.setDate(t.getDate()+Math.round(g)); bit.value=khIso(t); }
+    if(tb&&g!==null&&g>0){ const t=new Date(tb); t.setDate(t.getDate()+Math.round(g)-1); bit.value=khIso(t); }
   });
   /* Aylik <-> yillik faiz (23.09.2026): banka KMH faizini aylik soyler.
      Aylik = yillik / 12 (basit, bankanin ilan bicimi). Hesap yillik alandan yurur. */
