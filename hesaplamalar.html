@@ -2245,7 +2245,19 @@ function kmh(){
   const p=ekle==='ay'?30:ekle==='ceyrek'?90:0;
   const d=(fy/100)/360*(1+bs);                 /* gunluk faiz+BSMV yuku */
   let yuk, yilFaiz;
-  if(p){ const f=1+d*p, k=Math.floor(g/p), r=g-k*p;
+  /* Tarih girildiyse TAKVIM: faiz gun gun isler, ay (veya ceyrek) sonunda
+     bakiyeye eklenir — 01.07-30.09: 31+31+29 gun, 70.779 TL (Caglayan elle
+     kontrol, 23.09.2026). 30 gunluk blok 70.817 veriyordu. Tarih yoksa blok. */
+  const tb0=khTarih(kh_bas.value), tt0=khTarih(kh_bit.value);
+  const takvim=p&&tb0&&tt0&&gunFarki(tb0,tt0)===g;
+  if(takvim){ let bak=B, t=new Date(tb0);
+    while(t<tt0){
+      const n=new Date(t.getFullYear(),t.getMonth()+1,1);
+      if(p===90) n.setMonth(Math.ceil(n.getMonth()/3)*3);   /* Oca/Nis/Tem/Eki 1'i */
+      const s=n<tt0?n:tt0;
+      bak+=bak*d*gunFarki(t,s); t=s; }
+    yuk=bak-B; yilFaiz=Math.pow(1+d*p,360/p)-1; }
+  else if(p){ const f=1+d*p, k=Math.floor(g/p), r=g-k*p;
          yuk=B*(Math.pow(f,k)*(1+d*r)-1); yilFaiz=Math.pow(f,360/p)-1; }
   else { yuk=B*d*g; yilFaiz=d*360; }
   const basitYuk=B*d*g, bilesik=yuk-basitYuk;
