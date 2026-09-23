@@ -359,7 +359,7 @@ const metin = e => (e.textContent && e.textContent.trim()) || (e.innerHTML || ''
       { arac:'a8',  id:'p_fark',    ara:'20.183',not:'aylık fark' },
       { arac:'a9',  id:'fk_yil',    ara:'%75,6', not:'yıllık maliyet' },
       { arac:'a10', id:'gt_denk',   ara:'%55,7', not:'denk kredi faizi' },
-      { arac:'a11', id:'kh_yil',    ara:'%57,8', not:'yillik maliyet' },
+      { arac:'a11', id:'kh_yil',    ara:'%53,6', not:'yillik maliyet' },
       { arac:'a12', id:'l_fark',     ara:'291.141', not:'leasing lehine fark' },
       { arac:'a13', id:'g_ana',      ara:'2.339.440', not:'taksidin karsiligi' },
     ];

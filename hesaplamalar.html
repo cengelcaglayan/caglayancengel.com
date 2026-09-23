@@ -1173,8 +1173,8 @@ footer img{filter:none}
         <div class="girdiler"><div class="gg">
           <div><label for="kh_limit">Tahsis edilen limit (TL)</label><input id="kh_limit" type="text" inputmode="decimal" value="1.000.000"></div>
           <div><label for="kh_bakiye">Ortalama kullanılan bakiye (TL)<br><span class="ipucu">ekstredeki ortalama, anlık bakiye değil</span></label><input id="kh_bakiye" type="text" inputmode="decimal" value="400.000"></div>
-          <div><label for="kh_faiz">Yıllık faiz (%)</label><input id="kh_faiz" type="text" inputmode="decimal" value="55"></div>
-          <div><label for="kh_aylik">Aylık faiz (%)<br><span class="ipucu">bankanın söylediği oran buysa buraya girin</span></label><input id="kh_aylik" type="text" inputmode="decimal" value="4,58"></div>
+          <div><label for="kh_faiz">Yıllık faiz (%)</label><input id="kh_faiz" type="text" inputmode="decimal" value="51"></div>
+          <div><label for="kh_aylik">Aylık faiz (%)<br><span class="ipucu">bankanın söylediği oran buysa buraya girin</span></label><input id="kh_aylik" type="text" inputmode="decimal" value="4,25"></div>
           <div><label for="kh_bas">Başlangıç tarihi</label><input id="kh_bas" type="date"></div>
           <div><label for="kh_bit">Bitiş tarihi</label><input id="kh_bit" type="date"></div>
           <div><label for="kh_gun">Dönem (gün)<br><span class="ipucu">tarih seçince kendiliğinden dolar</span></label><input id="kh_gun" type="text" inputmode="decimal" value="30"></div>
@@ -1196,12 +1196,12 @@ footer img{filter:none}
     </div>
     <div class="ornek"><span class="et">Örnek hesap · sabit rakamlarla — sizin sonucunuz yukarıdaki araçta</span>
       <b>1.000.000 ₺</b> limitin ortalama <b>400.000 ₺</b>'si kullanılıyor, dönem
-      <b>30 gün</b>, yıllık faiz <b>%55</b>, BSMV <b>%5</b>: dönem faizi
-      <b>18.333 ₺</b>, BSMV <b>917 ₺</b>, toplam <b>19.250 ₺</b>. Yıllık gerçek maliyet
-      <b>%57,8</b> — kullanım oranı <b>%40</b>.
+      <b>30 gün</b>, aylık faiz <b>%4,25</b> (yıllık %51), BSMV <b>%5</b>: dönem faizi
+      <b>17.000 ₺</b>, BSMV <b>850 ₺</b>, toplam <b>17.850 ₺</b>. Yıllık gerçek maliyet
+      <b>%53,6</b> — kullanım oranı <b>%40</b>.
       Aynı hesapta yasal tavandaki <b>2.000 ₺</b> yıllık limit tahsis ücreti
       (limitin <b>%0,20</b>'si) varsa dönem payı BSMV'siyle <b>175 ₺</b> eklenir,
-      toplam <b>19.425 ₺</b> olur ve yıllık maliyet <b>%58,3</b>'e çıkar. Tahsis
+      toplam <b>18.025 ₺</b> olur ve yıllık maliyet <b>%54,1</b>'e çıkar. Tahsis
       ücreti limitin tamamı üzerinden alınır ama tavanı düşüktür: ilk tahsiste, limit
       artışında ve sizin istediğiniz yıllık yenilemede (revize) en çok %0,20.
       <span class="eylem"><b>Ne sorulur:</b> Bankaya sorun: “Tahsis ücreti limitin
@@ -2239,6 +2239,11 @@ function kmh(){
     +(fy/12).toLocaleString('tr-TR',{maximumFractionDigits:2})+' faizle '+TL(faiz)+' faiz ve '
     +TL(fBsmv)+' BSMV işler'+(tahsisPay?', tahsis ücretinin dönem payı '+TL(tahsisPay+tahsisBsmv):'')
     +'; toplam '+TL(toplam)+'. '+y;
+  /* TCMB azami KMH akdi faizi aylik %4,25 (1.1.2026'dan). Is Bankasi ticari KMH
+     ilani da %4,25 (olculdu 23.09.2026). Guncellik nobeti bu orani izler. */
+  const KMH_TAVAN=4.25;
+  if(fy/12>KMH_TAVAN+0.001) y+=' Dikkat: aylık %'+(fy/12).toLocaleString('tr-TR',{maximumFractionDigits:2})
+    +' TCMB\'nin KMH için ilan ettiği azami aylık %'+KMH_TAVAN.toLocaleString('tr-TR')+' faizin üstünde.';
   if(L&&tahsis>L*0.002+0.5) y+=' Dikkat: tahsis ücreti / limit = %'
     +(tahsis/L*100).toLocaleString('tr-TR',{maximumFractionDigits:2})
     +'; yasal tavan yıllık %0,20 ('+TL(L*0.002)+').';
