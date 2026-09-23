@@ -3032,16 +3032,19 @@ function binlik(el, silme){
   if(nokta===1 && !silme && !m[3] && tam.split('.')[1].length<3) return;
   const rakam=tam.replace(/\./g,''); if(!rakam) return;
   const yeni=m[1]+rakam.replace(/^0+(?=\d)/,'').replace(/\B(?=(\d{3})+(?!\d))/g,'.')+(m[3]||'');
-  if(yeni===v) return;
+  if(yeni===v) return false;
   const im=el.selectionStart==null?v.length:el.selectionStart;
   const sol=v.slice(0,im).replace(/\./g,'').length;
   el.value=yeni;
   let k=0,i=0; while(i<yeni.length&&k<sol){ if(yeni[i]!=='.') k++; i++; }
   try{ if(document.activeElement===el) el.setSelectionRange(i,i); }catch(e){}
+  return true;
 }
 document.querySelectorAll('input[inputmode="decimal"]').forEach(function(el){
   binlik(el,false);
-  el.addEventListener('input',function(e){ binlik(el,(e.inputType||'').indexOf('delete')===0); });
+  /* hepsiniHesapla bu dinleyiciden ONCE koşar ve ham degeri okur ("400.000"den sifir silinince
+     bir an "400.00" = 400 TL). Bicim degeri degistirdiyse hesap yeni degerle yeniden koşar. */
+  el.addEventListener('input',function(e){ if(binlik(el,(e.inputType||'').indexOf('delete')===0)) hepsiniHesapla(); });
 });
 
 (function(){
