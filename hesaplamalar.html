@@ -1212,7 +1212,7 @@ footer img{filter:none}
           <div><label for="kh_aylik">Aylık faiz (%)<br><span class="ipucu">bankanın söylediği oran buysa buraya girin</span></label><input id="kh_aylik" type="text" inputmode="decimal" value="4,25"></div>
           <div><label for="kh_ekle">Faiz hesaba eklenir<br><span class="ipucu">eklenen faize de faiz işler</span></label><select id="kh_ekle"><option value="ay">Her ay</option><option value="ceyrek">3 ayda bir</option><option value="yok">Eklenmez (basit faiz)</option></select></div>
           <div><label for="kh_bas">Başlangıç tarihi</label><input id="kh_bas" type="date"></div>
-          <div><label for="kh_bit">Bitiş tarihi (dahil)</label><input id="kh_bit" type="date"></div>
+          <div><label for="kh_bit">Bitiş tarihi (dahil)<br><span class="ipucu">borç bu günün akşamı da hesapta kalıyorsa; o gün kapandıysa bir önceki günü girin</span></label><input id="kh_bit" type="date"></div>
           <div><label for="kh_gun">Dönem (gün)<br><span class="ipucu">tarih seçince kendiliğinden dolar</span></label><input id="kh_gun" type="text" inputmode="decimal" value="30"></div>
           <div><label for="kh_tahsis">Limit tahsis ücreti (TL/yıl)<br><span class="ipucu">limitin tamamı üzerinden, yılda bir</span></label><input id="kh_tahsis" type="text" inputmode="decimal" value="0"></div>
           <div><label for="kh_bsmv">BSMV (%)</label><input id="kh_bsmv" type="text" inputmode="decimal" value="5"></div>
@@ -2289,9 +2289,9 @@ function kmh(){
     +(kullanim!==null?' · limit kullanımı '+YZ(kullanim):'');
   document.getElementById('kh_tablo').innerHTML=
      `<tr><td>Faiz oranı</td><td>aylık %${(fy/12).toLocaleString('tr-TR',{maximumFractionDigits:2})} · yıllık %${fy.toLocaleString('tr-TR',{maximumFractionDigits:2})}</td></tr>`
-   + `<tr><td>Faiz (${aralik}${g} gün · ortalama bakiye)</td><td>${TL(faiz)}</td></tr>`
+   + `<tr><td>Faiz (${aralik}${g} gün${p?'':' · ortalama bakiye'})</td><td>${TL(faiz)}</td></tr>`
    + `<tr><td>Faiz üzerinden BSMV</td><td>${TL(fBsmv)}</td></tr>`
-   + (bilesik>0.5?`<tr><td>İçinde: faizin faizi (eklenen faize işleyen)</td><td class="d-risk">${TL(bilesik)}</td></tr>`:'')
+   + (bilesik>0.5?`<tr><td>İçinde: faizin faizi (eklenen faiz ve BSMV'ye işleyen)</td><td class="d-risk">${TL(bilesik)}</td></tr>`:'')
    + (tahsisPay?`<tr><td>Limit tahsis ücreti — dönem payı + BSMV</td><td class="d-risk">${TL(tahsisPay+tahsisBsmv)}</td></tr>`:'')
    + `<tr><td><strong>Dönem toplam maliyeti</strong></td><td><strong>${TL(toplam)}</strong></td></tr>`
    + (kullanim!==null?`<tr><td>Limit kullanım oranı</td><td>${YZ(kullanim)}</td></tr>`:'')
@@ -2312,7 +2312,7 @@ function kmh(){
      yillik %0,20'sini gecemez. */
   /* Kullanicinin kendi rakamlariyla tek cumle — ornek kutusu sabit kaldigi icin
      "metinler statik" algisi dogdu (Caglayan 23.09.2026). */
-  y=(aralik?aralik.replace(' · ','')+' arasında':g+' günde')+' ortalama '+TL(B)+' bakiyeye aylık %'
+  y=(aralik?aralik.replace(' · ','')+' arasında':g+' günde')+(p?' başlangıçta '+TL(B)+' olan bakiyeye aylık %':' ortalama '+TL(B)+' bakiyeye aylık %')
     +(fy/12).toLocaleString('tr-TR',{maximumFractionDigits:2})+' faizle '+TL(faiz)+' faiz ve '
     +TL(fBsmv)+' BSMV işler'+(tahsisPay?', tahsis ücretinin dönem payı '+TL(tahsisPay+tahsisBsmv):'')
     +'; toplam '+TL(toplam)+'. '+y;
