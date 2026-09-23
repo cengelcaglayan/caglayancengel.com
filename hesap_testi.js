@@ -93,9 +93,9 @@ const TESTLER = [
     olc: [ { id:'r_alt', ara:'168.583', not:'donem maliyeti — plan ile ayni' } ] },
 
   { ad: 'a07 cek/senet iskontosu', fn: 'iskonto',
-    gir: { i_nom:'1.000.000', i_faiz:'45', i_gun:'90', i_kul:'1,1', i_bsmv:'5', i_esas:'360' },
-    olc: [ { id:'i_yil', bek:74.3, tol:0.1, not:'yillik maliyet' },
-           { id:'i_alt', ara:'870.325', not:'elinize gecen' } ] },
+    gir: { i_nom:'1.000.000', i_faiz:'45', i_gun:'90', i_kul:'0,27', i_bsmv:'5', i_esas:'360' },
+    olc: [ { id:'i_yil', bek:67.5, tol:0.1, not:'yillik maliyet' },
+           { id:'i_alt', ara:'879.040', not:'elinize gecen' } ] },
 
   { ad: 'a11 ticari KMH · sade', fn: 'kmh',
     gir: { kh_limit:'1.000.000', kh_bakiye:'400.000', kh_gun:'30', kh_faiz:'55',
@@ -106,9 +106,9 @@ const TESTLER = [
 
   { ad: 'a11 ticari KMH · tahsisli', fn: 'kmh',
     gir: { kh_limit:'1.000.000', kh_bakiye:'400.000', kh_gun:'30', kh_faiz:'55',
-           kh_tahsis:'25.000', kh_bsmv:'5' },
-    olc: [ { id:'kh_yil', bek:64.3, tol:0.1, not:'yillik maliyet' },
-           { id:'kh_alt', ara:'21.438', not:'donem maliyeti' } ] },
+           kh_tahsis:'2.000', kh_bsmv:'5' },
+    olc: [ { id:'kh_yil', bek:58.3, tol:0.1, not:'yillik maliyet' },
+           { id:'kh_alt', ara:'19.425', not:'donem maliyeti' } ] },
 
   { ad: 'a08 POS blokeli/ertesi gun', fn: 'pos',
     gir: { p_ciro:'500.000', p_k1:'2,5', p_k2:'2', p_gun:'30', p_maliyet:'4', p_bsmv:'5' },
@@ -355,7 +355,7 @@ const metin = e => (e.textContent && e.textContent.trim()) || (e.innerHTML || ''
       { arac:'a4',  id:'k_efektif', ara:'%3,90', not:'efektif oran' },
       { arac:'a5',  id:'r_yil',     ara:'%62',   not:'yıllık maliyet' },
       { arac:'a6',  id:'s_yil',     ara:'%58,9', not:'yıllık maliyet' },
-      { arac:'a7',  id:'i_yil',     ara:'%74,3', not:'yıllık maliyet' },
+      { arac:'a7',  id:'i_yil',     ara:'%67,5', not:'yıllık maliyet' },
       { arac:'a8',  id:'p_fark',    ara:'20.183',not:'aylık fark' },
       { arac:'a9',  id:'fk_yil',    ara:'%75,6', not:'yıllık maliyet' },
       { arac:'a10', id:'gt_denk',   ara:'%55,7', not:'denk kredi faizi' },

@@ -146,7 +146,7 @@ if "/hesaplamalar.html" in govde:
     if soru  < 11: uyari.append("Soru basligi %d, 11 olmali" % soru)
     if eylem < 11: uyari.append("Eylem satiri %d, 11 olmali" % eylem)
     # kilit rakamlar JS'siz metinde okunuyor mu
-    kilit = ["%3,90", "25.124", "%62", "%74,3", "20.183", "%75,6", "%55,7"]
+    kilit = ["%3,90", "25.124", "%62", "%67,5", "20.183", "%75,6", "%55,7"]
     yok = [k for k in kilit if k not in duz]
     print("  duz metinde rakamlar   %d/%d" % (len(kilit) - len(yok), len(kilit)))
     if yok: hata.append("Bu rakamlar JS'siz metinde okunmuyor: " + ", ".join(yok))
