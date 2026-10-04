@@ -228,7 +228,11 @@ for y in ["/", "/hesaplamalar.html", "/finans-nedir.html", "/ornek-rapor.html", 
         print("  %-22s 🔴 ust menu okunamadi" % y)
         continue
 
+    # 04.10.2026: alt basliklar (mp-bas) kalkti, ikon SVG'leri 1400 karakteri
+    # doldurdu -> son uc baslik "eksik" sanildi. Blok WhatsApp dugmesinde biter.
     j = g.find("mp-bas", i)
+    if j < 0:
+        j = g.find("mp-wa", i)
     blok = g[i:j if j > 0 else i + 1400]
     eksik = [b for b in beklenen if b not in blok]
     sira = [b for b in beklenen if b in blok]
