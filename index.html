@@ -630,6 +630,11 @@ body.kilit .top{z-index:100}
    okutabilir. Kutu yatay duzene gecer. */
 @media(max-width:900px){
   .hero .wrap.hero-iki{grid-template-columns:1fr;gap:0}
+  /* onizleme-hero 04.10.2026: telefonda deneyim seridi hesap kutusunun ustune cikar */
+  .hero .wrap.hero-iki>.hero-sol{order:1}
+  .hero .wrap.hero-iki>.proof{order:2}
+  .hero .wrap.hero-iki>.hero-yan{order:3}
+  .hero .wrap.hero-iki>.hero-qr-mob{order:4}
   .hero-qr{margin-top:0;display:grid;
     grid-template-columns:96px minmax(0,1fr);grid-template-rows:auto auto auto;
     gap:5px 16px;align-items:start;padding:15px}
@@ -860,9 +865,9 @@ section[id],header[id],div[id]{scroll-margin-top:calc(var(--ust,80px) + 14px)}
 .js-anim .hero .kicker{animation-delay:.05s}
 .js-anim .hero .h1{animation-delay:.13s}
 .js-anim .hero .sub{animation-delay:.23s}
-.js-anim .hero .pull{animation-delay:.33s}
-.js-anim .hero .ayrim{animation-delay:.43s}
-.js-anim .hero .cta{animation-delay:.51s}
+.js-anim .hero .pull{animation-delay:.41s}
+.js-anim .hero .ayrim{animation-delay:.49s}
+.js-anim .hero .cta{animation-delay:.31s}
 .js-anim .hero .proof{animation-delay:.59s}
 @keyframes acilis{to{opacity:1;transform:none}}
 
@@ -934,11 +939,12 @@ section[id],header[id],div[id]{scroll-margin-top:calc(var(--ust,80px) + 14px)}
     <p class="sub">
       Kasa, banka, POS ve stok kaydı bugün sistemde görünür. Asıl soru, görünen rakamın
       firmadaki fiili durumla ve sözleşme koşullarıyla örtüşüp örtüşmediğidir.
-      Finansal kontrol burada başlar: rakamın doğruluğu sınanır, nakdin ve işletme
-      sermayesinin nerede sıkıştığı görülür, finansal risk ölçülür ve alınacak kararın
-      işletmeye etkisi rakamla ortaya konur. Gerektiğinde aynı veri, 16 yıllık bankacılık
-      deneyiminin getirdiği bakışla kredi ve banka ilişkileri açısından da değerlendirilir.
     </p>
+
+    <div class="cta">
+      <a class="btn btn-fill" href="#iletisim">Görüşme talebi bırakın</a>
+      <a class="btn btn-line" href="#ne-yaparim">Çalışma alanlarımız</a>
+    </div>
 
     <div class="pull">
       <q>Bizim sistem tıkandı.</q>
@@ -953,11 +959,6 @@ section[id],header[id],div[id]{scroll-margin-top:calc(var(--ust,80px) + 14px)}
       açısından okunmasına, kontrol edilmesine ve karar sürecine bağlanmasına
       odaklanır.</strong>
     </p>
-
-    <div class="cta">
-      <a class="btn btn-fill" href="#iletisim">Görüşme talebi bırakın</a>
-      <a class="btn btn-line" href="#ne-yaparim">Çalışma alanlarımız</a>
-    </div>
 
    </div>
 
