@@ -406,6 +406,8 @@ section[id]{scroll-margin-top:calc(var(--yapiskan,130px) + 14px)}
   font-size:16px;font-weight:600
 }
 body.kilit{overflow:hidden}
+/* Menu acikken ust serit panelin ustunde kalir: logo ve kapat (X) gorunur (04.10.2026) */
+body.kilit .top{z-index:100}
 @media(max-width:1023px){.hmb{display:flex}.top .wrap>a:not(.wa-top):not(.marka),.top .wrap>.mgrup{display:none}}
 /* ---- her aracin altinda gorusme cagrisi ---- */
 .arac-cta{display:flex;align-items:center;gap:24px;flex-wrap:wrap;
@@ -422,7 +424,7 @@ body.kilit{overflow:hidden}
 .band .arac-cta{background:var(--paper)}
 @media(max-width:640px){.arac-cta{gap:14px;padding:16px 18px}.arac-cta .btn{width:100%;text-align:center}.cta-wa{justify-content:center}}
 /* ---- 360px alti: ust cubuk sikismasin (320px'de hamburger tasiyordu) ---- */
-@media(max-width:380px){
+@media(max-width:480px){
   .top .wrap{gap:9px;padding-left:16px;padding-right:16px}
   .top .marka{gap:9px}
   .top img{width:38px;height:38px}
@@ -824,7 +826,7 @@ footer img{filter:none}
   <button class="hmb" id="hmbBtn" aria-label="Menü" aria-expanded="false"><span></span></button></div>
 </div>
 
-<div class="mpanel" id="mpanel"><a href="/#ne-yaparim">Çalışma alanlarımız</a><a href="finans-nedir.html">Finans nedir?</a><a href="/#olcut">Sizde var mı?</a><a href="/#kimim">Hakkımda</a><a href="hesaplamalar.html#a4">Hesaplamalar</a><a href="ornek-rapor.html">Gerçek vaka</a><a href="/#iletisim">İletişim</a><div class="mp-bas">Çalışma alanlarımız</div><a class="mp-arac" href="/#k1">01 · İç kontrol ve kayıt doğruluğu</a><a class="mp-arac" href="/#k2">02 · Nakit ve işletme sermayesi</a><a class="mp-arac" href="/#k3">03 · Finansal durum ve risk</a><a class="mp-arac" href="/#k4">04 · Kredi, limit ve banka</a><a class="mp-arac" href="/#k5">05 · Karar ve kaynak seçimi</a><div class="mp-bas">Hesaplama araçları</div><a class="mp-arac" href="hesaplamalar.html#a4">Taksitli ticari kredi</a><a class="mp-arac" href="hesaplamalar.html#a5">Rotatif (BCH)</a><a class="mp-arac" href="hesaplamalar.html#a6">Spot kredi</a><a class="mp-arac" href="hesaplamalar.html#a7">Çek/senet iskonto</a><a class="mp-arac" href="hesaplamalar.html#a11">Ticari KMH</a><a class="mp-arac" href="hesaplamalar.html#a9">Faktoring</a><a class="mp-arac" href="hesaplamalar.html#a10">Eline geçen ne kadar</a><a class="mp-arac" href="hesaplamalar.html#a8">POS komisyonu</a><a class="mp-arac" href="hesaplamalar.html#a12">Leasing / kredi</a><a class="mp-arac" href="hesaplamalar.html#a13">Kredi kapasitesi</a><a class="mp-arac" href="hesaplamalar.html#a1">Bilanço teşhisi</a><a class="mp-arac" href="hesaplamalar.html#a2">Borç servisi · DSCR</a><a class="mp-arac" href="hesaplamalar.html#a3">Nakit döngüsü</a><a class="mp-wa" href="https://wa.me/905337619443" target="_blank" rel="noopener">WhatsApp ile yazın</a></div>
+<div class="mpanel" id="mpanel"><a href="/">Ana sayfa</a><a href="/#ne-yaparim">Çalışma alanlarımız</a><a href="finans-nedir.html">Finans nedir?</a><a href="/#olcut">Sizde var mı?</a><a href="/#kimim">Hakkımda</a><a href="hesaplamalar.html#a4">Hesaplamalar</a><a href="ornek-rapor.html">Gerçek vaka</a><a href="/#iletisim">İletişim</a><div class="mp-bas">Çalışma alanlarımız</div><a class="mp-arac" href="/#k1">01 · İç kontrol ve kayıt doğruluğu</a><a class="mp-arac" href="/#k2">02 · Nakit ve işletme sermayesi</a><a class="mp-arac" href="/#k3">03 · Finansal durum ve risk</a><a class="mp-arac" href="/#k4">04 · Kredi, limit ve banka</a><a class="mp-arac" href="/#k5">05 · Karar ve kaynak seçimi</a><div class="mp-bas">Hesaplama araçları</div><a class="mp-arac" href="hesaplamalar.html#a4">Taksitli ticari kredi</a><a class="mp-arac" href="hesaplamalar.html#a5">Rotatif (BCH)</a><a class="mp-arac" href="hesaplamalar.html#a6">Spot kredi</a><a class="mp-arac" href="hesaplamalar.html#a7">Çek/senet iskonto</a><a class="mp-arac" href="hesaplamalar.html#a11">Ticari KMH</a><a class="mp-arac" href="hesaplamalar.html#a9">Faktoring</a><a class="mp-arac" href="hesaplamalar.html#a10">Eline geçen ne kadar</a><a class="mp-arac" href="hesaplamalar.html#a8">POS komisyonu</a><a class="mp-arac" href="hesaplamalar.html#a12">Leasing / kredi</a><a class="mp-arac" href="hesaplamalar.html#a13">Kredi kapasitesi</a><a class="mp-arac" href="hesaplamalar.html#a1">Bilanço teşhisi</a><a class="mp-arac" href="hesaplamalar.html#a2">Borç servisi · DSCR</a><a class="mp-arac" href="hesaplamalar.html#a3">Nakit döngüsü</a><a class="mp-wa" href="https://wa.me/905337619443" target="_blank" rel="noopener">WhatsApp ile yazın</a></div>
 
 <header class="hero">
   <div class="wrap">
